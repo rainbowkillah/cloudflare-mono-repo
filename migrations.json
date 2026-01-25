@@ -4,6 +4,7 @@
       "ref": "678699c68f92b31443d8951e49f1f1bd37f7d467",
       "subject": "chore: remove unnecessary peer dependencies from package-lock.json"
     },
-    "targetVersion": "latest"
+    "targetVersion": "latest",
+    "confirmedPackageUpdates": true
   }
 }
