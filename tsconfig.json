@@ -5,6 +5,9 @@
   "references": [
     {
       "path": "./com-mrrainbowsmoke/my-ai"
+    },
+    {
+      "path": "./com-rainbowsmokeofficial/my-ai"
     }
   ]
 }
