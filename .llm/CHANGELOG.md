@@ -10,6 +10,9 @@ Track notable changes to plans, docs, and repo decisions here.
   - Custom fields: Phase, Priority
   - Labels created for all task categories
 
+- **Pre-M0 cleanup checklist**
+  - `docs/cleanup.md` - Candidate files/folders to remove or archive
+
 - **Architecture documentation suite completed**:
   - `docs/architecture.md` - Full system architecture with diagrams
   - `docs/tenancy.md` - Multi-tenant isolation strategy
@@ -17,7 +20,11 @@ Track notable changes to plans, docs, and repo decisions here.
   - `docs/testing.md` - Testing strategy at all levels
   - `docs/api-contracts.md` - Detailed endpoint specifications
   - `docs/security.md` - Security model, auth, threat analysis
-  - `docs/failure-modes.md` - Failure analysis and mitigation strategies
+- `docs/failure-modes.md` - Failure analysis and mitigation strategies
+
+### Updated
+- Archived `.llm/scratch/` into `.llm/archives/2026-01-26-scratch/`
+- Removed empty tenant placeholder folders under `tenants/`
 
 ### Reviews Completed
 - **Gemini (Planner) review** of plan.md

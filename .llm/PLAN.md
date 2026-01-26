@@ -15,6 +15,7 @@
 - [testing.md](docs/testing.md) — Testing strategy (unit, integration, E2E)
 - [metrics.md](docs/metrics.md) — Observability, logging, metrics plan
 - [BINDINGS.md](docs/BINDINGS.md) — Cloudflare bindings reference
+- [cleanup.md](docs/cleanup.md) — Pre-M0 repo cleanup candidates
 
 ### Security & Operations
 - [security.md](docs/security.md) — Security model, authentication, authorization

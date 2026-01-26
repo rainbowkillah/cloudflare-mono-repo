@@ -5,6 +5,7 @@
 ## Active Work
 
 ### Immediate Next Actions
+- [x] Review `.llm/docs/cleanup.md` and decide deletions/archival before M0 - DONE 2026-01-26
 - [ ] Implement M0 repo scaffolding + tenant middleware
 - [x] Write `.llm/docs/architecture.md` (currently empty) - DONE 2026-01-26
 - [x] Write `.llm/docs/tenancy.md` - DONE 2026-01-26
