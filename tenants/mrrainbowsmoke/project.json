@@ -1,0 +1,22 @@
+{
+  "name": "tenant-mrrainbowsmoke",
+  "projectType": "application",
+  "sourceRoot": "tenants/mrrainbowsmoke",
+  "targets": {
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "wrangler dev",
+        "cwd": "tenants/mrrainbowsmoke"
+      }
+    },
+    "deploy": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "wrangler deploy",
+        "cwd": "tenants/mrrainbowsmoke"
+      }
+    }
+  },
+  "tags": ["type:tenant"]
+}

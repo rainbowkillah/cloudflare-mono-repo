@@ -59,6 +59,8 @@
 
 ## 3. Authentication
 
+**M0 Scope:** No API key or JWT validation in M0; tenant resolution is header-only (`x-tenant-id`) and treated as non-authenticated.
+
 ### 3.1 Authentication Methods (Planned)
 
 | Method | Use Case | Implementation |

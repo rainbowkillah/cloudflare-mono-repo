@@ -168,6 +168,13 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
 - **Locked**: 2026-01-26
 - **Impact**: Simplifies async middleware, streaming, and binding initialization
 
+### M0 Authentication Scope
+- **Decision**: Header-only tenant resolution in M0 (`x-tenant-id`); API Key/JWT validation deferred
+- **Rationale**:
+  - M0 focuses on tenancy plumbing and repo scaffolding
+  - Auth enforcement will be added when session and rate limiting are in place (M1)
+- **Locked**: 2026-01-26
+
 ### TypeScript Configuration
 - **tsconfig.base.json** (created in M0, Issue #4):
   - `target: "ES2022"`
@@ -225,8 +232,11 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
 3. Tenant resolution middleware (MANDATORY)
    - Resolve tenant via header/hostname (configurable priority)
    - Attach tenant context object to request lifecycle
-4. Core error handling + response envelopes
-5. Local dev boot
+4. M0 auth + config scope (explicit)
+   - Auth: header-only `x-tenant-id` (no API key/JWT validation in M0)
+   - Tenant config source: file-based `tenants/<id>/tenant.config.json` bundled per tenant (KV sync deferred)
+5. Core error handling + response envelopes
+6. Local dev boot
    - hello endpoint per tenant
    - smoke tests
 

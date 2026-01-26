@@ -1,0 +1,22 @@
+{
+  "name": "tenant-rainbowsmokeofficial",
+  "projectType": "application",
+  "sourceRoot": "tenants/rainbowsmokeofficial",
+  "targets": {
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "wrangler dev",
+        "cwd": "tenants/rainbowsmokeofficial"
+      }
+    },
+    "deploy": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "wrangler deploy",
+        "cwd": "tenants/rainbowsmokeofficial"
+      }
+    }
+  },
+  "tags": ["type:tenant"]
+}

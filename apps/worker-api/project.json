@@ -1,0 +1,36 @@
+{
+  "name": "worker-api",
+  "projectType": "application",
+  "sourceRoot": "apps/worker-api/src",
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "main": "apps/worker-api/src/index.ts",
+        "outputPath": "dist/apps/worker-api",
+        "tsConfig": "apps/worker-api/tsconfig.app.json",
+        "esbuildOptions": {
+          "bundle": true,
+          "format": "esm",
+          "platform": "neutral",
+          "target": "es2022"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/vitest:test",
+      "options": {
+        "configFile": "apps/worker-api/vitest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": ["apps/worker-api/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}

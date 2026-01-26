@@ -1,0 +1,30 @@
+{
+  "name": "testing",
+  "projectType": "library",
+  "sourceRoot": "packages/testing/src",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "main": "packages/testing/src/index.ts",
+        "outputPath": "dist/packages/testing",
+        "tsConfig": "packages/testing/tsconfig.lib.json"
+      }
+    },
+    "test": {
+      "executor": "@nx/vitest:test",
+      "options": {
+        "configFile": "packages/testing/vitest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": ["packages/testing/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}

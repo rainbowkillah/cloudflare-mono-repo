@@ -1,6 +1,6 @@
 # Pre-M0 Status Summary
 
-**Last Updated:** 2026-01-26 14:29 UTC  
+**Last Updated:** 2026-01-26 16:37 UTC  
 **Status:** ✅ READY FOR M0 IMPLEMENTATION
 
 ---
@@ -12,7 +12,7 @@
 | **Documentation** | ✅ Complete | 4,491 lines across 10 documents |
 | **Planning** | ✅ Complete | 8 milestones + 4 Nx plugin milestones |
 | **GitHub Project** | ✅ Active | 122 issues tracked |
-| **Dependencies** | ⏳ Defined | Run `npm install` to initialize |
+| **Dependencies** | ✅ Installed | `npm install` complete |
 | **Implementation** | ⏳ Pending | M0 is next |
 | **Blockers** | ✅ None | All risks identified and mitigated |
 
@@ -39,8 +39,8 @@
 
 Before starting M0 implementation:
 
-- [ ] Run `npm install` (122 packages to install)
-- [ ] Verify `npx nx --version` works
+- [x] Run `npm install` (122 packages to install)
+- [x] Verify `npx nx --version` works
 - [ ] Review `docs/cleanup.md` for final decisions
 - [ ] Confirm toolchain: TypeScript, ESLint, Vitest, Wrangler
 
@@ -75,7 +75,9 @@ cloudflare-mono-repo/
 │   ├── archives/              # Historical artifacts
 │   ├── snippets/              # Code snippets
 │   └── *.md                   # PLAN, TODO, CHANGELOG
-├── packages/                  # Empty (awaiting M0)
+├── apps/                      # Worker app(s) scaffolded
+├── packages/                  # Core/testing libs scaffolded
+├── tenants/                   # Tenant configs scaffolded
 ├── package.json              # Dependencies defined
 ├── nx.json                   # Nx configured
 ├── tsconfig.json             # TypeScript configured
@@ -84,8 +86,6 @@ cloudflare-mono-repo/
 
 ### Missing (Expected) ⏳
 ```
-├── apps/                      # To be created in M0
-├── tenants/                   # To be created in M0
 └── node_modules/             # Run npm install
 ```
 

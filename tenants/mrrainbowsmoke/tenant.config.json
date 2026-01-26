@@ -1,0 +1,28 @@
+{
+  "tenantId": "mrrainbowsmoke",
+  "accountId": "account-mrrainbowsmoke",
+  "hostnameMapping": ["mrr.localhost"],
+  "ai": {
+    "defaultModel": "@cf/meta/llama-3-8b-instruct",
+    "allowedModels": ["@cf/meta/llama-3-8b-instruct"]
+  },
+  "vectorize": {
+    "indexName": "mrrainbowsmoke-index",
+    "dimensions": 768
+  },
+  "kv": {
+    "cacheNamespace": "mrrainbowsmoke-cache"
+  },
+  "durableObjects": {
+    "sessionClass": "SessionDO",
+    "rateLimitClass": "RateLimitDO"
+  },
+  "cors": {
+    "allowedOrigins": ["*"]
+  },
+  "features": {
+    "ttsEnabled": false,
+    "toolsEnabled": true,
+    "ragEnabled": true
+  }
+}

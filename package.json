@@ -2,7 +2,12 @@
   "name": "@org/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "build": "nx run-many --target=build",
+    "test": "nx run-many --target=test",
+    "lint": "nx run-many --target=lint",
+    "typecheck": "nx run-many --target=typecheck"
+  },
   "private": true,
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "^0.12.0",

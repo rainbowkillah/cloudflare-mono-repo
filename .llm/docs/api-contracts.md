@@ -22,7 +22,9 @@ Development: http://localhost:8787
 Header: Authorization: Bearer <token>
 ```
 
-Token types (to be implemented):
+**M0 scope:** Authorization header not required. Tenant resolution relies on `x-tenant-id` or hostname mapping.
+
+Token types (planned):
 - API Key: `ak_<tenant>_<random>`
 - JWT: Standard JWT with `tenant` claim
 

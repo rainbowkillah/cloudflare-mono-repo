@@ -352,14 +352,8 @@ export async function loadTenantConfig(
   tenantId: string,
   env: Env
 ): Promise<TenantContext> {
-  // Load from KV or filesystem (dev mode)
-  const configJson = await env.TENANT_CONFIGS.get(`tenant:${tenantId}`);
-
-  if (!configJson) {
-    throw new TenantResolutionError(`Unknown tenant: ${tenantId}`);
-  }
-
-  const config = TenantConfigSchema.parse(JSON.parse(configJson));
+  // M0: file-based config bundled per tenant
+  const config = TenantConfigSchema.parse(getTenantConfigFromBundle(tenantId));
 
   return {
     tenantId,
@@ -371,6 +365,8 @@ export async function loadTenantConfig(
   };
 }
 ```
+
+**M0 decision:** Tenant config is file-based (`tenants/<id>/tenant.config.json`) and bundled per tenant. KV-backed config is deferred until post-M0 (requires a sync/bootstrapping mechanism).
 
 ## 8. Testing Tenant Isolation
 

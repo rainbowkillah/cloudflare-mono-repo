@@ -1,6 +1,7 @@
 # Cloudflare Bindings Reference
 
 Guardrails: keep tenants isolated; secrets live only in Workers Secrets; never store raw prompts in D1/KV/R2.
+**M0 Scope:** D1 is deferred in M0. No D1 bindings are required until post-M0.
 
 ## mrrainbowsmoke
 Account: `9acbaee838d01aa096e63ad4551fda77` — Worker: `mrrainbowsmoke-ai-worker` — Config: `mrrainbowsmoke/wrangler.jsonc`

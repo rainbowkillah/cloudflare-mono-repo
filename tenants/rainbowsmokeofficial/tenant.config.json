@@ -1,0 +1,28 @@
+{
+  "tenantId": "rainbowsmokeofficial",
+  "accountId": "account-rainbowsmokeofficial",
+  "hostnameMapping": ["rso.localhost"],
+  "ai": {
+    "defaultModel": "@cf/meta/llama-3-8b-instruct",
+    "allowedModels": ["@cf/meta/llama-3-8b-instruct"]
+  },
+  "vectorize": {
+    "indexName": "rainbowsmokeofficial-index",
+    "dimensions": 768
+  },
+  "kv": {
+    "cacheNamespace": "rainbowsmokeofficial-cache"
+  },
+  "durableObjects": {
+    "sessionClass": "SessionDO",
+    "rateLimitClass": "RateLimitDO"
+  },
+  "cors": {
+    "allowedOrigins": ["*"]
+  },
+  "features": {
+    "ttsEnabled": false,
+    "toolsEnabled": true,
+    "ragEnabled": true
+  }
+}

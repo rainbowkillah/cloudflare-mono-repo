@@ -1,0 +1,8 @@
+{
+  "name": "worker-api-rainbowsmokeofficial",
+  "main": "../../apps/worker-api/src/index.ts",
+  "compatibility_date": "2026-01-26",
+  "vars": {
+    "TENANT_ID": "rainbowsmokeofficial"
+  }
+}

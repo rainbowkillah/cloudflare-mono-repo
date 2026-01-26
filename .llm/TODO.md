@@ -12,6 +12,16 @@
 - ✅ **Issue #14 DECIDED**: Wrangler ^4.x + ESM (ES2022) locked in (2026-01-26)
 - 📋 See `.llm/sessions/2026-01-26-M0-github-project-verification.md` for full plan
 
+**M0 Coordination**
+- [x] Review cross-agent kickoff feedback (Claude/Copilot/Gemini) and fold into Phase 1 tasks
+- [x] Decide M0 auth model (unauthenticated vs API key/JWT) and document in security/plan
+- [x] Decide tenant config source for M0 (filesystem vs KV) and document bootstrap story
+- [x] Define tenant config bootstrap mechanism (file-based for M0; KV sync deferred)
+- [ ] Make tenant-safety checks explicit for any M0 Durable Objects (tenant prefix validation)
+- [x] Clarify D1 usage in M0 (scope/tenancy/retention) or defer/remove from M0 docs
+- [x] Confirm Nx strategy for M0 (manual project setup now; Nx plugin later in NX-1)
+- [x] Update `.llm/docs/plan.md` to mark M0 as header-only auth (if chosen)
+
 **Runtime Decisions Locked (Issue #14)**
 - ✅ Wrangler: `^4.x` (latest stable, v4.26.0 already in package.json)
 - ✅ Module Format: ESM (ES2022 target, no service-worker transpilation)
@@ -22,34 +32,34 @@
 - 📋 See `plan.md` section 4.5 "Runtime Decisions" for full details
 
 **Phase 1: Parallel Setup (Issues #3, #4, #5, #6, #9, #14)** - Est. 2 hours
-- [ ] Issue #3: Monorepo directory structure (apps, packages, tenants, scripts, tests)
-- [ ] Issue #4: TypeScript + tsconfig.base.json for Workers runtime (ES2022)
-- [ ] Issue #5: ESLint + Prettier configuration
-- [ ] Issue #6: Vitest + Miniflare test runner setup
-- [ ] Issue #9: tenant.config.json schema + Zod validation library
-- [ ] Issue #14: Runtime decisions documented (wrangler version, ESM format)
+- [x] Issue #3: Monorepo directory structure (apps, packages, tenants, scripts, tests)
+- [x] Issue #4: TypeScript + tsconfig.base.json for Workers runtime (ES2022)
+- [x] Issue #5: ESLint + Prettier configuration
+- [x] Issue #6: Vitest + Miniflare test runner setup
+- [x] Issue #9: tenant.config.json schema + Zod validation library
+- [x] Issue #14: Runtime decisions documented (wrangler version, ESM format)
 
 **Phase 2: Nx Projects Registration (Issue #7)** - Est. 1 hour
-- [ ] Issue #7: Generate project.json for all apps/packages/tenants (unblocks nx run-many)
+- [x] Issue #7: Generate project.json for all apps/packages/tenants (unblocks nx run-many)
 
 **Phase 3: Core Middleware (Issues #8, #13)** - Est. 2 hours
-- [ ] Issue #8: Tenant resolution middleware (header → hostname → JWT claims)
-- [ ] Issue #13: Env typings source of truth (packages/core/src/env.ts)
+- [x] Issue #8: Tenant resolution middleware (header → hostname → JWT claims)
+- [x] Issue #13: Env typings source of truth (packages/core/src/env.ts)
 
 **Phase 4: Local Dev + Error Handling (Issues #10, #11, #12)** - Est. 2 hours
-- [ ] Issue #10: Error handling + response envelopes
-- [ ] Issue #11: wrangler dev local setup with hot reload
-- [ ] Issue #12: /health endpoint + smoke tests
+- [x] Issue #10: Error handling + response envelopes
+- [x] Issue #11: wrangler dev local setup with hot reload
+- [x] Issue #12: /health endpoint + smoke tests
 
 **Phase 5: Validation** - Est. 1 hour
 - [ ] Verify npm install completes
-- [ ] Verify Nx workspace detects all projects (`nx show projects`)
-- [ ] Verify full test suite passes (`nx run-many --target test`)
+- [x] Verify Nx workspace detects all projects (`nx show projects`)
+- [x] Verify full test suite passes (`nx run-many --target test`)
 - [ ] Verify tenant isolation constraints enforced at adapter layer
 
 ### Pre-M0 Infrastructure Checklist
-- [ ] Run `npm install` to initialize node_modules (122 packages)
-- [ ] Verify Nx installation works (`npx nx --version`)
+- [x] Run `npm install` to initialize node_modules (122 packages)
+- [x] Verify Nx installation works (`npx nx --version`)
 - [ ] Verify @naxodev/nx-cloudflare plugin loads
 - [ ] Final review of `.llm/docs/cleanup.md` for any remaining cleanups
 
