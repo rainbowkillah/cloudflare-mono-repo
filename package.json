@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "build": "nx run-many --target=build",
-    "test": "NX_DAEMON=false NX_CACHE_PROJECT_GRAPH=false NX_ISOLATE_PLUGINS=false nx run-many --target=test --output-style=stream",
+    "test": "NX_DAEMON=false NX_CACHE_PROJECT_GRAPH=false NX_ISOLATE_PLUGINS=false NX_NO_CLOUD=true nx run-many --target=test --output-style=stream",
     "lint": "nx run-many --target=lint",
     "typecheck": "nx run-many --target=typecheck"
   },
