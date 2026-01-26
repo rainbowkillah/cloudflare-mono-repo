@@ -4,6 +4,12 @@ Track notable changes to plans, docs, and repo decisions here.
 
 ## 2026-01-26
 
+### In Progress
+- **Phase 1 infrastructure started** (Codex)
+  - Branch created: `feat/M0-phase-1-infrastructure`
+  - Directory scaffolding confirmed (apps/packages/tests/tenants)
+  - Added TS configs, ESLint/Prettier config, Vitest workspace, tenant config schema + tests
+
 ### Inspections Completed
 - **Copilot (Pair) pre-commit inspection** at 14:29 UTC
   - Comprehensive repository state analysis

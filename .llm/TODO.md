@@ -2,7 +2,7 @@
 
 > Track actionable tasks here. See [GitHub Project](https://github.com/users/rainbowkillah/projects/12) for full task board.
 
-## M0 Status: 🟢 READY FOR IMPLEMENTATION
+## M0 Status: 🟡 PHASE 1 IN PROGRESS
 
 **GitHub Project Verification Complete** (2026-01-26)
 - ✅ All 12 M0 issues (Issues #3-#14) mapped to 5-phase implementation sequence
@@ -22,12 +22,12 @@
 - 📋 See `plan.md` section 4.5 "Runtime Decisions" for full details
 
 **Phase 1: Parallel Setup (Issues #3, #4, #5, #6, #9, #14)** - Est. 2 hours
-- [ ] Issue #3: Monorepo directory structure (apps, packages, tenants, scripts, tests)
-- [ ] Issue #4: TypeScript + tsconfig.base.json for Workers runtime (ES2022)
-- [ ] Issue #5: ESLint + Prettier configuration
-- [ ] Issue #6: Vitest + Miniflare test runner setup
-- [ ] Issue #9: tenant.config.json schema + Zod validation library
-- [ ] Issue #14: Runtime decisions documented (wrangler version, ESM format)
+- [x] Issue #3: Monorepo directory structure (apps, packages, tenants, scripts, tests)
+- [x] Issue #4: TypeScript + tsconfig.base.json for Workers runtime (ES2022)
+- [x] Issue #5: ESLint + Prettier configuration
+- [x] Issue #6: Vitest + Miniflare test runner setup
+- [x] Issue #9: tenant.config.json schema + Zod validation library
+- [x] Issue #14: Runtime decisions documented (wrangler version, ESM format)
 
 **Phase 2: Nx Projects Registration (Issue #7)** - Est. 1 hour
 - [ ] Issue #7: Generate project.json for all apps/packages/tenants (unblocks nx run-many)
