@@ -1,5 +1,5 @@
-import mrrConfig from '@org/tenant-mrrainbowsmoke';
-import rsoConfig from '@org/tenant-rainbowsmokeofficial';
+import mrrConfig from '../../../tenants/mrrainbowsmoke/index';
+import rsoConfig from '../../../tenants/rainbowsmokeofficial/index';
 import { TenantConfigSchema, type TenantConfig } from '@org/core';
 
 const configs: TenantConfig[] = [
