@@ -1,8 +1,0 @@
-
---- 2026-01-26T18:26:39.524Z debug
-🪵  Writing logs to "/home/dfox/ai/cloudflare-mono-repo/.wrangler/logs/wrangler-2026-01-26_18-26-39_396.log"
----
-
---- 2026-01-26T18:26:39.524Z log
-Using vars defined in tenants/mrrainbowsmoke/.dev.vars
----
