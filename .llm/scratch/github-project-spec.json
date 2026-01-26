@@ -1,0 +1,665 @@
+{
+  "project": {
+    "title": "Cloudflare Workers AI Multi-Tenant Monorepo",
+    "description": "Multi-tenant Cloudflare Workers AI platform with streaming chat, RAG, AI Gateway, and Nx plugin for developer experience.",
+    "visibility": "private"
+  },
+  "milestones": [
+    {
+      "id": "M0",
+      "title": "M0: Foundation & Scaffolding",
+      "description": "Monorepo boots cleanly; tenant resolution exists; baseline tooling + docs.",
+      "tasks": [
+        {
+          "title": "Create monorepo skeleton (apps/packages/tenants/docs/scripts/tests)",
+          "labels": ["scaffolding", "priority:high"]
+        },
+        {
+          "title": "Set up TypeScript baseline + tsconfig for Workers runtime",
+          "labels": ["tooling", "priority:high"]
+        },
+        {
+          "title": "Configure ESLint + Prettier",
+          "labels": ["tooling"]
+        },
+        {
+          "title": "Set up Vitest test runner",
+          "labels": ["testing", "tooling"]
+        },
+        {
+          "title": "Create project.json for each apps/* and packages/* target",
+          "labels": ["nx", "priority:high"]
+        },
+        {
+          "title": "Implement tenant resolution middleware (header/hostname priority)",
+          "labels": ["core", "priority:critical"]
+        },
+        {
+          "title": "Define tenant.config.json schema + Zod validation",
+          "labels": ["core", "priority:high"]
+        },
+        {
+          "title": "Create core error handling + response envelopes",
+          "labels": ["core"]
+        },
+        {
+          "title": "Set up local dev with wrangler dev",
+          "labels": ["dx", "tooling"]
+        },
+        {
+          "title": "Create hello endpoint per tenant + smoke tests",
+          "labels": ["testing"]
+        },
+        {
+          "title": "Define Env typings source of truth (packages/core/src/env.ts)",
+          "labels": ["typescript", "priority:high"]
+        },
+        {
+          "title": "Document wrangler version, ESM format decision",
+          "labels": ["docs"]
+        }
+      ],
+      "exit_criteria": [
+        "install -> build -> test passes",
+        "Local dev server runs for at least one worker app",
+        "Unit tests prove tenant resolution + rejection when missing"
+      ]
+    },
+    {
+      "id": "M1",
+      "title": "M1: Streaming Chat + Sessions (DO) + KV Cache",
+      "description": "/chat streaming works; sessions are tenant-isolated; rate limiting exists.",
+      "tasks": [
+        {
+          "title": "Build /chat endpoint with request schema (message list, session id, options)",
+          "labels": ["api", "priority:high"]
+        },
+        {
+          "title": "Define streaming response contract (SSE vs chunked)",
+          "labels": ["api", "priority:high"]
+        },
+        {
+          "title": "Implement Durable Object session store (tenant-scoped)",
+          "labels": ["storage", "priority:high"]
+        },
+        {
+          "title": "Add conversation history with retention policy",
+          "labels": ["storage"]
+        },
+        {
+          "title": "Implement KV cache layer (tenant-scoped keys)",
+          "labels": ["storage"]
+        },
+        {
+          "title": "Define cache policy rules",
+          "labels": ["storage"]
+        },
+        {
+          "title": "Implement DO-based rate limiter (per tenant + per IP/user)",
+          "labels": ["security", "priority:high"]
+        },
+        {
+          "title": "Define rate limit keying strategy (tenant+user+ip)",
+          "labels": ["security"]
+        },
+        {
+          "title": "Create streaming behavior tests",
+          "labels": ["testing"]
+        },
+        {
+          "title": "Create session isolation tests",
+          "labels": ["testing"]
+        },
+        {
+          "title": "Create rate limit enforcement tests",
+          "labels": ["testing"]
+        }
+      ],
+      "exit_criteria": [
+        "Streaming response works end-to-end",
+        "Sessions persist and are isolated per tenant",
+        "Rate limits demonstrably enforced",
+        "Logs include request_id + tenant + route + latency"
+      ]
+    },
+    {
+      "id": "M2",
+      "title": "M2: AI Gateway Integration + Model Routing",
+      "description": "All model calls go through AI Gateway; policies are enforceable.",
+      "tasks": [
+        {
+          "title": "Gateway integration spike - prove connectivity + configuration",
+          "labels": ["spike", "priority:critical"]
+        },
+        {
+          "title": "Implement model routing (tenant config chooses models)",
+          "labels": ["ai", "priority:high"]
+        },
+        {
+          "title": "Add per-route model override options",
+          "labels": ["ai"]
+        },
+        {
+          "title": "Implement budget/limits hooks (token limits)",
+          "labels": ["ai", "cost"]
+        },
+        {
+          "title": "Add observability hooks (latency, status, tokens in/out)",
+          "labels": ["observability", "priority:high"]
+        },
+        {
+          "title": "Document AI Gateway integration in .llm/docs/ai-gateway.md",
+          "labels": ["docs"]
+        },
+        {
+          "title": "Document fallback behavior for API changes",
+          "labels": ["docs"]
+        }
+      ],
+      "exit_criteria": [
+        "Gateway used for all AI calls",
+        "Tenant-specific routing works",
+        "Usage signals recorded (as available)",
+        "Fallback behavior documented"
+      ]
+    },
+    {
+      "id": "M3",
+      "title": "M3: Embeddings + Vectorize + Retrieval + RAG",
+      "description": "Ingest documents, retrieve relevant chunks, generate RAG responses with citations.",
+      "tasks": [
+        {
+          "title": "Implement ingestion pipeline (chunking strategy: size, overlap)",
+          "labels": ["rag", "priority:high"]
+        },
+        {
+          "title": "Implement embedding generation",
+          "labels": ["rag", "priority:high"]
+        },
+        {
+          "title": "Implement Vectorize upsert with metadata",
+          "labels": ["storage", "priority:high"]
+        },
+        {
+          "title": "Implement retrieval pipeline (query embedding)",
+          "labels": ["rag", "priority:high"]
+        },
+        {
+          "title": "Implement Vectorize search",
+          "labels": ["rag", "priority:high"]
+        },
+        {
+          "title": "Add optional rerank hook interface",
+          "labels": ["rag"]
+        },
+        {
+          "title": "Implement RAG response assembly with prompt template",
+          "labels": ["rag", "priority:high"]
+        },
+        {
+          "title": "Add citations to RAG responses",
+          "labels": ["rag"]
+        },
+        {
+          "title": "Implement basic safety filters",
+          "labels": ["security"]
+        },
+        {
+          "title": "Ensure Vectorize indexes are tenant-scoped",
+          "labels": ["storage", "priority:critical"]
+        },
+        {
+          "title": "Create deterministic fixture retrieval tests",
+          "labels": ["testing"]
+        },
+        {
+          "title": "Create tenant isolation tests for Vectorize",
+          "labels": ["testing", "priority:high"]
+        },
+        {
+          "title": "Create metadata integrity tests",
+          "labels": ["testing"]
+        },
+        {
+          "title": "Document Vectorize local emulation limitations + staging strategy",
+          "labels": ["docs"]
+        }
+      ],
+      "exit_criteria": [
+        "RAG returns answers with citations/metadata",
+        "Ingestion + retrieval works per tenant",
+        "Retrieval tested with fixtures"
+      ]
+    },
+    {
+      "id": "M4",
+      "title": "M4: AI Search UX Endpoint",
+      "description": "/search delivers structured results optimized for search experience.",
+      "tasks": [
+        {
+          "title": "Build /search endpoint with output schema",
+          "labels": ["api", "priority:high"]
+        },
+        {
+          "title": "Define output schema: answer + sources + confidence + follow-ups",
+          "labels": ["api"]
+        },
+        {
+          "title": "Implement query rewriting / intent detection (lightweight)",
+          "labels": ["rag"]
+        },
+        {
+          "title": "Implement caching for common queries (tenant-scoped KV)",
+          "labels": ["storage"]
+        },
+        {
+          "title": "Add search latency metrics",
+          "labels": ["observability"]
+        },
+        {
+          "title": "Add cache hit rate metrics",
+          "labels": ["observability"]
+        },
+        {
+          "title": "Add retrieval count metrics",
+          "labels": ["observability"]
+        },
+        {
+          "title": "Create schema validation tests",
+          "labels": ["testing"]
+        },
+        {
+          "title": "Create caching behavior tests",
+          "labels": ["testing"]
+        }
+      ],
+      "exit_criteria": [
+        "Stable structured output",
+        "Measurable latency improvements with cache",
+        "Clear 'why these results' transparency fields"
+      ]
+    },
+    {
+      "id": "M5",
+      "title": "M5: Tooling / Generative Functions (Function Calling)",
+      "description": "A controlled tool executor system: predictable, logged, tenant-safe.",
+      "tasks": [
+        {
+          "title": "Define tool schema (JSON schema for name, args, permissions)",
+          "labels": ["api", "priority:high"]
+        },
+        {
+          "title": "Implement tool dispatcher with registry",
+          "labels": ["core", "priority:high"]
+        },
+        {
+          "title": "Implement validation + auth/permission gating",
+          "labels": ["security", "priority:high"]
+        },
+        {
+          "title": "Implement tool: summarize",
+          "labels": ["tools"]
+        },
+        {
+          "title": "Implement tool: extract entities",
+          "labels": ["tools"]
+        },
+        {
+          "title": "Implement tool: classify intent",
+          "labels": ["tools"]
+        },
+        {
+          "title": "Implement tool: tag/chunk docs",
+          "labels": ["tools"]
+        },
+        {
+          "title": "Implement tool: ingest docs",
+          "labels": ["tools"]
+        },
+        {
+          "title": "Implement audit logging (tool name + args hash + outcome)",
+          "labels": ["observability", "security"]
+        },
+        {
+          "title": "Create permission tests",
+          "labels": ["testing"]
+        },
+        {
+          "title": "Create injection guard tests",
+          "labels": ["testing", "security"]
+        },
+        {
+          "title": "Create tool correctness tests",
+          "labels": ["testing"]
+        },
+        {
+          "title": "Document tool contracts",
+          "labels": ["docs"]
+        }
+      ],
+      "exit_criteria": [
+        "Tools run safely and predictably",
+        "Audit logs exist and are tenant-bound",
+        "Tool contracts documented"
+      ]
+    },
+    {
+      "id": "M6",
+      "title": "M6: TTS Contract + Adapter Boundary",
+      "description": "TTS endpoint exists with a stable API; implementation pluggable.",
+      "tasks": [
+        {
+          "title": "Define /tts contract (input: text, voice, format, streaming flag)",
+          "labels": ["api", "priority:high"]
+        },
+        {
+          "title": "Define output contract (audio stream or job id)",
+          "labels": ["api"]
+        },
+        {
+          "title": "Implement adapter interface",
+          "labels": ["core", "priority:high"]
+        },
+        {
+          "title": "Implement stub implementation with 'not enabled' behavior",
+          "labels": ["core"]
+        },
+        {
+          "title": "If feasible: implement provider adapter",
+          "labels": ["integration"]
+        },
+        {
+          "title": "Create contract tests",
+          "labels": ["testing"]
+        },
+        {
+          "title": "Create stub behavior tests",
+          "labels": ["testing"]
+        }
+      ],
+      "exit_criteria": [
+        "Contract documented and stable",
+        "No coupling to a single provider in core code"
+      ]
+    },
+    {
+      "id": "M7",
+      "title": "M7: Observability, Metrics, QA Gates, Load Tests",
+      "description": "We can measure, regress, and operate this thing like adults.",
+      "tasks": [
+        {
+          "title": "Finalize logging schema with required fields",
+          "labels": ["observability", "priority:high"]
+        },
+        {
+          "title": "Define correlation IDs and tracing strategy",
+          "labels": ["observability", "priority:high"]
+        },
+        {
+          "title": "Implement metrics helpers",
+          "labels": ["observability"]
+        },
+        {
+          "title": "Implement required metrics (requests_total, errors_total, latency_ms)",
+          "labels": ["observability"]
+        },
+        {
+          "title": "Add cost monitoring metrics (token usage)",
+          "labels": ["observability", "cost"]
+        },
+        {
+          "title": "Create dashboards/alerts suggestions document",
+          "labels": ["docs"]
+        },
+        {
+          "title": "Create load test scripts",
+          "labels": ["testing", "priority:high"]
+        },
+        {
+          "title": "Create retrieval quality 'smoke score' regression suite",
+          "labels": ["testing"]
+        },
+        {
+          "title": "Create streaming stability tests",
+          "labels": ["testing"]
+        },
+        {
+          "title": "Set up CI gates (lint, typecheck, unit, integration)",
+          "labels": ["ci", "priority:high"]
+        },
+        {
+          "title": "Document failure mode template",
+          "labels": ["docs"]
+        },
+        {
+          "title": "Document external dependency failure strategies",
+          "labels": ["docs"]
+        }
+      ],
+      "exit_criteria": [
+        "Metrics emitted for chat/search/retrieval/tools",
+        "CI gates enforce quality",
+        "Load test runnable and documented"
+      ]
+    },
+    {
+      "id": "M8",
+      "title": "M8: Repeatable Deployment per Tenant + Drift Detection",
+      "description": "One-command deploy per tenant; multi-tenant deploy-all; drift detection.",
+      "tasks": [
+        {
+          "title": "Create deployment script: deploy one tenant",
+          "labels": ["deploy", "priority:high"]
+        },
+        {
+          "title": "Create deployment script: deploy all tenants",
+          "labels": ["deploy", "priority:high"]
+        },
+        {
+          "title": "Add environment selection (dev/stage/prod)",
+          "labels": ["deploy"]
+        },
+        {
+          "title": "Implement config validation (fail fast if missing bindings)",
+          "labels": ["deploy"]
+        },
+        {
+          "title": "Implement drift detection (expected vs deployed config)",
+          "labels": ["deploy"]
+        },
+        {
+          "title": "Define multi-account credential strategy (wrangler profiles)",
+          "labels": ["deploy", "priority:critical"]
+        },
+        {
+          "title": "Create deploy rollback runbook",
+          "labels": ["docs", "runbook"]
+        },
+        {
+          "title": "Create incident response runbook",
+          "labels": ["docs", "runbook"]
+        }
+      ],
+      "exit_criteria": [
+        "Deploy per tenant is consistent and repeatable",
+        "Docs allow fresh clone -> deploy without guesswork"
+      ]
+    },
+    {
+      "id": "NX-1",
+      "title": "NX-1: Nx Plugin Bootstrap",
+      "description": "Create Nx plugin package skeleton and init generator.",
+      "tasks": [
+        {
+          "title": "Create Nx plugin package skeleton (packages/nx-cloudflare)",
+          "labels": ["nx", "priority:high"]
+        },
+        {
+          "title": "Implement init generator (add baseline config)",
+          "labels": ["nx", "priority:high"]
+        },
+        {
+          "title": "Add shared utilities: parse tenant config",
+          "labels": ["nx"]
+        },
+        {
+          "title": "Add shared utilities: update JSONC (use jsonc-parser)",
+          "labels": ["nx"]
+        },
+        {
+          "title": "Add shared utilities: validate config",
+          "labels": ["nx"]
+        },
+        {
+          "title": "Set up plugin testing infrastructure",
+          "labels": ["nx", "testing"]
+        }
+      ],
+      "exit_criteria": [
+        "nx g nx-cloudflare:init runs cleanly and adds baseline targets"
+      ]
+    },
+    {
+      "id": "NX-2",
+      "title": "NX-2: Worker Generator",
+      "description": "Scaffold Worker app with standard endpoints + middleware.",
+      "tasks": [
+        {
+          "title": "Scaffold worker-api template with tenant middleware",
+          "labels": ["nx", "priority:high"]
+        },
+        {
+          "title": "Add /health endpoint to template",
+          "labels": ["nx"]
+        },
+        {
+          "title": "Add project.json targets for dev/test/deploy",
+          "labels": ["nx", "priority:high"]
+        },
+        {
+          "title": "Define executor-to-wrangler mapping (--config, --cwd)",
+          "labels": ["nx"]
+        },
+        {
+          "title": "Create generator tests",
+          "labels": ["nx", "testing"]
+        }
+      ],
+      "exit_criteria": [
+        "New worker app created and runs with nx dev"
+      ]
+    },
+    {
+      "id": "NX-3",
+      "title": "NX-3: Tenant Generator",
+      "description": "Scaffold tenant folder + config + wrangler.jsonc template.",
+      "tasks": [
+        {
+          "title": "Scaffold tenant folder structure",
+          "labels": ["nx", "priority:high"]
+        },
+        {
+          "title": "Generate tenant.config.json template",
+          "labels": ["nx"]
+        },
+        {
+          "title": "Generate wrangler.jsonc template",
+          "labels": ["nx"]
+        },
+        {
+          "title": "Add tenant registry file for discoverability (optional)",
+          "labels": ["nx"]
+        },
+        {
+          "title": "Create generator tests",
+          "labels": ["nx", "testing"]
+        }
+      ],
+      "exit_criteria": [
+        "New tenant scaffold deploys with existing worker"
+      ]
+    },
+    {
+      "id": "NX-4",
+      "title": "NX-4: Bindings + deployAll",
+      "description": "Generator to add bindings; executor to deployAll tenants safely.",
+      "tasks": [
+        {
+          "title": "Implement binding generator (KV/DO/Vectorize/AI)",
+          "labels": ["nx", "priority:high"]
+        },
+        {
+          "title": "Update Env typing from single canonical file",
+          "labels": ["nx", "priority:high"]
+        },
+        {
+          "title": "Add DO class skeleton generation (optional)",
+          "labels": ["nx"]
+        },
+        {
+          "title": "Implement deployAll executor",
+          "labels": ["nx", "priority:high"]
+        },
+        {
+          "title": "Add concurrency policy to deployAll",
+          "labels": ["nx"]
+        },
+        {
+          "title": "Add dry-run mode to deployAll",
+          "labels": ["nx"]
+        },
+        {
+          "title": "Add continue-on-error flag to deployAll",
+          "labels": ["nx"]
+        },
+        {
+          "title": "Create generator/executor tests",
+          "labels": ["nx", "testing"]
+        }
+      ],
+      "exit_criteria": [
+        "nx deployAll works and reports per tenant status"
+      ]
+    }
+  ],
+  "labels": [
+    {"name": "priority:critical", "color": "B60205", "description": "Blocking other work"},
+    {"name": "priority:high", "color": "D93F0B", "description": "Should be done soon"},
+    {"name": "scaffolding", "color": "0E8A16", "description": "Project structure setup"},
+    {"name": "tooling", "color": "1D76DB", "description": "Build/dev tools"},
+    {"name": "core", "color": "5319E7", "description": "Core functionality"},
+    {"name": "api", "color": "006B75", "description": "API endpoints"},
+    {"name": "storage", "color": "FBCA04", "description": "KV/DO/Vectorize"},
+    {"name": "ai", "color": "D4C5F9", "description": "AI/ML related"},
+    {"name": "rag", "color": "C2E0C6", "description": "RAG pipeline"},
+    {"name": "security", "color": "B60205", "description": "Security related"},
+    {"name": "observability", "color": "0052CC", "description": "Metrics/logging/tracing"},
+    {"name": "testing", "color": "BFD4F2", "description": "Tests"},
+    {"name": "docs", "color": "C5DEF5", "description": "Documentation"},
+    {"name": "nx", "color": "143055", "description": "Nx plugin"},
+    {"name": "deploy", "color": "FEF2C0", "description": "Deployment"},
+    {"name": "dx", "color": "D876E3", "description": "Developer experience"},
+    {"name": "spike", "color": "FFDFBA", "description": "Research/validation"},
+    {"name": "tools", "color": "7057FF", "description": "Tool implementations"},
+    {"name": "ci", "color": "0E8A16", "description": "CI/CD"},
+    {"name": "runbook", "color": "F9D0C4", "description": "Operational docs"},
+    {"name": "cost", "color": "FFC107", "description": "Cost monitoring"},
+    {"name": "integration", "color": "BFD4F2", "description": "External integrations"}
+  ],
+  "review_feedback": {
+    "gemini": {
+      "milestone_sequencing": "Good - add explicit dependency mapping",
+      "exit_criteria": "Good - quantify metrics (P90 latency < X ms)",
+      "observability": "Needs work - define logging schema earlier than M7",
+      "testing_matrix": "Gaps - add E2E, security testing, performance baselines",
+      "failure_modes": "Incomplete - create standardized failure mode template"
+    },
+    "codex": {
+      "repo_structure": "Missing Nx projects, need project.json files",
+      "technical_clarity": "Too high-level - need concrete endpoint schemas",
+      "m0_scaffolding": "Missing wrangler version, ESM decision, test stack",
+      "nx_plugin_plan": "Feasible - use jsonc-parser, define executor mapping",
+      "blockers": ["AI Gateway uncertainty", "Vectorize local limits", "Multi-account credentials"]
+    }
+  }
+}

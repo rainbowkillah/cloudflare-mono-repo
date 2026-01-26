@@ -4,12 +4,31 @@
 - Use this file to track active plan(s) and links to detailed documents.
 
 ## Index
-- `.llm/docs/plan.md` — canonical plan
-- `.llm/docs/architecture.md`
-- `.llm/docs/tenancy.md`
-- `.llm/docs/milestones.md`
-- `.llm/docs/testing.md`
-- `.llm/docs/metrics.md`
-- `.llm/docs/failure-modes.md`
-- `.llm/docs/security.md`
-- `.llm/docs/adrs/`
+
+### Core Documents
+- [plan.md](docs/plan.md) — Canonical project plan with milestones M0-M8 + NX-1 to NX-4
+- [architecture.md](docs/architecture.md) — System architecture, components, data flow
+- [tenancy.md](docs/tenancy.md) — Multi-tenant isolation strategy
+- [api-contracts.md](docs/api-contracts.md) — Detailed endpoint specifications
+
+### Operational Documents
+- [testing.md](docs/testing.md) — Testing strategy (unit, integration, E2E)
+- [metrics.md](docs/metrics.md) — Observability, logging, metrics plan
+- [BINDINGS.md](docs/BINDINGS.md) — Cloudflare bindings reference
+
+### Pending Documents
+- `docs/security.md` — Security model (to be written)
+- `docs/milestones.md` — Milestone details (content in plan.md)
+- `docs/failure-modes.md` — Failure mode documentation (to be written)
+- `docs/adrs/` — Architecture Decision Records (empty)
+
+## GitHub Project
+
+Project board with 122 issues across all milestones:
+**https://github.com/users/rainbowkillah/projects/12**
+
+## Quick Links
+
+- [TODO.md](TODO.md) — Immediate action items and review feedback
+- [CHANGELOG.md](CHANGELOG.md) — Notable changes log
+- [agents.prompt.yml](agents.prompt.yml) — Agent orchestration config
