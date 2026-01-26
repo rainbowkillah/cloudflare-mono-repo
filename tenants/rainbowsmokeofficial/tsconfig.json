@@ -6,7 +6,7 @@
     "types": ["@cloudflare/workers-types"],
     "composite": true,
     "declaration": true,
-    "emitDeclarationOnly": true
+    "emitDeclarationOnly": false
   },
   "include": ["index.ts", "tenant.config.json"]
 }
