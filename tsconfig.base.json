@@ -1,21 +1,23 @@
 {
   "compilerOptions": {
-    "composite": true,
-    "declarationMap": true,
-    "emitDeclarationOnly": true,
-    "importHelpers": true,
-    "isolatedModules": true,
-    "lib": ["es2022"],
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "noEmitOnError": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitOverride": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "skipLibCheck": true,
+    "target": "ES2022",
+    "module": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "strict": true,
-    "target": "es2022",
-    "customConditions": ["@org/source"]
+    "esModuleInterop": false,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "declaration": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "@org/core/*": ["packages/core/src/*"],
+      "@org/storage/*": ["packages/storage/src/*"],
+      "@org/rag/*": ["packages/rag/src/*"],
+      "@org/observability/*": ["packages/observability/src/*"],
+      "@org/testing/*": ["packages/testing/src/*"]
+    }
   }
 }

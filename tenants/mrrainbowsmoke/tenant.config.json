@@ -1,0 +1,34 @@
+{
+  "tenantId": "mrrainbowsmoke",
+  "accountId": "acct_mrrainbowsmoke",
+  "hostnameMapping": {
+    "api.mrrainbowsmoke.com": "mrrainbowsmoke"
+  },
+  "ai": {
+    "models": ["@cf/meta/llama-3.1-8b-instruct"],
+    "budgets": {
+      "tokensPerDay": 100000,
+      "requestsPerMinute": 120
+    }
+  },
+  "vectorize": {
+    "indexNames": ["documents"]
+  },
+  "kv": {
+    "namespaceMappings": {
+      "SESSIONS": "kv_sessions"
+    }
+  },
+  "durable_objects": {
+    "classBindings": {
+      "SESSIONS": "SessionDO"
+    }
+  },
+  "cors": {
+    "origins": ["https://app.mrrainbowsmoke.com"],
+    "allowCredentials": true
+  },
+  "featureFlags": {
+    "chatStreaming": true
+  }
+}
