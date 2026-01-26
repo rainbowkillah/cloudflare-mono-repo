@@ -28,6 +28,8 @@ Track notable changes to plans, docs, and repo decisions here.
 - `nx run-many --target test` succeeds with `NX_DAEMON=false NX_CACHE_PROJECT_GRAPH=false NX_ISOLATE_PLUGINS=false` (NX_NO_CLOUD optional)
 - Updated test script to include Nx hang workaround flags
 - Normalized wrangler compatibility_date to 2026-01-20 to match local runtime support
+- Disabled Nx Cloud for `npm test` to avoid EAI_AGAIN failures
+- Added tenant `.dev.vars` files with `TENANT_ID` for local wrangler/test runs
 
 ### Inspections Completed
 - **Copilot (Pair) pre-commit inspection** at 14:29 UTC
