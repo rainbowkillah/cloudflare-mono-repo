@@ -23,6 +23,7 @@ Track notable changes to plans, docs, and repo decisions here.
 - Configured Workers Vitest pool for `worker-api` (Miniflare-backed test runner)
 - Fixed Vitest configs to set project `root`; core tests pass via direct Vitest run
 - Added smoke tests for `packages/testing` and `apps/worker-api` to avoid empty test runs
+- Added `@org/core` package exports entry for Vite resolution; worker-api Vitest run passes (wrangler pool)
 
 ### Inspections Completed
 - **Copilot (Pair) pre-commit inspection** at 14:29 UTC
