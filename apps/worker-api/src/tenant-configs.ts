@@ -1,5 +1,5 @@
-import mrrConfig from '../../../tenants/mrrainbowsmoke/index';
-import rsoConfig from '../../../tenants/rainbowsmokeofficial/index';
+import mrrConfig from '../../../tenants/mrrainbowsmoke/tenant.config.json';
+import rsoConfig from '../../../tenants/rainbowsmokeofficial/tenant.config.json';
 import {
   TenantConfigSchema,
   type TenantConfig,

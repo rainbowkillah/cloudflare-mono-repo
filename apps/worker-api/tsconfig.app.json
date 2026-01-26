@@ -8,10 +8,10 @@
   "include": [
     "src/**/*.ts",
     "../../packages/core/src/**/*.ts",
-    "../../tenants/mrrainbowsmoke/**/*.ts",
-    "../../tenants/mrrainbowsmoke/**/*.json",
-    "../../tenants/rainbowsmokeofficial/**/*.ts",
-    "../../tenants/rainbowsmokeofficial/**/*.json"
+    "../../tenants/mrrainbowsmoke/index.ts",
+    "../../tenants/mrrainbowsmoke/tenant.config.json",
+    "../../tenants/rainbowsmokeofficial/index.ts",
+    "../../tenants/rainbowsmokeofficial/tenant.config.json"
   ],
   "references": [
     { "path": "../../packages/core" },
