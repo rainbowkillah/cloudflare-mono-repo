@@ -269,7 +269,7 @@ repo_layout:
     - "packages/observability/    # metrics/log helpers"
     - "packages/testing/          # test utils + fixtures"
   tenants:
-    - "tenants/com-rainbowsmokeofficial/"
+    - "tenants/rainbowsmokeofficial/"
     - "tenants/com-mrrainbowsmoke/"
   tenant_files:
     required:
