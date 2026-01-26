@@ -36,6 +36,9 @@ Track notable changes to plans, docs, and repo decisions here.
 - Switched `worker-api:test` to `nx:run-commands` calling Vitest CLI to avoid Nx vitest executor failures
 - Fixed core tenant test import to use `TenantResolutionError` from `errors`
 - Disabled arg forwarding for `worker-api:test` run-commands to prevent Nx flags from breaking Vitest
+- Forced `CI=false` for `worker-api:test` run-commands to keep vitest-pool-workers stable
+- Disabled pseudo-tty for `worker-api:test` run-commands to avoid PTY issues in Nx
+- Wrapped `worker-api:test` command to unset `NX_TERMINAL_CAPTURE_STDERR` before running Vitest
 
 ### Inspections Completed
 - **Copilot (Pair) pre-commit inspection** at 14:29 UTC
