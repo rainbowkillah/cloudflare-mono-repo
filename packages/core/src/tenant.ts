@@ -5,15 +5,19 @@ export type TenantConfigMap = Record<string, TenantConfig>;
 
 export type TenantResolution = {
   tenantId: string;
+  accountId: string;
   config: TenantConfig;
   resolvedVia: 'header' | 'hostname';
+  requestId: string;
 };
 
 type ResolveOptions = {
   headerName?: string;
+  requestIdHeader?: string;
 };
 
 const DEFAULT_HEADER = 'x-tenant-id';
+const DEFAULT_REQUEST_ID_HEADER = 'x-request-id';
 
 export function resolveTenantFromRequest(
   request: Request,
@@ -21,7 +25,10 @@ export function resolveTenantFromRequest(
   options: ResolveOptions = {}
 ): TenantResolution {
   const headerName = options.headerName ?? DEFAULT_HEADER;
+  const requestIdHeader = options.requestIdHeader ?? DEFAULT_REQUEST_ID_HEADER;
+
   const headerTenant = request.headers.get(headerName) ?? undefined;
+  const requestId = request.headers.get(requestIdHeader) ?? crypto.randomUUID();
   const hostname = new URL(request.url).hostname;
 
   if (headerTenant) {
@@ -29,11 +36,17 @@ export function resolveTenantFromRequest(
     if (!config) {
       throw new TenantResolutionError(`Unknown tenant: ${headerTenant}`);
     }
-    return { tenantId: headerTenant, config, resolvedVia: 'header' };
+    return {
+      tenantId: headerTenant,
+      accountId: config.accountId,
+      config,
+      resolvedVia: 'header',
+      requestId,
+    };
   }
 
   if (hostname) {
-    const resolved = resolveTenantByHostname(hostname, configs);
+    const resolved = resolveTenantByHostname(hostname, configs, requestId);
     if (resolved) {
       return resolved;
     }
@@ -44,12 +57,19 @@ export function resolveTenantFromRequest(
 
 function resolveTenantByHostname(
   hostname: string,
-  configs: TenantConfigMap
+  configs: TenantConfigMap,
+  requestId: string
 ): TenantResolution | null {
   const entries = Object.entries(configs);
   for (const [tenantId, config] of entries) {
     if (config.hostnameMapping?.includes(hostname)) {
-      return { tenantId, config, resolvedVia: 'hostname' };
+      return {
+        tenantId,
+        accountId: config.accountId,
+        config,
+        resolvedVia: 'hostname',
+        requestId,
+      };
     }
   }
   return null;

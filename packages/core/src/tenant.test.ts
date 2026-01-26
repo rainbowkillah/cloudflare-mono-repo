@@ -43,7 +43,9 @@ describe('resolveTenantFromRequest', () => {
     const result = resolveTenantFromRequest(request, { 'tenant-a': config });
 
     expect(result.tenantId).toBe('tenant-a');
+    expect(result.accountId).toBe('account-a');
     expect(result.resolvedVia).toBe('header');
+    expect(result.requestId).toBeDefined();
   });
 
   it('resolves tenant from hostname when header is missing', () => {
@@ -53,7 +55,22 @@ describe('resolveTenantFromRequest', () => {
     const result = resolveTenantFromRequest(request, { 'tenant-a': config });
 
     expect(result.tenantId).toBe('tenant-a');
+    expect(result.accountId).toBe('account-a');
     expect(result.resolvedVia).toBe('hostname');
+    expect(result.requestId).toBeDefined();
+  });
+
+  it('uses provided request ID from header', () => {
+    const config = sampleConfig({ tenantId: 'tenant-a' });
+    const request = new Request('https://api.example.com/health', {
+      headers: {
+        'x-tenant-id': 'tenant-a',
+        'x-request-id': 'test-request-id',
+      },
+    });
+
+    const result = resolveTenantFromRequest(request, { 'tenant-a': config });
+    expect(result.requestId).toBe('test-request-id');
   });
 
   it('throws when header is missing and hostname does not match', () => {

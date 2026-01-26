@@ -17,7 +17,7 @@
 - [x] Decide M0 auth model (unauthenticated vs API key/JWT) and document in security/plan
 - [x] Decide tenant config source for M0 (filesystem vs KV) and document bootstrap story
 - [x] Define tenant config bootstrap mechanism (file-based for M0; KV sync deferred)
-- [ ] Make tenant-safety checks explicit for any M0 Durable Objects (tenant prefix validation)
+- [x] Make tenant-safety checks explicit for any M0 Durable Objects (tenant prefix validation)
 - [x] Clarify D1 usage in M0 (scope/tenancy/retention) or defer/remove from M0 docs
 - [x] Confirm Nx strategy for M0 (manual project setup now; Nx plugin later in NX-1)
 - [x] Update `.llm/docs/plan.md` to mark M0 as header-only auth (if chosen)
@@ -43,8 +43,8 @@
 - [x] Issue #7: Generate project.json for all apps/packages/tenants (unblocks nx run-many)
 
 **Phase 3: Core Middleware (Issues #8, #13)** - Est. 2 hours
-- [x] Issue #8: Tenant resolution middleware (header → hostname → JWT claims)
-- [x] Issue #13: Env typings source of truth (packages/core/src/env.ts)
+- [x] Issue #8: Tenant resolution middleware (header → hostname → JWT claims) - DESIGN REVIEWED & HARDENED
+- [x] Issue #13: Env typings source of truth (packages/core/src/env.ts) - DESIGN REVIEWED & COMPLETED
 
 **Phase 4: Local Dev + Error Handling (Issues #10, #11, #12)** - Est. 2 hours
 - [x] Issue #10: Error handling + response envelopes
@@ -52,26 +52,26 @@
 - [x] Issue #12: /health endpoint + smoke tests
 
 **Phase 5: Validation** - Est. 1 hour
-- [ ] Verify npm install completes
+- [x] Verify npm install completes
 - [x] Verify Nx workspace detects all projects (`nx show projects`)
 - [x] Verify full test suite passes (`nx run-many --target test`)
-- [ ] Verify tenant isolation constraints enforced at adapter layer
+- [x] Verify tenant isolation constraints enforced at adapter layer (core helpers added)
 
 ### Pre-M0 Infrastructure Checklist
 - [x] Run `npm install` to initialize node_modules (122 packages)
 - [x] Verify Nx installation works (`npx nx --version`)
-- [ ] Verify @naxodev/nx-cloudflare plugin loads
-- [ ] Final review of `.llm/docs/cleanup.md` for any remaining cleanups
+- [x] Verify @naxodev/nx-cloudflare plugin loads
+- [x] Final review of `.llm/docs/cleanup.md` for any remaining cleanups
 
 ## Review Feedback Summary (2026-01-26)
 
 ### Gemini (Planner) Recommendations
-- [ ] Add explicit milestone dependency mapping to plan.md
-- [ ] Quantify exit criteria (e.g., "P90 latency < X ms")
-- [ ] Define logging schema earlier than M7
-- [ ] Add E2E testing layer distinct from unit/integration
-- [ ] Add dedicated security testing activities
-- [ ] Create standardized failure mode template
+- [x] Add explicit milestone dependency mapping to plan.md
+- [x] Quantify exit criteria (e.g., "P90 latency < X ms")
+- [x] Define logging schema earlier than M7 (in metrics.md)
+- [x] Add E2E testing layer distinct from unit/integration (in testing.md)
+- [x] Add dedicated security testing activities (in testing.md)
+- [x] Create standardized failure mode template
 
 ### Codex (Builder) Recommendations
 - [ ] Create `project.json` for each apps/packages target (Nx has no projects registered)

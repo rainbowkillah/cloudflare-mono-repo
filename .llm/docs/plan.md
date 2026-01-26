@@ -41,7 +41,7 @@ We also build a developer experience layer: an **Nx plugin** that provides gener
 ### 1.3 Operational clarity
 - Observability is a first-class deliverable:
   - metrics definitions, logging schema, dashboards/alerts suggestions, runbooks.
-- Every component has failure mode documentation.
+- Every component has failure mode documentation following the [Standardized Failure Mode Template](failure-modes.md#1-failure-mode-template).
 
 ---
 
@@ -211,6 +211,26 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
 
 ## 5) Milestones (Actions, Subactions, Exit Criteria)
 
+### 5.0) Milestone Dependency Map
+
+```mermaid
+graph TD
+    M0[M0: Foundation] --> M1[M1: Chat & Sessions]
+    M0 --> NX1[NX-1: Plugin Bootstrap]
+    M1 --> M2[M2: AI Gateway]
+    M1 --> M3[M3: RAG Pipeline]
+    NX1 --> NX2[NX-2: Worker Gen]
+    NX2 --> NX3[NX-3: Tenant Gen]
+    M2 --> M4[M4: AI Search UX]
+    M3 --> M4
+    M4 --> M5[M5: Tools]
+    M5 --> M6[M6: TTS]
+    M6 --> M7[M7: Observability]
+    M7 --> M8[M8: Deploy]
+    NX3 --> NX4[NX-4: Bindings]
+    NX4 --> M8
+```
+
 > Every milestone ends with:
 > 1) runnable demo steps
 > 2) tests passing
@@ -241,9 +261,10 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
    - smoke tests
 
 **Exit criteria**
-- `install -> build -> test` passes
-- Local dev server runs for at least one worker app
-- Unit tests prove tenant resolution + rejection when missing
+- `install -> build -> test` passes (100% success rate)
+- Local dev server runs for at least one worker app (ready in < 5s)
+- Unit tests prove tenant resolution + rejection when missing (80%+ coverage)
+- **Quantified Metric**: P90 tenant resolution overhead < 2ms (local simulation)
 
 **Blockers**
 - None expected; if toolchain issues, lock versions and document.
@@ -275,6 +296,8 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
 - Sessions persist and are isolated per tenant
 - Rate limits demonstrably enforced
 - Logs include request_id + tenant + route + latency
+- **Quantified Metric**: TTFT (Time to First Token) P90 < 500ms (model inference excluded)
+- **Quantified Metric**: Session lookup latency < 50ms
 
 **Blockers**
 - Streaming edge cases in runtime; mitigate by defining a strict response protocol.
@@ -303,6 +326,8 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
 - Tenant-specific routing works
 - Usage signals recorded (as available)
 - Fallback behavior documented
+- **Quantified Metric**: Gateway routing overhead < 100ms
+- **Quantified Metric**: 100% of AI calls include tenant-id metadata in headers
 
 **Blockers**
 - API details may change; if so, freeze on known-working config and document.
@@ -334,6 +359,8 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
 - RAG returns answers with citations/metadata
 - Ingestion + retrieval works per tenant
 - Retrieval tested with fixtures
+- **Quantified Metric**: Vector search P90 < 200ms
+- **Quantified Metric**: Retrieval Recall@5 > 0.6 (on standard fixtures)
 
 **Blockers**
 - Local simulation limitations; use staging for integration tests if needed.
@@ -360,6 +387,8 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
 - Stable structured output
 - Measurable latency improvements with cache
 - Clear “why these results” transparency fields
+- **Quantified Metric**: Cache hit response P90 < 100ms
+- **Quantified Metric**: Intent detection accuracy > 80% (unit tested)
 
 ---
 
@@ -389,6 +418,8 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
 - Tools run safely and predictably
 - Audit logs exist and are tenant-bound
 - Tool contracts documented
+- **Quantified Metric**: Dispatcher overhead < 10ms
+- **Quantified Metric**: 100% of tool executions audit-logged
 
 ---
 
@@ -409,6 +440,7 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
 **Exit criteria**
 - Contract documented and stable
 - No coupling to a single provider in core code
+- **Quantified Metric**: API response (streaming start) < 1s
 
 ---
 
@@ -430,6 +462,8 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
 - Metrics emitted for chat/search/retrieval/tools
 - CI gates enforce quality
 - Load test runnable and documented
+- **Quantified Metric**: CI pipeline duration < 10 minutes
+- **Quantified Metric**: 0 high-severity vulnerabilities in dependencies
 
 ---
 
@@ -452,6 +486,8 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
 **Exit criteria**
 - Deploy per tenant is consistent and repeatable
 - Docs allow fresh clone -> deploy without guesswork
+- **Quantified Metric**: Multi-tenant deploy (10 tenants) < 5 minutes
+- **Quantified Metric**: Config validation catch 100% of missing bindings before deploy
 
 ---
 

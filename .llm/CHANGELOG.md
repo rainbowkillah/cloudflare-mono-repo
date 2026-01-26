@@ -39,6 +39,14 @@ Track notable changes to plans, docs, and repo decisions here.
 - Made worker-api Vitest config switch to Node pool when running under Nx task env
 - Restored `worker-api:test` to `@nx/vitest:test` executor
 - Added scratchpad + session export documenting Nx/vitest findings for follow-up
+- Gemini design review: Hardened `packages/core/src/env.ts` to be the full source of truth for bindings
+- Gemini design review: Updated `TenantResolution` with `accountId` and `requestId` (automatic UUID generation)
+- Gemini design review: Aligned `worker-api /health` endpoint with API contract; added `env` and `ctx` to fetch handler
+- Gemini design review: Verified tenant isolation logic and updated smoke tests
+- Claude Architect: Added `validateTenantScope` and `formatTenantResourceId` helpers to `packages/core` to enforce future storage isolation.
+- Claude Architect: Updated `plan.md` with explicit Milestone Dependency Map and quantified exit criteria for all milestones.
+- Claude Architect: Expanded `testing.md` with E2E user journeys and dedicated security testing activities.
+- Claude Architect: Finalized M0 Foundation and Scaffolding with formal sign-off report.
 
 ### Inspections Completed
 - **Copilot (Pair) pre-commit inspection** at 14:29 UTC

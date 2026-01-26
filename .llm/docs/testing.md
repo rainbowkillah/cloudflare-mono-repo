@@ -129,11 +129,18 @@ describe('Chat API Integration', () => {
 
 ### 2.3 E2E Tests
 
-**What:** Full system tests against staging environment
+**What:** Full system tests against staging environment, validating real user journeys
 **Where:** `tests/e2e/`
 **Runner:** Vitest or Playwright
 **Speed:** <30s per test
 **When:** Pre-deploy, nightly
+
+**User Journeys to Test:**
+1. **New Session Journey**: Start chat -> Get streaming response -> Verify session ID header.
+2. **Continued Session Journey**: Use session ID -> Send follow-up -> Verify context preservation.
+3. **Search Journey**: Perform RAG search -> Verify citations link to real sources.
+4. **Tool Journey**: Execute tool -> Verify result format and audit log entry.
+5. **Cross-Account Journey**: Request Tenant A -> Request Tenant B -> Verify no data leakage.
 
 ```typescript
 // tests/e2e/chat-flow.e2e.test.ts
@@ -176,6 +183,33 @@ describe('E2E: Chat Flow', () => {
 
     expect(followUp.ok).toBe(true);
     // Session should have context from previous turn
+  });
+});
+```
+
+### 2.4 Security Testing
+
+**What:** Dedicated activities to identify vulnerabilities and isolation breaches.
+
+**Activities:**
+1. **Dependency Auditing**: `npm audit` integrated into CI to catch CVEs.
+2. **Secret Scanning**: Gitleaks or similar to prevent credential leakage.
+3. **Isolation Probing**: Automated tests attempting cross-tenant ID guessing (Durable Objects, KV).
+4. **Prompt Injection Simulation**: "Red teaming" tests attempting to bypass system prompts.
+5. **Input Fuzzing**: Sending malformed/huge payloads to test Zod validation and DoS resilience.
+
+```typescript
+// packages/testing/src/security-suite.ts
+
+describe('Security: Isolation Probing', () => {
+  it('should not allow DO ID forging', async () => {
+    const forgedId = 'tenant-b:session-123';
+    const response = await fetch(`${STAGING_URL}/sessions/${forgedId}`, {
+      headers: { 'x-tenant-id': 'tenant-a' }
+    });
+    
+    // Should fail with 403 or 404
+    expect([403, 404]).toContain(response.status);
   });
 });
 ```
