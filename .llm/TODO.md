@@ -4,8 +4,15 @@
 
 ## Active Work
 
+### Pre-M0 Checklist
+- [ ] Run `npm install` to initialize node_modules
+- [ ] Verify Nx installation works (`npx nx --version`)
+- [ ] Final review of `.llm/docs/cleanup.md` for any remaining cleanups
+- [ ] Verify toolchain: TypeScript, ESLint, Vitest, Wrangler
+
 ### Immediate Next Actions
 - [x] Review `.llm/docs/cleanup.md` and decide deletions/archival before M0 - DONE 2026-01-26
+- [x] Repository inspection complete - DONE 2026-01-26 (see sessions/2026-01-26-copilot-inspection.md)
 - [ ] Implement M0 repo scaffolding + tenant middleware
 - [x] Write `.llm/docs/architecture.md` (currently empty) - DONE 2026-01-26
 - [x] Write `.llm/docs/tenancy.md` - DONE 2026-01-26
