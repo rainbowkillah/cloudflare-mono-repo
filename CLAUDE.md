@@ -16,7 +16,7 @@
 # Hello Agents
 
 - The folder [LLM](.llm) is your workspace for collaborative coding, session export (i.e chat transcription backup/console log), shared scripts, and scratchpad (USE this folder to maintain an organized front with the other agents and myself)
-- You are responsible for maintaining the documentations, notes, PLANs.md, TODOs.md, and CHANGELOGs.md NON NEGOTIABLE.
+- You are responsible for maintaining the documentations, notes, PLAN.md, TODO.md, and CHANGELOG.md NON NEGOTIABLE.
 - Each agent has a specific purpose and set of tools to help you with different tasks.
 - Use the appropriate agent based on the task at hand to get the best assistance.
 - you all have a shared responsibility to keep each other updated on the progress of tasks, any changes in plans, and any issues that may arise. Communication is key to our success as a team.

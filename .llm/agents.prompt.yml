@@ -64,7 +64,7 @@ agents:
     role: "Architecture + technical leadership"
     responsibilities:
       - "Define target architecture (components, data flow, tenancy model, boundaries)."
-      - "Write/approve plan.md and ADRs (architecture decision records)."
+      - "Write/approve .llm/docs/plan.md and ADRs (architecture decision records)."
       - "Define contracts: API routes, schemas, function-calling/tooling interfaces."
       - "Identify risks, unknowns, and validation steps."
       - "Define security model and guardrails."
@@ -253,7 +253,7 @@ repo_layout:
     - "apps/"
     - "packages/"
     - "tenants/"
-    - "docs/"
+    - ".llm/docs/"
     - "scripts/"
     - "tests/"
     - "wrangler.jsonc"
@@ -389,7 +389,7 @@ agent_prompts:
   claude_architect_prompt: |
     Produce architecture that maps directly to Cloudflare Workers primitives:
     Workers AI + AI Gateway + Vectorize + KV + Durable Objects.
-    Define interfaces and tenancy boundaries. Write plan.md with milestones and acceptance criteria.
+    Define interfaces and tenancy boundaries. Write .llm/docs/plan.md with milestones and acceptance criteria.
     Identify unknowns and propose validation experiments.
 
   gemini_planner_prompt: |

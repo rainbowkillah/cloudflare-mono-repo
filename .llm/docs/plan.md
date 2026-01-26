@@ -1,5 +1,11 @@
 # Cloudflare Workers AI Multi-Tenant Monorepo — plan.md
 
+> Canonical plan document. Backlinks: `.llm/PLAN.md` (index), `.llm/TODO.md` (tasks), `.llm/CHANGELOG.md` (changes).
+>
+> Author: Codex
+> Last Updated: 2026-01-26
+> Status: Active
+
 ## 0) Executive Summary
 
 We are building a multi-tenant Cloudflare Workers AI platform inside a monorepo. It must support:
@@ -78,7 +84,7 @@ We also build a developer experience layer: an **Nx plugin** that provides gener
   - `wrangler.jsonc`
   - `policies.json` (optional)
   - `prompts/*.md` (optional)
-- `/docs/*`
+- `.llm/docs/*`
 - `/scripts/*`
 - `/tests/*`
 
@@ -140,7 +146,7 @@ This project touches APIs that evolve. These are the “don’t hallucinate” c
 > 1) runnable demo steps
 > 2) tests passing
 > 3) metrics/logs emitted
-> 4) short Milestone Report in `/docs/reports/`
+> 4) short Milestone Report in `.llm/docs/reports/`
 
 ---
 
@@ -149,7 +155,7 @@ This project touches APIs that evolve. These are the “don’t hallucinate” c
 
 **Actions**
 1. Create monorepo skeleton
-   - apps/packages/tenants/docs/scripts/tests
+   - apps/packages/tenants/.llm/docs/scripts/tests
 2. Tooling setup
    - TypeScript baseline + tsconfig
    - lint + format
@@ -218,7 +224,7 @@ This project touches APIs that evolve. These are the “don’t hallucinate” c
 4. Observability hooks
    - record: latency, status, tokens in/out (if available)
 5. Docs
-   - `docs/ai-gateway.md` how we route and why
+   - `.llm/docs/ai-gateway.md` how we route and why
 
 **Exit criteria**
 - Gateway used for all AI calls
@@ -487,6 +493,5 @@ Project is “done enough to be dangerous” when:
 ## 8) Next Actions (Immediate)
 
 1) Implement M0 repo scaffolding + tenant middleware
-2) Write `docs/architecture.md`, `docs/tenancy.md`, `docs/metrics.md`, `docs/testing.md`
+2) Write `.llm/docs/architecture.md`, `.llm/docs/tenancy.md`, `.llm/docs/metrics.md`, `.llm/docs/testing.md`
 3) Start NX-1 plugin bootstrap in parallel (it will pay off fast)
-
