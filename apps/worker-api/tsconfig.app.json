@@ -17,5 +17,9 @@
     { "path": "../../packages/core" },
     { "path": "../../tenants/mrrainbowsmoke" },
     { "path": "../../tenants/rainbowsmokeofficial" }
+  ],
+  "files": [
+    "../../tenants/mrrainbowsmoke/tenant.config.json",
+    "../../tenants/rainbowsmokeofficial/tenant.config.json"
   ]
 }
