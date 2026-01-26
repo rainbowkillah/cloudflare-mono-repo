@@ -24,6 +24,10 @@ Track notable changes to plans, docs, and repo decisions here.
 - Fixed Vitest configs to set project `root`; core tests pass via direct Vitest run
 - Added smoke tests for `packages/testing` and `apps/worker-api` to avoid empty test runs
 - Added `@org/core` package exports entry for Vite resolution; worker-api Vitest run passes (wrangler pool)
+- Diagnosed Nx hang: plugin isolation/graph lock; workaround `NX_ISOLATE_PLUGINS=false`
+- `nx run-many --target test` succeeds with `NX_DAEMON=false NX_CACHE_PROJECT_GRAPH=false NX_ISOLATE_PLUGINS=false` (NX_NO_CLOUD optional)
+- Updated test script to include Nx hang workaround flags
+- Normalized wrangler compatibility_date to 2026-01-20 to match local runtime support
 
 ### Inspections Completed
 - **Copilot (Pair) pre-commit inspection** at 14:29 UTC
