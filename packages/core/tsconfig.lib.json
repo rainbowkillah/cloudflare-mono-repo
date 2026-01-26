@@ -2,8 +2,12 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc/packages/core",
+    "declarationDir": "./dist",
+    "rootDir": "src",
     "types": ["@cloudflare/workers-types"],
-    "composite": true
+    "composite": true,
+    "declaration": true,
+    "emitDeclarationOnly": true
   },
   "include": ["src/**/*.ts"]
 }

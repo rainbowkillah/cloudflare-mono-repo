@@ -15,8 +15,14 @@
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "paths": {
-      "@org/core": ["packages/core/src/index.ts"],
-      "@org/testing": ["packages/testing/src/index.ts"],
+      "@org/core": [
+        "packages/core/src/index.ts",
+        "packages/core/dist/index.d.ts"
+      ],
+      "@org/testing": [
+        "packages/testing/src/index.ts",
+        "packages/testing/dist/index.d.ts"
+      ],
       "@org/tenant-mrrainbowsmoke": ["tenants/mrrainbowsmoke/index.ts"],
       "@org/tenant-rainbowsmokeofficial": [
         "tenants/rainbowsmokeofficial/index.ts"

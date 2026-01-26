@@ -2,8 +2,11 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc/tenants/rainbowsmokeofficial",
+    "rootDir": ".",
     "types": ["@cloudflare/workers-types"],
-    "composite": true
+    "composite": true,
+    "declaration": true,
+    "emitDeclarationOnly": true
   },
   "include": ["index.ts", "tenant.config.json"]
 }
