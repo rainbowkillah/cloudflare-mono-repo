@@ -4,5 +4,10 @@
     "outDir": "../../dist/out-tsc/apps/worker-api",
     "types": ["@cloudflare/workers-types"]
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts"],
+  "references": [
+    { "path": "../../packages/core" },
+    { "path": "../../tenants/mrrainbowsmoke" },
+    { "path": "../../tenants/rainbowsmokeofficial" }
+  ]
 }

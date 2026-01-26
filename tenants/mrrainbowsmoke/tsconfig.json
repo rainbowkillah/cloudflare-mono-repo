@@ -1,0 +1,8 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc/tenants/mrrainbowsmoke",
+    "types": ["@cloudflare/workers-types"]
+  },
+  "include": ["index.ts", "tenant.config.json"]
+}
