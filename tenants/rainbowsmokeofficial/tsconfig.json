@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc/tenants/mrrainbowsmoke",
+    "outDir": "../../dist/out-tsc/tenants/rainbowsmokeofficial",
     "types": ["@cloudflare/workers-types"],
     "composite": true
   },

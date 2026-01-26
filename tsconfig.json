@@ -2,5 +2,11 @@
   "extends": "./tsconfig.base.json",
   "compileOnSave": false,
   "files": [],
-  "references": []
+  "references": [
+    { "path": "./apps/worker-api/tsconfig.json" },
+    { "path": "./packages/core/tsconfig.json" },
+    { "path": "./packages/testing/tsconfig.json" },
+    { "path": "./tenants/mrrainbowsmoke/tsconfig.json" },
+    { "path": "./tenants/rainbowsmokeofficial/tsconfig.json" }
+  ]
 }
