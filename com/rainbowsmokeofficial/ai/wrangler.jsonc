@@ -1,9 +1,0 @@
-{
-  "account_id": "7fde695caf9cc41efca391316eb71003",
-  "compatibility_date": "2024-01-01",
-  "compatibility_flags": [
-    "nodejs_compat"
-  ],
-  "main": "src/index.js",
-  "name": "azure"
-}

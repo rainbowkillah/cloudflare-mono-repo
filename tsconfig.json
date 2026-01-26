@@ -2,12 +2,5 @@
   "extends": "./tsconfig.base.json",
   "compileOnSave": false,
   "files": [],
-  "references": [
-    {
-      "path": "./com/mrrainbowsmoke/ai"
-    },
-    {
-      "path": "./com/rainbowsmokeofficial/ai"
-    }
-  ]
+  "references": []
 }
