@@ -2,26 +2,56 @@
 
 > Track actionable tasks here. See [GitHub Project](https://github.com/users/rainbowkillah/projects/12) for full task board.
 
-## Active Work
+## M0 Status: 🟢 READY FOR IMPLEMENTATION
 
-### Pre-M0 Checklist
-- [ ] Run `npm install` to initialize node_modules
+**GitHub Project Verification Complete** (2026-01-26)
+- ✅ All 12 M0 issues (Issues #3-#14) mapped to 5-phase implementation sequence
+- ✅ Critical path identified (Issues #8, #9 are dependency blockers)
+- ✅ Team role assignments: Codex (Phase 1-4), Gemini (design review), Claude (decisions/blockers)
+- ✅ Success criteria: 10 measurable exit conditions defined
+- ✅ **Issue #14 DECIDED**: Wrangler ^4.x + ESM (ES2022) locked in (2026-01-26)
+- 📋 See `.llm/sessions/2026-01-26-M0-github-project-verification.md` for full plan
+
+**Runtime Decisions Locked (Issue #14)**
+- ✅ Wrangler: `^4.x` (latest stable, v4.26.0 already in package.json)
+- ✅ Module Format: ESM (ES2022 target, no service-worker transpilation)
+- ✅ TypeScript: strict mode enabled, ES2022 target/lib
+- ✅ Build: esbuild via @nx/esbuild, ESM format, single bundle per worker
+- ✅ Testing: Vitest (unit) + miniflare (integration)
+- ✅ Env Types: packages/core/src/env.ts as single source of truth
+- 📋 See `plan.md` section 4.5 "Runtime Decisions" for full details
+
+**Phase 1: Parallel Setup (Issues #3, #4, #5, #6, #9, #14)** - Est. 2 hours
+- [ ] Issue #3: Monorepo directory structure (apps, packages, tenants, scripts, tests)
+- [ ] Issue #4: TypeScript + tsconfig.base.json for Workers runtime (ES2022)
+- [ ] Issue #5: ESLint + Prettier configuration
+- [ ] Issue #6: Vitest + Miniflare test runner setup
+- [ ] Issue #9: tenant.config.json schema + Zod validation library
+- [ ] Issue #14: Runtime decisions documented (wrangler version, ESM format)
+
+**Phase 2: Nx Projects Registration (Issue #7)** - Est. 1 hour
+- [ ] Issue #7: Generate project.json for all apps/packages/tenants (unblocks nx run-many)
+
+**Phase 3: Core Middleware (Issues #8, #13)** - Est. 2 hours
+- [ ] Issue #8: Tenant resolution middleware (header → hostname → JWT claims)
+- [ ] Issue #13: Env typings source of truth (packages/core/src/env.ts)
+
+**Phase 4: Local Dev + Error Handling (Issues #10, #11, #12)** - Est. 2 hours
+- [ ] Issue #10: Error handling + response envelopes
+- [ ] Issue #11: wrangler dev local setup with hot reload
+- [ ] Issue #12: /health endpoint + smoke tests
+
+**Phase 5: Validation** - Est. 1 hour
+- [ ] Verify npm install completes
+- [ ] Verify Nx workspace detects all projects (`nx show projects`)
+- [ ] Verify full test suite passes (`nx run-many --target test`)
+- [ ] Verify tenant isolation constraints enforced at adapter layer
+
+### Pre-M0 Infrastructure Checklist
+- [ ] Run `npm install` to initialize node_modules (122 packages)
 - [ ] Verify Nx installation works (`npx nx --version`)
+- [ ] Verify @naxodev/nx-cloudflare plugin loads
 - [ ] Final review of `.llm/docs/cleanup.md` for any remaining cleanups
-- [ ] Verify toolchain: TypeScript, ESLint, Vitest, Wrangler
-
-### Immediate Next Actions
-- [x] Review `.llm/docs/cleanup.md` and decide deletions/archival before M0 - DONE 2026-01-26
-- [x] Repository inspection complete - DONE 2026-01-26 (see sessions/2026-01-26-copilot-inspection.md)
-- [ ] Implement M0 repo scaffolding + tenant middleware
-- [x] Write `.llm/docs/architecture.md` (currently empty) - DONE 2026-01-26
-- [x] Write `.llm/docs/tenancy.md` - DONE 2026-01-26
-- [x] Write `.llm/docs/metrics.md` - DONE 2026-01-26
-- [x] Write `.llm/docs/testing.md` - DONE 2026-01-26
-- [x] Write `.llm/docs/api-contracts.md` - DONE 2026-01-26
-- [x] Write `.llm/docs/security.md` - DONE 2026-01-26
-- [x] Write `.llm/docs/failure-modes.md` - DONE 2026-01-26
-- [ ] Start NX-1 plugin bootstrap in parallel
 
 ## Review Feedback Summary (2026-01-26)
 

@@ -140,6 +140,68 @@ This project touches APIs that evolve. These are the “don’t hallucinate” c
 
 ---
 
+## 4.5 Runtime Decisions (Locked for M0+)
+
+These decisions are locked in to unblock Phase 1 implementation. Any deviation requires full team consensus.
+
+### Wrangler Version
+- **Decision**: `wrangler ^4.x` (latest stable major version)
+- **Rationale**: 
+  - Stable, widely-tested API surface
+  - Full ESM support without configuration
+  - Comprehensive local dev experience via `wrangler dev` with hot reload
+  - Robust multi-account authentication
+- **Locked**: 2026-01-26
+- **Review gate**: If major breaking changes in wrangler > 4.5, escalate to full team before upgrade
+
+### Module Format (ESM)
+- **Decision**: ESM modules (ES2022 target)
+- **Rationale**:
+  - Native `async/await` and top-level await support
+  - Best practice for modern Cloudflare Workers
+  - Full compatibility with Workers AI bindings
+  - Cleaner streaming implementation for `/chat`
+- **Configuration**:
+  - `TypeScript` target: `ES2022`
+  - `wrangler.jsonc` compatibility mode: not required for ESM
+  - Build output: ES modules (no transpilation to service-worker format)
+- **Locked**: 2026-01-26
+- **Impact**: Simplifies async middleware, streaming, and binding initialization
+
+### TypeScript Configuration
+- **tsconfig.base.json** (created in M0, Issue #4):
+  - `target: "ES2022"`
+  - `module: "ES2022"`
+  - `lib: ["ES2022", "DOM", "DOM.Iterable"]`
+  - `strict: true` (strict null checking, no implicit any, etc.)
+  - `esModuleInterop: false` (ESM only, no CommonJS fallback)
+- **Impact**: All code must be strict TypeScript; no escape hatches for type safety
+
+### Build Configuration
+- **esbuild** via `@nx/esbuild` executor:
+  - Target: `es2022`
+  - Format: `esm` (ES modules only)
+  - Splitting: disabled (single bundle per worker)
+  - Minification: enabled for production
+- **Local dev**: `wrangler dev` handles hot reload + ES module transformation
+
+### Testing Stack
+- **Unit tests**: Vitest (via `@nx/vitest`)
+  - Environment: `node` (no browser globals)
+  - Parallel by default
+- **Integration tests**: Vitest + miniflare for local Durable Objects/KV simulation
+- **E2E tests**: Staged environment (M2+) against real Cloudflare infrastructure
+
+### Binding Type Safety
+- **Source of truth**: `packages/core/src/env.ts`
+  - Single file defining all Cloudflare binding types (Workers AI, Vectorize, KV, DO, etc.)
+  - Imported by all consumers (worker-api, storage adapters, etc.)
+  - No drift between type definitions and actual bindings
+  - All `env` parameters typed from this source
+- **Impact**: Type consistency across generators, executors, and runtime code
+
+---
+
 ## 5) Milestones (Actions, Subactions, Exit Criteria)
 
 > Every milestone ends with:
