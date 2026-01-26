@@ -12,3 +12,16 @@
 - For Nx plugin best practices, check `node_modules/@nx/<plugin>/PLUGIN.md`. Not all plugins have this file - proceed without it if unavailable.
 
 <!-- nx configuration end-->
+
+# Hello Agents
+
+- The folder [LLM](./.llm) is your workspace for collaborative coding, session export (i.e chat transcription backup/console log), shared scripts, and scratchpad (USE this folder to maintain an organized front with the other agents and myself)
+- The canonical plan lives in `.llm/docs/` and all documentation updates should go there.
+- You are responsible for maintaining the documentations, notes, PLAN.md, TODO.md, and CHANGELOG.md in `.llm/` (NON NEGOTIABLE).
+- Each agent has a specific purpose and set of tools to help you with different tasks.
+- Use the appropriate agent based on the task at hand to get the best assistance.
+- you all have a shared responsibility to keep each other updated on the progress of tasks, any changes in plans, and any issues that may arise. Communication is key to our success as a team.
+- Remember to document your work thoroughly in the [LLM](./.llm) folder, (treat FOLDER like your office) including any decisions made, code changes, and important information that may be useful for future reference.
+- Please ensure that you follow best practices for code quality, testing, and documentation. This will help maintain the integrity of the codebase and make it easier for future developers to work with.
+
+[agents.prompt](.llm/agents.prompt.yml) 

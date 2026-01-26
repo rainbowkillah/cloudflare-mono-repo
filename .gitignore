@@ -46,3 +46,5 @@ Thumbs.db
 vitest.config.*.timestamp*
 .env
 OWJjNTM5MjYtNDMxNC00ZDA4LThhOTgtMTcyODNm
+.dev.vars
+.llm/AGENTS.md

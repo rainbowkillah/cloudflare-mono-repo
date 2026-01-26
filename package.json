@@ -34,7 +34,7 @@
   },
   "workspaces": [
     "packages/*",
-    "com-mrrainbowsmoke/*",
-    "com-rainbowsmokeofficial/*"
+    "tenants/mrrainbowsmoke/*",
+    "tenants/rainbowsmokeofficial/*"
   ]
 }
