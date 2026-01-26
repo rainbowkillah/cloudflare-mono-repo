@@ -19,7 +19,7 @@ project:
   runtime: "cloudflare-workers"
   tenancy:
     mode: "multi-tenant"
-    accounts: ["com.rainbowsmokeofficial", "com-mrrainbowsmoke"]
+    accounts: ["rainbowsmokeofficial", "mrrainbowsmoke"]
     tenant_isolation:
       strategy: "config + namespace isolation"
       rules:
@@ -269,7 +269,7 @@ repo_layout:
     - "packages/observability/    # metrics/log helpers"
     - "packages/testing/          # test utils + fixtures"
   tenants:
-    - "tenants/com.rainbowsmokeofficial/"
+    - "tenants/com-rainbowsmokeofficial/"
     - "tenants/com-mrrainbowsmoke/"
   tenant_files:
     required:

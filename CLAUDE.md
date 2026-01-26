@@ -24,6 +24,4 @@
 - Please ensure that you follow best practices for code quality, testing, and documentation. This will help maintain the integrity of the codebase and make it easier for future developers to work with.
 - Always ask questions if you are unsure about anything. It's better to clarify doubts early on than to make assumptions that could lead to mistakes later.
 
-[agents.prompt][def]
-
-[def]: .llm/agents.prompt.yml
+[agents.prompt](.llm/agents.prompt.yml) 
