@@ -51,7 +51,7 @@ inputs_expected:
   - "CI environment provides secrets via vars or secret store, not committed files."
 
 outputs_required:
-  - "plan.md (project plan + milestones + acceptance criteria)"
+  - ".llm/docs/plan.md (project plan + milestones + acceptance criteria)"
   - "repo scaffolding (apps, packages, tenants, scripts)"
   - "metrics plan (what/why/how; dashboards/alerts suggestions)"
   - "dev + test strategy (unit, integration, e2e; local Miniflare where possible)"
@@ -69,11 +69,11 @@ agents:
       - "Identify risks, unknowns, and validation steps."
       - "Define security model and guardrails."
     deliverables:
-      - "docs/plan.md"
-      - "docs/architecture.md"
-      - "docs/adrs/*.md"
-      - "docs/security.md"
-      - "docs/tenancy.md"
+      - ".llm/docs/plan.md"
+      - ".llm/docs/architecture.md"
+      - ".llm/docs/adrs/*.md"
+      - ".llm/docs/security.md"
+      - ".llm/docs/tenancy.md"
     acceptance_criteria:
       - "All major components mapped to Cloudflare primitives (Workers AI, AI Gateway, Vectorize, KV, DO)."
       - "Tenant isolation approach clearly documented and testable."
@@ -88,10 +88,10 @@ agents:
       - "Define metrics/observability plan (what to measure + where to emit)."
       - "Review for completeness, edge cases, failure modes."
     deliverables:
-      - "docs/milestones.md"
-      - "docs/testing.md"
-      - "docs/metrics.md"
-      - "docs/failure-modes.md"
+      - ".llm/docs/milestones.md"
+      - ".llm/docs/testing.md"
+      - ".llm/docs/metrics.md"
+      - ".llm/docs/failure-modes.md"
     acceptance_criteria:
       - "Each milestone has a demo step and measurable pass/fail criteria."
       - "Metrics cover latency, errors, cost signals, token usage, cache hit rates, retrieval quality."
@@ -123,7 +123,7 @@ agents:
       - "Spot obvious footguns and performance issues."
     deliverables:
       - "refactors, cleanup PRs"
-      - "docs/examples/*.md"
+      - ".llm/docs/examples/*.md"
       - "developer experience improvements (scripts, generators)"
     acceptance_criteria:
       - "Developer workflow is one-command simple for common tasks."
@@ -362,8 +362,8 @@ testing:
 
 execution_playbook:
   step_order:
-    - "Claude writes docs/plan.md + docs/architecture.md + docs/tenancy.md."
-    - "Gemini writes docs/milestones.md + docs/testing.md + docs/metrics.md."
+    - "Claude writes .llm/docs/plan.md + .llm/docs/architecture.md + .llm/docs/tenancy.md."
+    - "Gemini writes .llm/docs/milestones.md + .llm/docs/testing.md + .llm/docs/metrics.md."
     - "Codex scaffolds repo (M0) and makes it runnable."
     - "Copilot refactors + polishes after each milestone."
     - "Repeat M1..M8 with milestone reports."
