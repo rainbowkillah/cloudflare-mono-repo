@@ -30,6 +30,8 @@ Track notable changes to plans, docs, and repo decisions here.
 - Normalized wrangler compatibility_date to 2026-01-20 to match local runtime support
 - Disabled Nx Cloud for `npm test` to avoid EAI_AGAIN failures
 - Added tenant `.dev.vars` files with `TENANT_ID` for local wrangler/test runs
+- Added npm-scope aliases for tenant config imports and tenant `index.ts` exports to satisfy Nx module boundaries linting
+- Marked tenant Nx projects as `library` to allow app-to-tenant imports under module boundaries rules
 
 ### Inspections Completed
 - **Copilot (Pair) pre-commit inspection** at 14:29 UTC

@@ -1,6 +1,6 @@
 {
   "name": "tenant-mrrainbowsmoke",
-  "projectType": "application",
+  "projectType": "library",
   "sourceRoot": "tenants/mrrainbowsmoke",
   "targets": {
     "dev": {

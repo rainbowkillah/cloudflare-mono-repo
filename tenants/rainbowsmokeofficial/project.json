@@ -1,6 +1,6 @@
 {
   "name": "tenant-rainbowsmokeofficial",
-  "projectType": "application",
+  "projectType": "library",
   "sourceRoot": "tenants/rainbowsmokeofficial",
   "targets": {
     "dev": {

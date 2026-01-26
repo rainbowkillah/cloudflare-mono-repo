@@ -16,7 +16,11 @@
     "noUnusedLocals": true,
     "paths": {
       "@org/core": ["packages/core/src/index.ts"],
-      "@org/testing": ["packages/testing/src/index.ts"]
+      "@org/testing": ["packages/testing/src/index.ts"],
+      "@org/tenant-mrrainbowsmoke": ["tenants/mrrainbowsmoke/index.ts"],
+      "@org/tenant-rainbowsmokeofficial": [
+        "tenants/rainbowsmokeofficial/index.ts"
+      ]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,
