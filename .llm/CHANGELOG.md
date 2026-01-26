@@ -21,6 +21,8 @@ Track notable changes to plans, docs, and repo decisions here.
 - Added tenant Nx projects with `wrangler dev/deploy` targets
 - Centralized JSON/error response helpers in core and wired worker-api to use them
 - Configured Workers Vitest pool for `worker-api` (Miniflare-backed test runner)
+- Fixed Vitest configs to set project `root`; core tests pass via direct Vitest run
+- Added smoke tests for `packages/testing` and `apps/worker-api` to avoid empty test runs
 
 ### Inspections Completed
 - **Copilot (Pair) pre-commit inspection** at 14:29 UTC
