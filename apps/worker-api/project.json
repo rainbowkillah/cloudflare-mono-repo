@@ -19,14 +19,10 @@
       }
     },
     "test": {
-      "executor": "nx:run-commands",
+      "executor": "@nx/vitest:test",
       "options": {
-        "command": "bash -lc \"unset NX_TERMINAL_CAPTURE_STDERR; npx vitest --run --config apps/worker-api/vitest.config.ts\"",
-        "forwardAllArgs": false,
-        "env": {
-          "CI": "false"
-        },
-        "usePty": false
+        "configFile": "apps/worker-api/vitest.config.ts",
+        "passWithNoTests": true
       }
     },
     "lint": {
