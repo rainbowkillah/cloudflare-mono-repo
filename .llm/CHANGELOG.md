@@ -33,6 +33,8 @@ Track notable changes to plans, docs, and repo decisions here.
 - Added npm-scope aliases for tenant config imports and tenant `index.ts` exports to satisfy Nx module boundaries linting
 - Marked tenant Nx projects as `library` to allow app-to-tenant imports under module boundaries rules
 - Added Vite alias resolution for tenant package names in worker-api Vitest config
+- Switched `worker-api:test` to `nx:run-commands` calling Vitest CLI to avoid Nx vitest executor failures
+- Fixed core tenant test import to use `TenantResolutionError` from `errors`
 
 ### Inspections Completed
 - **Copilot (Pair) pre-commit inspection** at 14:29 UTC

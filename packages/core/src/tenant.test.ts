@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { resolveTenantFromRequest, TenantResolutionError } from './tenant';
+import { resolveTenantFromRequest } from './tenant';
+import { TenantResolutionError } from './errors';
 import type { TenantConfig } from './tenant-config';
 
 const sampleConfig = (overrides: Partial<TenantConfig>): TenantConfig => ({

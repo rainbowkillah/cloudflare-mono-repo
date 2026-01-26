@@ -19,10 +19,9 @@
       }
     },
     "test": {
-      "executor": "@nx/vitest:test",
+      "executor": "nx:run-commands",
       "options": {
-        "configFile": "apps/worker-api/vitest.config.ts",
-        "passWithNoTests": true
+        "command": "npx vitest --run --config apps/worker-api/vitest.config.ts"
       }
     },
     "lint": {
