@@ -5,7 +5,9 @@
   "scripts": {
     "lint": "nx lint",
     "lint:fix": "nx lint --fix",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "vitest run --coverage",
+    "test:coverage": "vitest run --coverage"
   },
   "private": true,
   "devDependencies": {
