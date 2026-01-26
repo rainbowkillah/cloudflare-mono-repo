@@ -5,7 +5,7 @@ import {
   jsonResponse,
   resolveTenantFromRequest,
   type Env,
-} from '@org/core';
+} from '../../../packages/core/src/index';
 import { TENANT_CONFIGS } from './tenant-configs';
 
 export default {
