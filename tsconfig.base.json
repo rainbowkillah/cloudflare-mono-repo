@@ -15,10 +15,11 @@
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "paths": {
-      "@org/core": ["./packages/core/dist/index.d.ts"],
-      "@org/testing": ["./packages/testing/dist/index.d.ts"],
-      "@org/tenant-mrrainbowsmoke": ["./tenants/mrrainbowsmoke/dist/index.d.ts"],
+      "@org/core": ["packages/core/src/index.ts", "./packages/core/dist/index.d.ts"],
+      "@org/testing": ["packages/testing/src/index.ts", "./packages/testing/dist/index.d.ts"],
+      "@org/tenant-mrrainbowsmoke": ["tenants/mrrainbowsmoke/index.ts", "./tenants/mrrainbowsmoke/dist/index.d.ts"],
       "@org/tenant-rainbowsmokeofficial": [
+        "tenants/rainbowsmokeofficial/index.ts",
         "./tenants/rainbowsmokeofficial/dist/index.d.ts"
       ]
     },
