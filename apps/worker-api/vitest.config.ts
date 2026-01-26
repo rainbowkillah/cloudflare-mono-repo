@@ -7,9 +7,9 @@ export default defineWorkersConfig({
     pool: '@cloudflare/vitest-pool-workers',
     poolOptions: {
       workers: {
-        main: 'apps/worker-api/src/index.ts',
+        main: 'src/index.ts',
         wrangler: {
-          configPath: 'tenants/mrrainbowsmoke/wrangler.jsonc',
+          configPath: '../../tenants/mrrainbowsmoke/wrangler.jsonc',
         },
       },
     },
