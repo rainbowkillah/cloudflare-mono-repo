@@ -6,6 +6,18 @@ const repoRoot = path.resolve(fileURLToPath(new URL('../..', import.meta.url)));
 process.env.WRANGLER_LOG_PATH ??= path.join(repoRoot, '.wrangler', 'logs');
 
 export default defineWorkersConfig({
+  resolve: {
+    alias: {
+      '@org/tenant-mrrainbowsmoke': path.join(
+        repoRoot,
+        'tenants/mrrainbowsmoke/index.ts'
+      ),
+      '@org/tenant-rainbowsmokeofficial': path.join(
+        repoRoot,
+        'tenants/rainbowsmokeofficial/index.ts'
+      ),
+    },
+  },
   test: {
     root: 'apps/worker-api',
     include: ['src/**/*.test.ts', 'src/**/*.spec.ts'],

@@ -32,6 +32,7 @@ Track notable changes to plans, docs, and repo decisions here.
 - Added tenant `.dev.vars` files with `TENANT_ID` for local wrangler/test runs
 - Added npm-scope aliases for tenant config imports and tenant `index.ts` exports to satisfy Nx module boundaries linting
 - Marked tenant Nx projects as `library` to allow app-to-tenant imports under module boundaries rules
+- Added Vite alias resolution for tenant package names in worker-api Vitest config
 
 ### Inspections Completed
 - **Copilot (Pair) pre-commit inspection** at 14:29 UTC
