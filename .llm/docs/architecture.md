@@ -76,6 +76,7 @@ Every request MUST resolve to a tenant before accessing any resource:
 ```
 
 All storage is tenant-scoped:
+
 - **KV keys**: `{tenant}:{namespace}:{key}`
 - **DO IDs**: `{tenant}:{session_id}`
 - **Vectorize**: Separate index per tenant OR tenant prefix in metadata
@@ -83,6 +84,7 @@ All storage is tenant-scoped:
 ### 2.2 Edge-First Architecture
 
 All computation happens at Cloudflare's edge:
+
 - No origin servers
 - No external databases (except via Workers AI/Gateway)
 - State lives in KV, DO, and Vectorize
@@ -90,6 +92,7 @@ All computation happens at Cloudflare's edge:
 ### 2.3 Streaming by Default
 
 All AI responses stream to minimize time-to-first-token:
+
 - SSE (Server-Sent Events) for chat
 - Chunked transfer for large payloads
 
@@ -172,18 +175,19 @@ tenants/
 ```
 
 **tenant.config.json schema:**
+
 ```typescript
 interface TenantConfig {
-  tenantId: string;              // Unique identifier
-  accountId: string;             // Cloudflare account ID
-  hostnameMapping?: string[];    // Optional: hostnames that map to this tenant
+  tenantId: string; // Unique identifier
+  accountId: string; // Cloudflare account ID
+  hostnameMapping?: string[]; // Optional: hostnames that map to this tenant
 
   ai: {
-    defaultModel: string;        // e.g., "@cf/meta/llama-3-8b-instruct"
-    allowedModels: string[];     // Models this tenant can use
+    defaultModel: string; // e.g., "@cf/meta/llama-3-8b-instruct"
+    allowedModels: string[]; // Models this tenant can use
     gateway?: {
-      id: string;                // AI Gateway ID
-      cacheTtl?: number;         // Cache TTL in seconds
+      id: string; // AI Gateway ID
+      cacheTtl?: number; // Cache TTL in seconds
     };
     budgets?: {
       dailyTokenLimit?: number;
@@ -192,18 +196,18 @@ interface TenantConfig {
   };
 
   vectorize: {
-    indexName: string;           // Tenant's Vectorize index
-    dimensions: number;          // Embedding dimensions (e.g., 768)
+    indexName: string; // Tenant's Vectorize index
+    dimensions: number; // Embedding dimensions (e.g., 768)
   };
 
   kv: {
-    cacheNamespace: string;      // KV namespace for caching
-    metadataNamespace?: string;  // Optional: separate namespace for metadata
+    cacheNamespace: string; // KV namespace for caching
+    metadataNamespace?: string; // Optional: separate namespace for metadata
   };
 
   durableObjects: {
-    sessionClass: string;        // DO class name for sessions
-    rateLimitClass: string;      // DO class name for rate limiting
+    sessionClass: string; // DO class name for sessions
+    rateLimitClass: string; // DO class name for rate limiting
   };
 
   cors: {
@@ -292,28 +296,28 @@ Client                    Worker                   Vectorize              Worker
 
 ### 5.1 KV (Key-Value Store)
 
-| Use Case | Key Pattern | TTL | Notes |
-|----------|-------------|-----|-------|
-| Query cache | `{tenant}:cache:query:{hash}` | 1h | RAG response caching |
-| Prompt versions | `{tenant}:prompts:{name}:{version}` | - | Immutable |
-| Feature flags | `{tenant}:flags:{flag}` | 5m | Short TTL for fast updates |
-| Metadata | `{tenant}:meta:{entity}:{id}` | - | Document metadata |
+| Use Case        | Key Pattern                         | TTL | Notes                      |
+| --------------- | ----------------------------------- | --- | -------------------------- |
+| Query cache     | `{tenant}:cache:query:{hash}`       | 1h  | RAG response caching       |
+| Prompt versions | `{tenant}:prompts:{name}:{version}` | -   | Immutable                  |
+| Feature flags   | `{tenant}:flags:{flag}`             | 5m  | Short TTL for fast updates |
+| Metadata        | `{tenant}:meta:{entity}:{id}`       | -   | Document metadata          |
 
 ### 5.2 Durable Objects
 
-| Class | Purpose | ID Format | State |
-|-------|---------|-----------|-------|
-| `SessionDO` | Conversation history | `{tenant}:{session_id}` | Messages, created_at, last_active |
-| `RateLimitDO` | Rate limiting | `{tenant}:{ip}` or `{tenant}:{user_id}` | Counts, window timestamps |
+| Class         | Purpose              | ID Format                               | State                             |
+| ------------- | -------------------- | --------------------------------------- | --------------------------------- |
+| `SessionDO`   | Conversation history | `{tenant}:{session_id}`                 | Messages, created_at, last_active |
+| `RateLimitDO` | Rate limiting        | `{tenant}:{ip}` or `{tenant}:{user_id}` | Counts, window timestamps         |
 
 ### 5.3 Vectorize
 
-| Configuration | Value | Notes |
-|---------------|-------|-------|
-| Index per tenant | `{tenant}-vectors` | Full isolation |
-| Dimensions | 768 | Match embedding model |
-| Metric | cosine | Standard for text |
-| Metadata | `{doc_id, chunk_id, source, tenant}` | Always include tenant |
+| Configuration    | Value                                | Notes                 |
+| ---------------- | ------------------------------------ | --------------------- |
+| Index per tenant | `{tenant}-vectors`                   | Full isolation        |
+| Dimensions       | 768                                  | Match embedding model |
+| Metric           | cosine                               | Standard for text     |
+| Metadata         | `{doc_id, chunk_id, source, tenant}` | Always include tenant |
 
 ## 6. API Contracts
 
@@ -337,10 +341,10 @@ Response:
 ```typescript
 interface ErrorResponse {
   error: {
-    code: string;           // e.g., "TENANT_NOT_FOUND", "RATE_LIMITED"
-    message: string;        // Human-readable message
-    details?: unknown;      // Additional context
-    request_id: string;     // For debugging
+    code: string; // e.g., "TENANT_NOT_FOUND", "RATE_LIMITED"
+    message: string; // Human-readable message
+    details?: unknown; // Additional context
+    request_id: string; // For debugging
   };
 }
 ```
@@ -378,8 +382,8 @@ Options (to be decided):
 
 ```typescript
 interface LogEntry {
-  timestamp: string;        // ISO 8601
-  level: "debug" | "info" | "warn" | "error";
+  timestamp: string; // ISO 8601
+  level: 'debug' | 'info' | 'warn' | 'error';
   tenant: string;
   request_id: string;
   route: string;
@@ -399,22 +403,23 @@ interface LogEntry {
 
 ### 8.2 Metrics
 
-| Metric | Type | Labels |
-|--------|------|--------|
-| `requests_total` | Counter | tenant, route, status |
-| `errors_total` | Counter | tenant, route, error_code |
-| `latency_ms` | Histogram | tenant, route |
-| `ai_tokens_total` | Counter | tenant, model, direction (in/out) |
-| `vectorize_queries_total` | Counter | tenant |
-| `vectorize_latency_ms` | Histogram | tenant |
-| `cache_hits_total` | Counter | tenant, cache_type |
-| `rate_limited_total` | Counter | tenant |
+| Metric                    | Type      | Labels                            |
+| ------------------------- | --------- | --------------------------------- |
+| `requests_total`          | Counter   | tenant, route, status             |
+| `errors_total`            | Counter   | tenant, route, error_code         |
+| `latency_ms`              | Histogram | tenant, route                     |
+| `ai_tokens_total`         | Counter   | tenant, model, direction (in/out) |
+| `vectorize_queries_total` | Counter   | tenant                            |
+| `vectorize_latency_ms`    | Histogram | tenant                            |
+| `cache_hits_total`        | Counter   | tenant, cache_type                |
+| `rate_limited_total`      | Counter   | tenant                            |
 
 ## 9. Deployment Architecture
 
 ### 9.1 Per-Tenant Deployment
 
 Each tenant has its own wrangler.jsonc that extends the base:
+
 - Separate KV namespaces
 - Separate DO bindings
 - Separate Vectorize index
@@ -422,23 +427,23 @@ Each tenant has its own wrangler.jsonc that extends the base:
 
 ### 9.2 Environment Strategy
 
-| Environment | Purpose | Binding Suffix |
-|-------------|---------|----------------|
-| dev | Local development | `-dev` |
-| staging | Pre-production testing | `-staging` |
-| production | Live traffic | (none) |
+| Environment | Purpose                | Binding Suffix |
+| ----------- | ---------------------- | -------------- |
+| dev         | Local development      | `-dev`         |
+| staging     | Pre-production testing | `-staging`     |
+| production  | Live traffic           | (none)         |
 
 ## 10. Decision Log
 
-| Decision | Choice | Rationale |
-|----------|--------|-----------|
-| Streaming protocol | SSE | Native browser support, simpler than WebSocket |
-| Session storage | Durable Objects | Strong consistency, automatic locality |
-| Cache storage | KV | High throughput, global distribution |
-| Vector storage | Vectorize | Native integration, managed service |
-| Validation | Zod | Runtime + TypeScript inference |
-| Module format | ESM | Modern Workers, better tree-shaking |
+| Decision           | Choice          | Rationale                                      |
+| ------------------ | --------------- | ---------------------------------------------- |
+| Streaming protocol | SSE             | Native browser support, simpler than WebSocket |
+| Session storage    | Durable Objects | Strong consistency, automatic locality         |
+| Cache storage      | KV              | High throughput, global distribution           |
+| Vector storage     | Vectorize       | Native integration, managed service            |
+| Validation         | Zod             | Runtime + TypeScript inference                 |
+| Module format      | ESM             | Modern Workers, better tree-shaking            |
 
 ---
 
-*See also: [plan.md](./plan.md), [tenancy.md](./tenancy.md), [api-contracts.md](./api-contracts.md)*
+_See also: [plan.md](./plan.md), [tenancy.md](./tenancy.md), [api-contracts.md](./api-contracts.md)_

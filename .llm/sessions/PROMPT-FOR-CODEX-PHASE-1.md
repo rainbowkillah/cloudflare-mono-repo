@@ -2,7 +2,7 @@
 
 **Date**: 2026-01-26  
 **Mission**: Execute M0 Phase 1 infrastructure scaffolding (2 hours, 6 parallel tasks)  
-**Status**: 🟢 READY TO START NOW  
+**Status**: 🟢 READY TO START NOW
 
 ---
 
@@ -11,7 +11,7 @@
 ✅ **Team coordination complete** - All planning, GitHub verification, runtime decisions locked  
 ✅ **Runtime decisions finalized** - Wrangler ^4.x, ESM (ES2022), strict TypeScript  
 ✅ **npm install complete** - 852 packages ready, 0 vulnerabilities  
-✅ **Nx verified working** - v22.4.1 with all 8 plugins loaded  
+✅ **Nx verified working** - v22.4.1 with all 8 plugins loaded
 
 **Your role**: Build Phase 1 infrastructure so Phase 2-5 can execute sequentially.
 
@@ -20,7 +20,9 @@
 ## Phase 1: Infrastructure Scaffolding (6 Parallel Tasks)
 
 ### Task 1: Issue #3 - Monorepo Directory Structure
+
 **Acceptance Criteria**:
+
 - [ ] Create `/apps/worker-api/` directory
 - [ ] Create `/apps/ingest-worker/` directory (optional separation)
 - [ ] Create `/packages/core/src/` directory
@@ -40,7 +42,9 @@
 ---
 
 ### Task 2: Issue #4 - TypeScript Configuration + tsconfig.base.json
+
 **Acceptance Criteria**:
+
 - [ ] Create `tsconfig.base.json` at repo root with:
   ```json
   {
@@ -78,7 +82,9 @@
 ---
 
 ### Task 3: Issue #5 - ESLint + Prettier Configuration
+
 **Acceptance Criteria**:
+
 - [ ] Create `.eslintrc.json` with:
   - TypeScript plugin enabled (@typescript-eslint)
   - Nx recommended rules
@@ -103,7 +109,9 @@
 ---
 
 ### Task 4: Issue #6 - Vitest Configuration
+
 **Acceptance Criteria**:
+
 - [ ] Create `vitest.workspace.ts` at repo root (partially exists, verify)
 - [ ] Configure Vitest with:
   - Environment: `node` (no jsdom, workers don't have browser globals)
@@ -122,8 +130,11 @@
 ---
 
 ### Task 5: Issue #9 - tenant.config.json Schema + Zod Validation
+
 **Acceptance Criteria**:
+
 - [ ] Create `packages/core/src/tenant-config.ts` with Zod schema:
+
   ```typescript
   import { z } from 'zod';
 
@@ -131,32 +142,45 @@
     tenantId: z.string().min(1),
     accountId: z.string().optional(),
     hostnameMapping: z.record(z.string()).optional(),
-    ai: z.object({
-      models: z.array(z.string()),
-      gatewayRoutes: z.record(z.string()).optional(),
-      budgets: z.object({
-        tokensPerDay: z.number().optional(),
-        requestsPerMinute: z.number().optional()
-      }).optional()
-    }).optional(),
-    vectorize: z.object({
-      indexNames: z.array(z.string()).optional()
-    }).optional(),
-    kv: z.object({
-      namespaceMappings: z.record(z.string()).optional()
-    }).optional(),
-    durable_objects: z.object({
-      classBindings: z.record(z.string()).optional()
-    }).optional(),
-    cors: z.object({
-      origins: z.array(z.string()).optional(),
-      allowCredentials: z.boolean().optional()
-    }).optional(),
-    featureFlags: z.record(z.boolean()).optional()
+    ai: z
+      .object({
+        models: z.array(z.string()),
+        gatewayRoutes: z.record(z.string()).optional(),
+        budgets: z
+          .object({
+            tokensPerDay: z.number().optional(),
+            requestsPerMinute: z.number().optional(),
+          })
+          .optional(),
+      })
+      .optional(),
+    vectorize: z
+      .object({
+        indexNames: z.array(z.string()).optional(),
+      })
+      .optional(),
+    kv: z
+      .object({
+        namespaceMappings: z.record(z.string()).optional(),
+      })
+      .optional(),
+    durable_objects: z
+      .object({
+        classBindings: z.record(z.string()).optional(),
+      })
+      .optional(),
+    cors: z
+      .object({
+        origins: z.array(z.string()).optional(),
+        allowCredentials: z.boolean().optional(),
+      })
+      .optional(),
+    featureFlags: z.record(z.boolean()).optional(),
   });
 
   export type TenantConfig = z.infer<typeof TenantConfigSchema>;
   ```
+
 - [ ] Create `tenants/mrrainbowsmoke/tenant.config.json` with sample valid config
 - [ ] Create `tenants/rainbowsmokeofficial/tenant.config.json` with sample valid config
 - [ ] Write unit test: `packages/core/src/__tests__/tenant-config.test.ts`
@@ -171,7 +195,9 @@
 ---
 
 ### Task 6: Issue #14 - Document Runtime Decisions (Already Completed by Claude)
-**Status**: ✅ Already done by Claude  
+
+**Status**: ✅ Already done by Claude
+
 - [x] plan.md section 4.5 added with full runtime decisions
 - [x] 2026-01-26-issue-14-decision.md created with decision rationale
 - [x] Wrangler ^4.x locked (v4.26.0 in package.json)
@@ -184,11 +210,13 @@
 ## Critical Dependencies & Sequencing
 
 ### No Build Blockers
+
 - All 6 tasks are **parallel** - work on them simultaneously
 - Task 1 (directories) is prerequisite for Tasks 2-5 (create dir structure first)
 - Task 6 (runtime decisions) is informational only - already done
 
 ### Execution Order Recommendation
+
 1. Task 1 (directories) - 15 min, unblocks 2-5
 2. Start Tasks 2-5 in parallel once Task 1 done
 3. Task 6 verification (5 min, after everything)
@@ -202,7 +230,7 @@
 ✅ **Phase 2 (Issue #7)**: Nx project.json generation - blocked until Phase 1 complete  
 ✅ **Phase 3 (Issues #8, #13)**: Tenant middleware - blocked until Phase 2 complete  
 ✅ **Phase 4 (Issues #10-12)**: Local dev + error handling - blocked until Phase 3 complete  
-✅ **Phase 5**: Validation - blocked until Phase 4 complete  
+✅ **Phase 5**: Validation - blocked until Phase 4 complete
 
 **Critical path**: Phase 1 → Phase 2 → Phase 3 (tenant middleware is blocker for Phase 4+)
 
@@ -213,7 +241,7 @@
 Phase 1 is COMPLETE when **ALL of the following pass**:
 
 1. **Directory Structure**: All directories from plan.md section 3.1 exist
-2. **TypeScript**: 
+2. **TypeScript**:
    - `tsconfig.base.json` at repo root with ES2022 target/module, strict mode
    - Each app/package has tsconfig.json extending base
    - `npx tsc --noEmit` passes
@@ -239,16 +267,19 @@ Phase 1 is COMPLETE when **ALL of the following pass**:
 ## GitHub Integration
 
 ### Before You Start
+
 1. Create branch: `git checkout -b feat/M0-phase-1-infrastructure`
 2. Link all 6 issues in branch description
 3. Mark issues as "In Progress" on GitHub Project
 
 ### As You Complete Each Task
+
 1. Commit with message: `feat(M0): Issue #X - [task name]`
 2. Update GitHub issue with implementation notes
 3. Link commits to issue
 
 ### When Phase 1 Complete
+
 1. Create PR: `feat/M0-phase-1-infrastructure`
 2. Description: Link all 6 completed issues
 3. Ready for Gemini + Claude review before Phase 2
@@ -258,11 +289,13 @@ Phase 1 is COMPLETE when **ALL of the following pass**:
 ## Reference Documents (Read These First)
 
 ### Critical Reading (10 min)
+
 1. [plan.md](../docs/plan.md) - Sections 0-3.2 (executive summary, architecture, layout)
 2. [2026-01-26-issue-14-decision.md](./2026-01-26-issue-14-decision.md) - Runtime decisions (Wrangler, ESM, TS config)
 3. [2026-01-26-M0-infrastructure-ready.md](./2026-01-26-M0-infrastructure-ready.md) - Full Phase 1-5 plan with dependencies
 
 ### For Deep Context (Optional)
+
 - [tenancy.md](../docs/tenancy.md) - Tenant isolation rules (needed later in Phase 3)
 - [architecture.md](../docs/architecture.md) - System design (context for middleware decisions)
 - [GitHub Project](https://github.com/users/rainbowkillah/projects/12) - Issues #3-14 (M0 tasks)
@@ -313,7 +346,8 @@ git push origin feat/M0-phase-1-infrastructure
 
 ## Success Definition
 
-🎯 **Phase 1 Success**: 
+🎯 **Phase 1 Success**:
+
 - All 6 tasks completed and passing
 - `npm install && npm run lint && npm test` all pass
 - Nx ready for project.json generation (Phase 2)
@@ -335,6 +369,6 @@ git push origin feat/M0-phase-1-infrastructure
 
 ---
 
-*Created: 2026-01-26 by Claude*  
-*For: Codex (Phase 1-4 execution)*  
-*Status: READY TO EXECUTE*
+_Created: 2026-01-26 by Claude_  
+_For: Codex (Phase 1-4 execution)_  
+_Status: READY TO EXECUTE_

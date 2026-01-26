@@ -8,8 +8,8 @@ export default defineWorkspace([
       pool: 'threads',
       coverage: {
         provider: 'v8',
-        reportsDirectory: 'coverage'
-      }
-    }
-  }
+        reportsDirectory: 'coverage',
+      },
+    },
+  },
 ]);

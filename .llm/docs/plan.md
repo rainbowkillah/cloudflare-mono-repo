@@ -9,11 +9,13 @@
 ## 0) Executive Summary
 
 We are building a multi-tenant Cloudflare Workers AI platform inside a monorepo. It must support:
+
 - Workers AI (model inference), AI Gateway (policy/routing/observability), Vectorize (embeddings + retrieval), AI Search (RAG UX), KV, Durable Objects (sessions/state), streaming chat, “tool”/function execution, TTS contract (and optional implementation depending on provider constraints), metrics + QA gates, and repeatable deployments per tenant/account.
 
 We also build a developer experience layer: an **Nx plugin** that provides generators/executors comparable to Cloudflare’s `wrangler` + `create-cloudflare` so new apps/services/tenants can be created and deployed consistently.
 
 **Hard requirements:**
+
 - Tenant isolation is non-negotiable.
 - No secrets in repo.
 - Every milestone ships runnable code + tests + measurable success criteria.
@@ -24,6 +26,7 @@ We also build a developer experience layer: an **Nx plugin** that provides gener
 ## 1) Non-Negotiable Constraints and Guardrails
 
 ### 1.1 Tenant isolation rules
+
 - Every request must resolve tenant context BEFORE any storage/AI call.
 - All storage bindings must be tenant-scoped:
   - KV namespaces per tenant (or tenant prefix strategy if required).
@@ -33,12 +36,14 @@ We also build a developer experience layer: an **Nx plugin** that provides gener
 - No cross-tenant reads/writes unless explicit “shared” policy exists.
 
 ### 1.2 Security + compliance defaults
+
 - Strict request validation on every endpoint.
 - CORS locked down per tenant.
 - Rate limiting per tenant per IP/user key.
 - Redaction in logs (no PII by default; no tokens or raw prompts in logs unless explicitly enabled).
 
 ### 1.3 Operational clarity
+
 - Observability is a first-class deliverable:
   - metrics definitions, logging schema, dashboards/alerts suggestions, runbooks.
 - Every component has failure mode documentation.
@@ -48,16 +53,18 @@ We also build a developer experience layer: an **Nx plugin** that provides gener
 ## 2) Target Architecture (High-level)
 
 ### 2.1 Core apps (Workers)
-1) **worker-api**: Primary API surface
+
+1. **worker-api**: Primary API surface
    - `/chat` (streaming)
    - `/search` (RAG UX)
    - `/tools/execute` (function/tool dispatcher)
    - `/ingest` (optional or separated)
    - `/tts` (contract + adapter boundary)
-2) **ingest-worker** (optional separation)
+2. **ingest-worker** (optional separation)
    - Document ingestion pipeline: chunk -> embed -> Vectorize upsert
 
 ### 2.2 Shared packages
+
 - `packages/core`: tenant resolution, middleware, schemas, errors
 - `packages/storage`: KV/DO/Vectorize adapters (tenant-aware)
 - `packages/rag`: chunking, prompting, citations, safety filters
@@ -65,6 +72,7 @@ We also build a developer experience layer: an **Nx plugin** that provides gener
 - `packages/testing`: fixtures, harness, local runners
 
 ### 2.3 Key primitives mapping
+
 - **Durable Objects**: sessions, rate limiting, streaming coordination (if needed)
 - **KV**: lightweight cache, tenant metadata, prompt versions, feature flags
 - **Vectorize**: embeddings store + retrieval
@@ -76,6 +84,7 @@ We also build a developer experience layer: an **Nx plugin** that provides gener
 ## 3) Repo & Tenant Layout
 
 ### 3.1 Proposed folder structure
+
 - `/apps/worker-api`
 - `/apps/ingest-worker` (optional)
 - `/packages/*`
@@ -89,6 +98,7 @@ We also build a developer experience layer: an **Nx plugin** that provides gener
 - `/tests/*`
 
 ### 3.2 Tenant config (minimum fields)
+
 - `tenantId`
 - `accountId` (Cloudflare account association if required)
 - `hostnameMapping` (optional)
@@ -106,34 +116,42 @@ We also build a developer experience layer: an **Nx plugin** that provides gener
 This project touches APIs that evolve. These are the “don’t hallucinate” checkpoints.
 
 ### 4.1 Cloudflare AI Gateway specifics
+
 **Unknowns/Blockers**
+
 - Exact configuration required to route Workers AI calls via AI Gateway in Workers runtime.
 - How usage metrics are exposed/collected and best practice logging.
-**Action**
+  **Action**
 - Create a “Gateway Validation Spike” early (Milestone M2) that proves:
   - calls go through gateway
   - we can capture request_id, latency, and token usage signals (where available)
 
 ### 4.2 TTS feasibility
+
 **Unknowns/Blockers**
+
 - Cloudflare-native TTS availability and best option.
-**Action**
+  **Action**
 - Build TTS as an adapter boundary:
   - Contract exists even if implementation is stubbed
   - Later plug a provider (Cloudflare-native if/when supported or external service)
 
 ### 4.3 Local dev parity
+
 **Unknowns/Blockers**
+
 - How much of Vectorize/Workers AI can be simulated locally.
-**Action**
+  **Action**
 - Define a local harness:
   - unit tests fully local
   - integration tests use staging resources per tenant where needed (CI gated)
 
 ### 4.4 Multi-account deployment
+
 **Unknowns/Blockers**
+
 - wrangler auth context switching across accounts/tenants.
-**Action**
+  **Action**
 - Deployment scripts must support:
   - deploying by tenant folder (each with its own wrangler.jsonc)
   - “deploy all tenants” with explicit order and failure handling
@@ -145,8 +163,9 @@ This project touches APIs that evolve. These are the “don’t hallucinate” c
 These decisions are locked in to unblock Phase 1 implementation. Any deviation requires full team consensus.
 
 ### Wrangler Version
+
 - **Decision**: `wrangler ^4.x` (latest stable major version)
-- **Rationale**: 
+- **Rationale**:
   - Stable, widely-tested API surface
   - Full ESM support without configuration
   - Comprehensive local dev experience via `wrangler dev` with hot reload
@@ -155,6 +174,7 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
 - **Review gate**: If major breaking changes in wrangler > 4.5, escalate to full team before upgrade
 
 ### Module Format (ESM)
+
 - **Decision**: ESM modules (ES2022 target)
 - **Rationale**:
   - Native `async/await` and top-level await support
@@ -169,6 +189,7 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
 - **Impact**: Simplifies async middleware, streaming, and binding initialization
 
 ### TypeScript Configuration
+
 - **tsconfig.base.json** (created in M0, Issue #4):
   - `target: "ES2022"`
   - `module: "ES2022"`
@@ -178,6 +199,7 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
 - **Impact**: All code must be strict TypeScript; no escape hatches for type safety
 
 ### Build Configuration
+
 - **esbuild** via `@nx/esbuild` executor:
   - Target: `es2022`
   - Format: `esm` (ES modules only)
@@ -186,6 +208,7 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
 - **Local dev**: `wrangler dev` handles hot reload + ES module transformation
 
 ### Testing Stack
+
 - **Unit tests**: Vitest (via `@nx/vitest`)
   - Environment: `node` (no browser globals)
   - Parallel by default
@@ -193,6 +216,7 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
 - **E2E tests**: Staged environment (M2+) against real Cloudflare infrastructure
 
 ### Binding Type Safety
+
 - **Source of truth**: `packages/core/src/env.ts`
   - Single file defining all Cloudflare binding types (Workers AI, Vectorize, KV, DO, etc.)
   - Imported by all consumers (worker-api, storage adapters, etc.)
@@ -205,17 +229,20 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
 ## 5) Milestones (Actions, Subactions, Exit Criteria)
 
 > Every milestone ends with:
-> 1) runnable demo steps
-> 2) tests passing
-> 3) metrics/logs emitted
-> 4) short Milestone Report in `.llm/docs/reports/`
+>
+> 1. runnable demo steps
+> 2. tests passing
+> 3. metrics/logs emitted
+> 4. short Milestone Report in `.llm/docs/reports/`
 
 ---
 
 ### Milestone M0 — Foundation & Scaffolding
+
 **Goal:** Monorepo boots cleanly; tenant resolution exists; baseline tooling + docs.
 
 **Actions**
+
 1. Create monorepo skeleton
    - apps/packages/tenants/.llm/docs/scripts/tests
 2. Tooling setup
@@ -231,19 +258,23 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
    - smoke tests
 
 **Exit criteria**
+
 - `install -> build -> test` passes
 - Local dev server runs for at least one worker app
 - Unit tests prove tenant resolution + rejection when missing
 
 **Blockers**
+
 - None expected; if toolchain issues, lock versions and document.
 
 ---
 
 ### Milestone M1 — Streaming Chat + Sessions (DO) + KV cache
+
 **Goal:** `/chat` streaming works; sessions are tenant-isolated; rate limiting exists.
 
 **Actions**
+
 1. Build `/chat` endpoint
    - Request schema: message list, session id, options
    - Streaming response contract (SSE or chunked)
@@ -261,20 +292,24 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
    - rate limit enforcement test
 
 **Exit criteria**
+
 - Streaming response works end-to-end
 - Sessions persist and are isolated per tenant
 - Rate limits demonstrably enforced
 - Logs include request_id + tenant + route + latency
 
 **Blockers**
+
 - Streaming edge cases in runtime; mitigate by defining a strict response protocol.
 
 ---
 
 ### Milestone M2 — AI Gateway Integration + Model Routing Policy
+
 **Goal:** All model calls go through AI Gateway; policies are enforceable.
 
 **Actions**
+
 1. Gateway integration spike
    - Prove connectivity + configuration
 2. Model routing
@@ -289,20 +324,24 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
    - `.llm/docs/ai-gateway.md` how we route and why
 
 **Exit criteria**
+
 - Gateway used for all AI calls
 - Tenant-specific routing works
 - Usage signals recorded (as available)
 - Fallback behavior documented
 
 **Blockers**
+
 - API details may change; if so, freeze on known-working config and document.
 
 ---
 
 ### Milestone M3 — Embeddings + Vectorize + Retrieval + RAG assembly
+
 **Goal:** Ingest documents, retrieve relevant chunks, generate RAG responses with citations.
 
 **Actions**
+
 1. Ingestion pipeline
    - chunking strategy (size, overlap)
    - embedding generation
@@ -321,19 +360,23 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
    - metadata integrity tests
 
 **Exit criteria**
+
 - RAG returns answers with citations/metadata
 - Ingestion + retrieval works per tenant
 - Retrieval tested with fixtures
 
 **Blockers**
+
 - Local simulation limitations; use staging for integration tests if needed.
 
 ---
 
 ### Milestone M4 — AI Search UX Endpoint
+
 **Goal:** `/search` delivers structured results optimized for search experience.
 
 **Actions**
+
 1. Build `/search`
    - output schema: answer + sources + confidence notes + recommended follow-ups
 2. Query rewriting / intent detection (lightweight)
@@ -347,6 +390,7 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
    - caching behavior tests
 
 **Exit criteria**
+
 - Stable structured output
 - Measurable latency improvements with cache
 - Clear “why these results” transparency fields
@@ -354,9 +398,11 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
 ---
 
 ### Milestone M5 — Tooling / Generative Functions (Function Calling)
+
 **Goal:** A controlled tool executor system: predictable, logged, tenant-safe.
 
 **Actions**
+
 1. Define tool schema
    - JSON schema for tool name, args, permissions
 2. Tool dispatcher
@@ -376,6 +422,7 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
    - tool correctness tests
 
 **Exit criteria**
+
 - Tools run safely and predictably
 - Audit logs exist and are tenant-bound
 - Tool contracts documented
@@ -383,9 +430,11 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
 ---
 
 ### Milestone M6 — TTS Contract + Adapter Boundary
+
 **Goal:** TTS endpoint exists with a stable API; implementation pluggable.
 
 **Actions**
+
 1. Define `/tts` contract
    - input: text, voice, format, streaming flag
    - output: audio stream or job id
@@ -397,15 +446,18 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
    - stub behavior tests
 
 **Exit criteria**
+
 - Contract documented and stable
 - No coupling to a single provider in core code
 
 ---
 
 ### Milestone M7 — Observability, Metrics, QA Gates, Load Tests
+
 **Goal:** We can measure, regress, and operate this thing like adults.
 
 **Actions**
+
 1. Finalize logging schema
 2. Implement metrics helpers and required metrics
 3. Add dashboards/alerts suggestions (document)
@@ -417,6 +469,7 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
    - lint, typecheck, unit, integration
 
 **Exit criteria**
+
 - Metrics emitted for chat/search/retrieval/tools
 - CI gates enforce quality
 - Load test runnable and documented
@@ -424,9 +477,11 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
 ---
 
 ### Milestone M8 — Repeatable Deployment per Tenant + Drift Detection
+
 **Goal:** One-command deploy per tenant; multi-tenant deploy-all; drift detection.
 
 **Actions**
+
 1. Deployment scripts
    - deploy one tenant
    - deploy all tenants
@@ -440,6 +495,7 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
    - incident response notes
 
 **Exit criteria**
+
 - Deploy per tenant is consistent and repeatable
 - Docs allow fresh clone -> deploy without guesswork
 
@@ -450,7 +506,9 @@ These decisions are locked in to unblock Phase 1 implementation. Any deviation r
 This section is the “/claude architecture + /gemini quality gate” version of the Nx plugin plan.
 
 ### 6.1 Goals of Nx plugin
+
 Provide a single consistent workflow to:
+
 - scaffold a new Worker app (like `create-cloudflare`)
 - configure bindings for KV/DO/Vectorize/AI Gateway (like wrangler config management)
 - scaffold a new tenant (tenant folder + wrangler.jsonc + config)
@@ -458,22 +516,26 @@ Provide a single consistent workflow to:
 - support multi-account context cleanly
 
 ### 6.2 Nx plugin deliverables
+
 Create `packages/nx-cloudflare/` (Nx plugin)
+
 - **Generators**
-  1) `init`: add baseline config to repo (workspace config, default targets)
-  2) `worker`: scaffold a Worker app with standard endpoints + middleware
-  3) `tenant`: scaffold tenant folder + config + wrangler.jsonc template
-  4) `binding`: add KV/DO/Vectorize/AI bindings to tenant + app config
-  5) `rag-module`: add ingestion/retrieval wiring + sample prompts
+  1. `init`: add baseline config to repo (workspace config, default targets)
+  2. `worker`: scaffold a Worker app with standard endpoints + middleware
+  3. `tenant`: scaffold tenant folder + config + wrangler.jsonc template
+  4. `binding`: add KV/DO/Vectorize/AI bindings to tenant + app config
+  5. `rag-module`: add ingestion/retrieval wiring + sample prompts
 - **Executors**
-  1) `dev`: runs wrangler dev for a selected tenant/app
-  2) `test`: runs unit/integration tests; optionally uses staging for Vectorize/AI
-  3) `deploy`: deploy one tenant (wrangler deploy)
-  4) `deployAll`: loops tenants with safe failure behavior
-  5) `typecheck/lint`: standard
+  1. `dev`: runs wrangler dev for a selected tenant/app
+  2. `test`: runs unit/integration tests; optionally uses staging for Vectorize/AI
+  3. `deploy`: deploy one tenant (wrangler deploy)
+  4. `deployAll`: loops tenants with safe failure behavior
+  5. `typecheck/lint`: standard
 
 ### 6.3 Generator behavior specs (what it should produce)
+
 **worker generator outputs**
+
 - `apps/<name>/src/index.ts` with:
   - tenant resolution middleware
   - basic routes: /health, /chat skeleton
@@ -481,16 +543,19 @@ Create `packages/nx-cloudflare/` (Nx plugin)
 - `apps/<name>/README.md` “how to run”
 
 **tenant generator outputs**
+
 - `tenants/<tenant-id>/tenant.config.json`
 - `tenants/<tenant-id>/wrangler.jsonc`
 - optional `policies.json`, `prompts/`
 
 **binding generator outputs**
+
 - Updates tenant wrangler.jsonc with required bindings
 - Updates shared typing in `packages/core` for Env bindings
 - Optionally adds DO class skeleton
 
 ### 6.4 Compatibility mapping: Wrangler / create-cloudflare → Nx
+
 - `create-cloudflare` ~ `nx g nx-cloudflare:worker`
 - `wrangler init` ~ `nx g nx-cloudflare:init`
 - `wrangler dev` ~ `nx dev <project> --tenant=<id>`
@@ -500,38 +565,48 @@ Create `packages/nx-cloudflare/` (Nx plugin)
 ### 6.5 Nx plugin action plan (Milestone NX-1..NX-4)
 
 #### NX-1 — Plugin bootstrap
+
 Actions:
+
 - create Nx plugin package skeleton
 - implement `init` generator
 - add shared utilities: parse tenant config, update JSONC, validate
-Exit criteria:
+  Exit criteria:
 - `nx g nx-cloudflare:init` runs cleanly and adds baseline targets
 
 Blockers:
+
 - JSONC editing reliably (need robust JSONC parser/writer)
 
 #### NX-2 — worker generator
+
 Actions:
+
 - scaffold worker-api template with tenant middleware + /health
 - add project.json targets for dev/test/deploy
-Exit criteria:
+  Exit criteria:
 - new worker app created and runs with `nx dev`
 
 #### NX-3 — tenant generator
+
 Actions:
+
 - scaffold tenant folder, config, wrangler.jsonc template
 - add tenant registry file (optional) for discoverability
-Exit criteria:
+  Exit criteria:
 - new tenant scaffold deploys with existing worker
 
 #### NX-4 — bindings + deployAll
+
 Actions:
+
 - generator to add bindings and update Env typing
 - executor to deployAll tenants safely
-Exit criteria:
+  Exit criteria:
 - `nx deployAll` works and reports per tenant status
 
 ### 6.6 Nx plugin quality gates (/gemini brain)
+
 - “dry-run” mode for generators
 - validation: generated files compile
 - snapshot tests for generator outputs
@@ -543,6 +618,7 @@ Exit criteria:
 ## 7) Definition of Done (Global)
 
 Project is “done enough to be dangerous” when:
+
 - New tenant can be created in minutes via Nx generator.
 - Streaming chat works with sessions and rate limits.
 - RAG ingestion + retrieval works with citations.
@@ -554,6 +630,6 @@ Project is “done enough to be dangerous” when:
 
 ## 8) Next Actions (Immediate)
 
-1) Implement M0 repo scaffolding + tenant middleware
-2) Write `.llm/docs/architecture.md`, `.llm/docs/tenancy.md`, `.llm/docs/metrics.md`, `.llm/docs/testing.md`
-3) Start NX-1 plugin bootstrap in parallel (it will pay off fast)
+1. Implement M0 repo scaffolding + tenant middleware
+2. Write `.llm/docs/architecture.md`, `.llm/docs/tenancy.md`, `.llm/docs/metrics.md`, `.llm/docs/testing.md`
+3. Start NX-1 plugin bootstrap in parallel (it will pay off fast)

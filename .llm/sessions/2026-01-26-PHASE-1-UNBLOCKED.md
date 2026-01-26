@@ -8,22 +8,24 @@
 ## The Decision
 
 ### Wrangler Version
+
 ✅ **^4.x** (Latest stable, v4.26.0 already in package.json)
 
-### Module Format  
+### Module Format
+
 ✅ **ESM (ES2022)** - No service-worker transpilation
 
 ---
 
 ## What This Means
 
-| Item | Decision | Impact |
-|------|----------|--------|
-| TypeScript Target | ES2022 | Native async/await support |
-| Module Format | ESM | No CommonJS, streaming-friendly |
-| Build Output | Single ESM bundle | Simplified esbuild config |
-| Wrangler Version | ^4.x (stable) | Reliable local dev + deploy |
-| Local Dev | wrangler dev | Hot reload + full Workers runtime |
+| Item              | Decision          | Impact                            |
+| ----------------- | ----------------- | --------------------------------- |
+| TypeScript Target | ES2022            | Native async/await support        |
+| Module Format     | ESM               | No CommonJS, streaming-friendly   |
+| Build Output      | Single ESM bundle | Simplified esbuild config         |
+| Wrangler Version  | ^4.x (stable)     | Reliable local dev + deploy       |
+| Local Dev         | wrangler dev      | Hot reload + full Workers runtime |
 
 ---
 
@@ -44,28 +46,31 @@
 
 ## Updated Documents
 
-| Document | Purpose | Updated |
-|----------|---------|---------|
-| `plan.md` | Added section 4.5 "Runtime Decisions" | ✅ Yes |
-| `TODO.md` | Marked Issue #14 decided | ✅ Yes |
-| `2026-01-26-M0-infrastructure-ready.md` | Marked Phase 1 unblocked | ✅ Yes |
-| `2026-01-26-issue-14-decision.md` | Full decision rationale | ✅ Created |
+| Document                                | Purpose                               | Updated    |
+| --------------------------------------- | ------------------------------------- | ---------- |
+| `plan.md`                               | Added section 4.5 "Runtime Decisions" | ✅ Yes     |
+| `TODO.md`                               | Marked Issue #14 decided              | ✅ Yes     |
+| `2026-01-26-M0-infrastructure-ready.md` | Marked Phase 1 unblocked              | ✅ Yes     |
+| `2026-01-26-issue-14-decision.md`       | Full decision rationale               | ✅ Created |
 
 ---
 
 ## Next Steps
 
 ### For Codex
+
 1. Create feat/M0-phase-1-infrastructure branch
 2. Begin 6 parallel tasks (Issues #3-6, #9, #14)
 3. Update GitHub issues with implementation progress
 
-### For Gemini  
+### For Gemini
+
 1. Review Issue #8 tenant middleware design docs (plan.md, tenancy.md, architecture.md)
 2. Ready to advise on middleware/adapter layer architecture in Phase 3
 
 ### For Claude
-1. Monitor Phase 1 progress 
+
+1. Monitor Phase 1 progress
 2. Gate Phase 2 start (Nx project.json generation)
 3. Escalate any deviations from documented constraints
 

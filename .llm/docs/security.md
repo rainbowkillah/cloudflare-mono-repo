@@ -18,22 +18,22 @@
 
 ### 2.1 Assets to Protect
 
-| Asset | Sensitivity | Impact if Compromised |
-|-------|-------------|----------------------|
-| Tenant data (sessions, vectors) | High | Data breach, compliance violation |
-| API keys/tokens | Critical | Full account takeover |
-| AI prompts/responses | Medium | IP exposure, PII leak |
-| System configuration | High | Service disruption |
-| Usage metrics | Low | Competitive intelligence |
+| Asset                           | Sensitivity | Impact if Compromised             |
+| ------------------------------- | ----------- | --------------------------------- |
+| Tenant data (sessions, vectors) | High        | Data breach, compliance violation |
+| API keys/tokens                 | Critical    | Full account takeover             |
+| AI prompts/responses            | Medium      | IP exposure, PII leak             |
+| System configuration            | High        | Service disruption                |
+| Usage metrics                   | Low         | Competitive intelligence          |
 
 ### 2.2 Threat Actors
 
-| Actor | Motivation | Capabilities |
-|-------|------------|--------------|
-| Malicious tenant | Data theft, abuse | Authenticated API access |
-| External attacker | Data theft, disruption | Network access |
-| Curious tenant | Accidental access | Authenticated, misconfigured |
-| Insider (compromised creds) | Varies | Valid credentials |
+| Actor                       | Motivation             | Capabilities                 |
+| --------------------------- | ---------------------- | ---------------------------- |
+| Malicious tenant            | Data theft, abuse      | Authenticated API access     |
+| External attacker           | Data theft, disruption | Network access               |
+| Curious tenant              | Accidental access      | Authenticated, misconfigured |
+| Insider (compromised creds) | Varies                 | Valid credentials            |
 
 ### 2.3 Attack Vectors
 
@@ -61,11 +61,11 @@
 
 ### 3.1 Authentication Methods (Planned)
 
-| Method | Use Case | Implementation |
-|--------|----------|----------------|
-| API Keys | Server-to-server | KV-stored, tenant-scoped |
-| JWT | User sessions | RS256 signed, short-lived |
-| Cloudflare Access | Internal tools | Zero-trust integration |
+| Method            | Use Case         | Implementation            |
+| ----------------- | ---------------- | ------------------------- |
+| API Keys          | Server-to-server | KV-stored, tenant-scoped  |
+| JWT               | User sessions    | RS256 signed, short-lived |
+| Cloudflare Access | Internal tools   | Zero-trust integration    |
 
 ### 3.2 API Key Format
 
@@ -76,15 +76,16 @@ Example: ak_acme_a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6
 ```
 
 **Storage:**
+
 ```typescript
 // KV key: api_keys:{key_hash}
 // Value: { tenantId, createdAt, lastUsed, scopes, name }
 
 interface APIKeyMetadata {
   tenantId: string;
-  keyHash: string;          // SHA-256 of full key
-  name: string;             // Human-readable name
-  scopes: string[];         // e.g., ['chat', 'search']
+  keyHash: string; // SHA-256 of full key
+  name: string; // Human-readable name
+  scopes: string[]; // e.g., ['chat', 'search']
   createdAt: string;
   lastUsed: string;
   expiresAt?: string;
@@ -95,22 +96,23 @@ interface APIKeyMetadata {
 
 ```typescript
 interface JWTPayload {
-  sub: string;              // User ID
-  tenant: string;           // Tenant ID (REQUIRED)
-  iat: number;              // Issued at
-  exp: number;              // Expiration (max 1 hour)
-  scopes: string[];         // Permissions
+  sub: string; // User ID
+  tenant: string; // Tenant ID (REQUIRED)
+  iat: number; // Issued at
+  exp: number; // Expiration (max 1 hour)
+  scopes: string[]; // Permissions
 }
 ```
 
 **Validation:**
+
 ```typescript
 async function validateJWT(token: string, env: Env): Promise<JWTPayload> {
   const publicKey = await env.JWT_PUBLIC_KEY.get('current');
 
   const payload = await jwt.verify(token, publicKey, {
     algorithms: ['RS256'],
-    clockTolerance: 30,     // 30 second clock skew tolerance
+    clockTolerance: 30, // 30 second clock skew tolerance
   });
 
   // Validate required claims
@@ -137,7 +139,7 @@ type Scope =
 
 interface Permission {
   scope: Scope;
-  resource?: string;        // Optional resource constraint
+  resource?: string; // Optional resource constraint
 }
 ```
 
@@ -155,7 +157,7 @@ export function requireScopes(...requiredScopes: Scope[]) {
     }
 
     const hasAllScopes = requiredScopes.every(
-      scope => auth.scopes.includes(scope) || auth.scopes.includes('admin:*')
+      (scope) => auth.scopes.includes(scope) || auth.scopes.includes('admin:*')
     );
 
     if (!hasAllScopes) {
@@ -206,26 +208,24 @@ import { z } from 'zod';
 
 export const MessageSchema = z.object({
   role: z.enum(['user', 'assistant', 'system']),
-  content: z.string()
+  content: z
+    .string()
     .min(1)
-    .max(32000)                    // Prevent DoS via huge messages
-    .refine(
-      content => !containsMaliciousPatterns(content),
-      { message: 'Invalid content' }
-    ),
+    .max(32000) // Prevent DoS via huge messages
+    .refine((content) => !containsMaliciousPatterns(content), { message: 'Invalid content' }),
 });
 
 export const ChatRequestSchema = z.object({
-  messages: z.array(MessageSchema)
-    .min(1)
-    .max(100),                     // Prevent excessive context
+  messages: z.array(MessageSchema).min(1).max(100), // Prevent excessive context
   session_id: z.string().uuid().optional(),
   model: z.string().optional(),
   stream: z.boolean().default(true),
-  options: z.object({
-    temperature: z.number().min(0).max(2).default(0.7),
-    max_tokens: z.number().min(1).max(4096).optional(),
-  }).optional(),
+  options: z
+    .object({
+      temperature: z.number().min(0).max(2).default(0.7),
+      max_tokens: z.number().min(1).max(4096).optional(),
+    })
+    .optional(),
 });
 ```
 
@@ -252,19 +252,14 @@ export function sanitizeContent(content: string): string {
 }
 
 export function containsMaliciousPatterns(content: string): boolean {
-  return DANGEROUS_PATTERNS.some(pattern => pattern.test(content));
+  return DANGEROUS_PATTERNS.some((pattern) => pattern.test(content));
 }
 ```
 
 ### 5.3 File Upload Validation (if applicable)
 
 ```typescript
-const ALLOWED_MIME_TYPES = [
-  'text/plain',
-  'text/markdown',
-  'application/json',
-  'application/pdf',
-];
+const ALLOWED_MIME_TYPES = ['text/plain', 'text/markdown', 'application/json', 'application/pdf'];
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
@@ -303,7 +298,7 @@ export function detectPromptLeakAttempt(userMessage: string): boolean {
     /reveal.*your.*prompt/i,
   ];
 
-  return leakPatterns.some(pattern => pattern.test(lower));
+  return leakPatterns.some((pattern) => pattern.test(lower));
 }
 
 export function filterPromptFromResponse(response: string): string {
@@ -354,10 +349,10 @@ INSTRUCTIONS:
 function escapePromptContent(content: string): string {
   // Remove potential instruction injections
   return content
-    .replace(/---/g, '—')           // Prevent delimiter injection
+    .replace(/---/g, '—') // Prevent delimiter injection
     .replace(/INSTRUCTIONS?:/gi, '') // Remove instruction keywords
-    .replace(/SYSTEM:/gi, '')        // Remove system keywords
-    .slice(0, 8000);                 // Limit length
+    .replace(/SYSTEM:/gi, '') // Remove system keywords
+    .slice(0, 8000); // Limit length
 }
 ```
 
@@ -365,11 +360,11 @@ function escapePromptContent(content: string): string {
 
 ### 7.1 Rate Limit Tiers
 
-| Tier | Requests/min | Tokens/day | Burst |
-|------|--------------|------------|-------|
-| Free | 10 | 10,000 | 20 |
-| Pro | 60 | 100,000 | 100 |
-| Enterprise | 300 | 1,000,000 | 500 |
+| Tier       | Requests/min | Tokens/day | Burst |
+| ---------- | ------------ | ---------- | ----- |
+| Free       | 10           | 10,000     | 20    |
+| Pro        | 60           | 100,000    | 100   |
+| Enterprise | 300          | 1,000,000  | 500   |
 
 ### 7.2 Implementation
 
@@ -414,13 +409,13 @@ export class RateLimitDO implements DurableObject {
   async fetch(request: Request): Promise<Response> {
     const { limit, window } = await request.json();
     const now = Date.now();
-    const windowStart = now - (window * 1000);
+    const windowStart = now - window * 1000;
 
     // Get or create window
     let timestamps = this.counts.get('requests') ?? [];
 
     // Remove expired entries
-    timestamps = timestamps.filter(t => t > windowStart);
+    timestamps = timestamps.filter((t) => t > windowStart);
 
     const allowed = timestamps.length < limit;
 
@@ -432,7 +427,7 @@ export class RateLimitDO implements DurableObject {
     return Response.json({
       allowed,
       remaining: Math.max(0, limit - timestamps.length),
-      resetAt: windowStart + (window * 1000),
+      resetAt: windowStart + window * 1000,
       retryAfter: allowed ? undefined : Math.ceil((timestamps[0] - windowStart) / 1000),
     });
   }
@@ -443,21 +438,23 @@ export class RateLimitDO implements DurableObject {
 
 ### 8.1 Data Classification
 
-| Classification | Examples | Handling |
-|---------------|----------|----------|
-| Public | API docs, error codes | No restrictions |
-| Internal | Metrics, logs | Redact before external |
-| Confidential | User messages, sessions | Encrypt, access control |
-| Restricted | API keys, tokens | Encrypt, audit access |
+| Classification | Examples                | Handling                |
+| -------------- | ----------------------- | ----------------------- |
+| Public         | API docs, error codes   | No restrictions         |
+| Internal       | Metrics, logs           | Redact before external  |
+| Confidential   | User messages, sessions | Encrypt, access control |
+| Restricted     | API keys, tokens        | Encrypt, audit access   |
 
 ### 8.2 Encryption
 
 **At Rest:**
+
 - KV: Cloudflare-managed encryption
 - Vectorize: Cloudflare-managed encryption
 - Durable Objects: Cloudflare-managed encryption
 
 **In Transit:**
+
 - All traffic over HTTPS (TLS 1.3)
 - Internal service calls use mTLS where available
 
@@ -467,10 +464,10 @@ export class RateLimitDO implements DurableObject {
 // packages/storage/src/retention.ts
 
 const RETENTION_POLICIES = {
-  sessions: 30 * 24 * 60 * 60,     // 30 days
-  logs: 90 * 24 * 60 * 60,         // 90 days
-  vectors: undefined,              // Indefinite (until deleted)
-  cache: 24 * 60 * 60,             // 24 hours
+  sessions: 30 * 24 * 60 * 60, // 30 days
+  logs: 90 * 24 * 60 * 60, // 90 days
+  vectors: undefined, // Indefinite (until deleted)
+  cache: 24 * 60 * 60, // 24 hours
 };
 
 export async function enforceRetention(env: Env): Promise<void> {
@@ -488,12 +485,12 @@ export async function enforceRetention(env: Env): Promise<void> {
 
 ### 9.1 Secret Types
 
-| Secret | Storage | Rotation |
-|--------|---------|----------|
-| API Keys (tenant) | KV (hashed) | On demand |
-| JWT Private Key | Wrangler Secrets | Quarterly |
-| AI Gateway Token | Wrangler Secrets | On compromise |
-| Encryption Keys | Wrangler Secrets | Annually |
+| Secret            | Storage          | Rotation      |
+| ----------------- | ---------------- | ------------- |
+| API Keys (tenant) | KV (hashed)      | On demand     |
+| JWT Private Key   | Wrangler Secrets | Quarterly     |
+| AI Gateway Token  | Wrangler Secrets | On compromise |
+| Encryption Keys   | Wrangler Secrets | Annually      |
 
 ### 9.2 Secret Access
 
@@ -536,13 +533,13 @@ Wrangler Secrets (production):
 
 ### 10.1 Auditable Events
 
-| Event | Data Captured | Retention |
-|-------|---------------|-----------|
-| Authentication | user, method, success, IP | 1 year |
-| Authorization failure | user, resource, action | 1 year |
-| Data access | user, resource, action | 90 days |
-| Admin actions | user, action, target | 2 years |
-| Rate limit exceeded | tenant, endpoint, count | 30 days |
+| Event                 | Data Captured             | Retention |
+| --------------------- | ------------------------- | --------- |
+| Authentication        | user, method, success, IP | 1 year    |
+| Authorization failure | user, resource, action    | 1 year    |
+| Data access           | user, resource, action    | 90 days   |
+| Admin actions         | user, action, target      | 2 years   |
+| Rate limit exceeded   | tenant, endpoint, count   | 30 days   |
 
 ### 10.2 Audit Log Format
 
@@ -591,4 +588,4 @@ interface AuditLogEntry {
 
 ---
 
-*See also: [architecture.md](./architecture.md), [tenancy.md](./tenancy.md)*
+_See also: [architecture.md](./architecture.md), [tenancy.md](./tenancy.md)_

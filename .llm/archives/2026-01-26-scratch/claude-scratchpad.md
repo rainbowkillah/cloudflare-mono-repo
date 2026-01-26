@@ -15,6 +15,7 @@ Quick notes, working thoughts, and temporary documentation for Claude Code sessi
 ### Session Summary
 
 This session accomplished:
+
 1. Reviewed `AGENTS.md` and `agents.prompt.yml` orchestration config
 2. Explored repository structure and compared against plan.md expectations
 3. Coordinated reviews with Gemini (Planner) and Codex (Builder)
@@ -46,6 +47,7 @@ Missing:
 ### Key Findings from Reviews
 
 **Gemini (Planner) Feedback:**
+
 - Milestone sequencing: Good, add explicit dependency mapping
 - Exit criteria: Good, quantify with specific metrics (P90 < X ms)
 - Observability: Define logging schema earlier than M7
@@ -53,6 +55,7 @@ Missing:
 - Failure modes: Create standardized template (done!)
 
 **Codex (Builder) Feedback:**
+
 - Nx workspace has 0 projects registered - need project.json files
 - Endpoint schemas too high-level - need concrete request/response types
 - Missing runtime decisions: wrangler version, ESM vs service-worker
@@ -65,38 +68,38 @@ Missing:
 **URL:** https://github.com/users/rainbowkillah/projects/12
 **Issues:** 122 total
 
-| Milestone | Count | Priority |
-|-----------|-------|----------|
-| M0: Foundation | 12 | Start here |
-| M1: Chat+Sessions | 10 | |
-| M2: AI Gateway | 7 | Spike needed |
-| M3: RAG | 14 | |
-| M4: Search UX | 8 | |
-| M5: Tools | 13 | |
-| M6: TTS | 7 | |
-| M7: Observability | 12 | |
-| M8: Deploy | 8 | |
-| NX-1: Bootstrap | 6 | Parallel with M0 |
-| NX-2: Worker Gen | 5 | |
-| NX-3: Tenant Gen | 5 | |
-| NX-4: Bindings | 8 | |
-| Review Feedback | 7 | |
+| Milestone         | Count | Priority         |
+| ----------------- | ----- | ---------------- |
+| M0: Foundation    | 12    | Start here       |
+| M1: Chat+Sessions | 10    |                  |
+| M2: AI Gateway    | 7     | Spike needed     |
+| M3: RAG           | 14    |                  |
+| M4: Search UX     | 8     |                  |
+| M5: Tools         | 13    |                  |
+| M6: TTS           | 7     |                  |
+| M7: Observability | 12    |                  |
+| M8: Deploy        | 8     |                  |
+| NX-1: Bootstrap   | 6     | Parallel with M0 |
+| NX-2: Worker Gen  | 5     |                  |
+| NX-3: Tenant Gen  | 5     |                  |
+| NX-4: Bindings    | 8     |                  |
+| Review Feedback   | 7     |                  |
 
 ### Documentation Created
 
 All in `.llm/docs/`:
 
-| Document | Status | Lines | Key Content |
-|----------|--------|-------|-------------|
-| plan.md | Pre-existing | 498 | Milestones M0-M8, NX-1 to NX-4 |
-| architecture.md | Created | ~350 | System design, components, data flow |
-| tenancy.md | Created | ~300 | Multi-tenant isolation strategy |
-| api-contracts.md | Created | ~450 | All endpoint specifications |
-| testing.md | Created | ~400 | Unit/integration/E2E strategy |
-| metrics.md | Created | ~350 | Logging, metrics, alerting |
-| security.md | Created | ~450 | Threat model, auth, validation |
-| failure-modes.md | Created | ~550 | 15+ failure scenarios, runbook |
-| BINDINGS.md | Pre-existing | ~150 | Cloudflare bindings reference |
+| Document         | Status       | Lines | Key Content                          |
+| ---------------- | ------------ | ----- | ------------------------------------ |
+| plan.md          | Pre-existing | 498   | Milestones M0-M8, NX-1 to NX-4       |
+| architecture.md  | Created      | ~350  | System design, components, data flow |
+| tenancy.md       | Created      | ~300  | Multi-tenant isolation strategy      |
+| api-contracts.md | Created      | ~450  | All endpoint specifications          |
+| testing.md       | Created      | ~400  | Unit/integration/E2E strategy        |
+| metrics.md       | Created      | ~350  | Logging, metrics, alerting           |
+| security.md      | Created      | ~450  | Threat model, auth, validation       |
+| failure-modes.md | Created      | ~550  | 15+ failure scenarios, runbook       |
+| BINDINGS.md      | Pre-existing | ~150  | Cloudflare bindings reference        |
 
 ### Files Modified This Session
 
@@ -121,10 +124,12 @@ Updated:
 ### Quick Reference
 
 **Tenant Accounts:**
+
 - rainbowsmokeofficial
 - mrrainbowsmoke (note: folder has typo "mrrainibowsmoke")
 
 **Key Cloudflare Primitives:**
+
 - Workers AI - Model inference
 - AI Gateway - Policy, routing, observability
 - Vectorize - Embeddings + retrieval
@@ -132,6 +137,7 @@ Updated:
 - Durable Objects - Sessions, rate limiting
 
 **API Endpoints (planned):**
+
 - `POST /chat` - Streaming chat with sessions
 - `POST /search` - RAG search with citations
 - `POST /ingest` - Document ingestion
@@ -142,10 +148,12 @@ Updated:
 ### Pending Tasks
 
 From TODO.md:
+
 - [ ] Implement M0 repo scaffolding + tenant middleware
 - [ ] Start NX-1 plugin bootstrap in parallel
 
 From Review Feedback:
+
 - [ ] Add explicit milestone dependency mapping to plan.md
 - [ ] Quantify exit criteria (P90 latency < X ms)
 - [ ] Define AuthN/AuthZ strategy decision
@@ -160,14 +168,14 @@ From Review Feedback:
 
 ### Technical Decisions Needed
 
-| Decision | Options | Recommendation |
-|----------|---------|----------------|
-| Module format | ESM vs Service Worker | ESM (modern, tree-shaking) |
-| Streaming protocol | SSE vs Chunked | SSE (browser native) |
-| Test runner | Vitest vs Jest | Vitest (faster, native ESM) |
-| Local dev | wrangler dev vs Miniflare | wrangler dev (official) |
-| Validation | Zod vs Valibot | Zod (more mature) |
-| JSONC editing | jsonc-parser vs manual | jsonc-parser (preserves formatting) |
+| Decision           | Options                   | Recommendation                      |
+| ------------------ | ------------------------- | ----------------------------------- |
+| Module format      | ESM vs Service Worker     | ESM (modern, tree-shaking)          |
+| Streaming protocol | SSE vs Chunked            | SSE (browser native)                |
+| Test runner        | Vitest vs Jest            | Vitest (faster, native ESM)         |
+| Local dev          | wrangler dev vs Miniflare | wrangler dev (official)             |
+| Validation         | Zod vs Valibot            | Zod (more mature)                   |
+| JSONC editing      | jsonc-parser vs manual    | jsonc-parser (preserves formatting) |
 
 ### Useful Commands
 
@@ -196,12 +204,14 @@ gemini -m gemini-2.5-flash --approval-mode yolo "prompt"
 ### Agent Coordination Notes
 
 Per `agents.prompt.yml`:
+
 - **Claude (Architect):** Architecture, ADRs, security, contracts
 - **Gemini (Planner):** Milestones, testing, metrics, QA
 - **Codex (Builder):** Implementation, scaffolding, tests
 - **Copilot (Pair):** Refactoring, DX, cleanup
 
 Orchestration mode: autonomous-first
+
 - Architect/Planner proceed without questions unless hard blocker
 - Builder executes milestones in order
 - Pair runs after each milestone
@@ -224,6 +234,7 @@ Move to `.llm/sessions/` after next session starts.
 ### Package.json Workspace Issue
 
 Current `package.json` has:
+
 ```json
 "workspaces": [
   "packages/*",
@@ -233,6 +244,7 @@ Current `package.json` has:
 ```
 
 But actual structure is:
+
 ```
 tenants/
 ├── rainbowsmokeofficial/

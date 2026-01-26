@@ -19,6 +19,7 @@
 ### Critical Path (Blocking Issues - MUST DO FIRST)
 
 #### 🔴 Issue #8 - [CRITICAL] Implement tenant resolution middleware
+
 - **Status:** Not started
 - **Acceptance Criteria:**
   - Resolve tenant from x-tenant-id header (priority 1)
@@ -30,6 +31,7 @@
 - **Assigned to:** Codex (implementation), Gemini (review)
 
 #### 🔴 Issue #9 - Define tenant.config.json schema + Zod validation
+
 - **Status:** Not started
 - **Acceptance Criteria:**
   - Schema fields: tenantId, accountId, hostnameMapping, ai policy, vectorize index, kv namespace, do class, cors, featureFlags
@@ -41,6 +43,7 @@
 ### Infrastructure Setup (MUST DO SECOND)
 
 #### Issue #3 - Create monorepo skeleton
+
 - **Status:** Not started
 - **Acceptance Criteria:**
   - apps/, packages/, tenants/, scripts/, tests/ directories exist
@@ -49,6 +52,7 @@
 - **Assigned to:** Codex (scaffolding)
 
 #### Issue #4 - Set up TypeScript baseline + tsconfig for Workers
+
 - **Status:** Not started
 - **Acceptance Criteria:**
   - target: ES2022, module: ESNext, lib for Workers
@@ -58,6 +62,7 @@
 - **Assigned to:** Codex (TS config)
 
 #### Issue #7 - Create project.json for each app & package
+
 - **Status:** Not started
 - **Acceptance Criteria:**
   - project.json for each app
@@ -70,6 +75,7 @@
 ### Toolchain Configuration (PARALLELIZE)
 
 #### Issue #5 - Configure ESLint + Prettier
+
 - **Status:** Not started
 - **Acceptance Criteria:**
   - ESLint config for TypeScript
@@ -78,6 +84,7 @@
 - **Assigned to:** Codex
 
 #### Issue #6 - Set up Vitest test runner
+
 - **Status:** Not started
 - **Acceptance Criteria:**
   - Workspace Vitest config
@@ -86,6 +93,7 @@
 - **Assigned to:** Codex
 
 #### Issue #11 - Set up local dev with wrangler dev
+
 - **Status:** Not started
 - **Acceptance Criteria:**
   - wrangler dev working
@@ -96,6 +104,7 @@
 - **Assigned to:** Codex
 
 #### Issue #14 - Document wrangler version + ESM format decision
+
 - **Status:** Not started
 - **Acceptance Criteria:**
   - Specific wrangler version chosen
@@ -108,6 +117,7 @@
 ### Core Implementation (DO AFTER MIDDLEWARE)
 
 #### Issue #10 - Create error handling + response envelopes
+
 - **Status:** Not started
 - **Acceptance Criteria:**
   - Standard error response format
@@ -118,6 +128,7 @@
 - **Assigned to:** Codex (implementation), Gemini (design review)
 
 #### Issue #13 - Define Env typings source of truth
+
 - **Status:** Not started
 - **Acceptance Criteria:**
   - packages/core/src/env.ts created
@@ -128,6 +139,7 @@
 - **Assigned to:** Codex (env types)
 
 #### Issue #12 - Create /health endpoint + smoke tests
+
 - **Status:** Not started
 - **Acceptance Criteria:**
   - /health endpoint returns tenant info
@@ -142,6 +154,7 @@
 ## 3. M0 Implementation Sequence
 
 ### Phase 1: Setup (2 hours) — **PARALLEL**
+
 ```
 Issues #3, #4, #5, #6, #9, #14
 ├── #3: Create directory structure
@@ -153,12 +166,14 @@ Issues #3, #4, #5, #6, #9, #14
 ```
 
 ### Phase 2: Nx Configuration (1 hour) — **SEQUENTIAL (depends on #3)**
+
 ```
 Issue #7
 └── Create project.json for all apps/packages
 ```
 
 ### Phase 3: Core Middleware (2 hours) — **SEQUENTIAL (depends on #9, #4, #7)**
+
 ```
 Issues #8, #13
 ├── #8: Tenant resolution middleware (CRITICAL)
@@ -166,6 +181,7 @@ Issues #8, #13
 ```
 
 ### Phase 4: Local Dev + Error Handling (2 hours) — **PARALLEL (depends on #8)**
+
 ```
 Issues #10, #11, #12
 ├── #11: wrangler dev setup
@@ -174,6 +190,7 @@ Issues #10, #11, #12
 ```
 
 ### Phase 5: Validation (1 hour)
+
 ```
 ✅ All tests pass
 ✅ wrangler dev works
@@ -201,12 +218,14 @@ Issues #10, #11, #12
 ## 5. Key Dependencies & Blockers
 
 ### None Identified for M0
+
 - All required packages in package.json
 - No external API integration needed (M2+)
 - No multi-account deployment yet (M3+)
 - Can use Miniflare stubs for Vectorize/KV testing
 
 ### Known Workarounds
+
 - AI Gateway: use mock/stub for M0 (real integration M2)
 - Vectorize: use Miniflare local emulation (staging M2)
 - Auth: placeholder for M0, real implementation M1-M2
@@ -216,6 +235,7 @@ Issues #10, #11, #12
 ## 6. Team Assignments Summary
 
 ### Codex (Builder)
+
 - **M0 Responsibility:** Implementation lead
 - **Issues to tackle:**
   1. #3, #4, #5, #6 (infrastructure)
@@ -226,6 +246,7 @@ Issues #10, #11, #12
 - **Success:** All M0 issues implemented with tests passing
 
 ### Gemini (Planner)
+
 - **M0 Responsibility:** Architecture validation + test strategy
 - **Issues to review:**
   1. #8 (tenant middleware design)
@@ -235,6 +256,7 @@ Issues #10, #11, #12
 - **Success:** No architectural surprises, tests cover tenant isolation
 
 ### Claude (Lead)
+
 - **M0 Responsibility:** Coordination + decision gates + sign-off
 - **Issues to own:**
   1. #14 (runtime decisions: wrangler version, ESM vs service-worker)
@@ -249,7 +271,7 @@ Issues #10, #11, #12
 
 1. **Codex**: Begin Phase 1 setup (issues #3, #4, #5, #6, #9, #14 in parallel)
 2. **Gemini**: Review tenant middleware design (issue #8)
-3. **Claude**: 
+3. **Claude**:
    - Decide wrangler version + ESM format (issue #14)
    - Create PR template if needed
    - Setup branch protection rules
@@ -260,16 +282,19 @@ Issues #10, #11, #12
 ## 8. Communication Plan
 
 ### Daily Standup (10 min)
+
 - What did I do yesterday?
 - What am I doing today?
 - Blockers?
 
 ### Code Review Gate
+
 - All PRs must reference GitHub issue #
 - Tests must pass
 - No TODO comments in production code
 
 ### Escalation
+
 1. Unblocked? → Ask in GitHub issue
 2. Architectural question? → Gemini reviews
 3. Constraint violation? → Claude decides
@@ -292,7 +317,7 @@ Issues #10, #11, #12
 **GitHub Project Verification:** ✅ COMPLETE  
 **12 M0 Issues:** ✅ CLEAR ACCEPTANCE CRITERIA  
 **Team Alignment:** ✅ ROLES ASSIGNED  
-**Blockers:** ✅ NONE IDENTIFIED  
+**Blockers:** ✅ NONE IDENTIFIED
 
 ---
 
@@ -304,7 +329,7 @@ Issues #10, #11, #12
 
 ---
 
-*Document: `.llm/sessions/2026-01-26-M0-github-project-verification.md`*  
-*Created by: Claude (Lead)*  
-*Date: 2026-01-26 UTC*  
-*Next: M0 Implementation Begins*
+_Document: `.llm/sessions/2026-01-26-M0-github-project-verification.md`_  
+_Created by: Claude (Lead)_  
+_Date: 2026-01-26 UTC_  
+_Next: M0 Implementation Begins_

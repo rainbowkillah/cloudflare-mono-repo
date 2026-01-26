@@ -1,4 +1,4 @@
-npm install @openrouter/ai-sdk-provider
+// npm install @openrouter/ai-sdk-provider
 import { createOpenRouter } from '@openrouter/ai-sdk-provider';
 import { streamText } from 'ai';
 import { z } from 'zod';
@@ -29,9 +29,7 @@ export const getWeather = async (modelName: string) => {
       getCurrentWeather: {
         description: 'Get the current weather in a given location',
         parameters: z.object({
-          location: z
-            .string()
-            .describe('The city and state, e.g. San Francisco, CA'),
+          location: z.string().describe('The city and state, e.g. San Francisco, CA'),
           unit: z.enum(['celsius', 'fahrenheit']).optional(),
         }),
         execute: async ({ location, unit = 'celsius' }) => {
