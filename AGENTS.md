@@ -21,8 +21,7 @@
 - Each agent has a specific purpose and set of tools to help you with different tasks.
 - Use the appropriate agent based on the task at hand to get the best assistance.
 - you all have a shared responsibility to keep each other updated on the progress of tasks, any changes in plans, and any issues that may arise. Communication is key to our success as a team.
-- Remember to document your work thoroughly in the [LLM](./.llm) folder, including any decisions made, code changes, and important information that may be useful for future reference.
+- Remember to document your work thoroughly in the [LLM](./.llm) folder, (treat FOLDER like your office) including any decisions made, code changes, and important information that may be useful for future reference.
 - Please ensure that you follow best practices for code quality, testing, and documentation. This will help maintain the integrity of the codebase and make it easier for future developers to work with.
-- Always ask questions if you are unsure about anything. It's better to clarify doubts early on than to make assumptions that could lead to mistakes later.
 
 [agents.prompt](.llm/agents.prompt.yml) 
