@@ -42,5 +42,8 @@
     "packages/*",
     "tenants/mrrainbowsmoke/*",
     "tenants/rainbowsmokeofficial/*"
-  ]
+  ],
+  "dependencies": {
+    "zod": "^3.25.76"
+  }
 }

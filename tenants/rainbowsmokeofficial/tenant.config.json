@@ -1,0 +1,25 @@
+{
+  "tenantId": "rainbowsmokeofficial",
+  "accountId": "acct_rainbowsmokeofficial",
+  "hostnameMapping": {
+    "api.rainbowsmokeofficial.com": "rainbowsmokeofficial"
+  },
+  "ai": {
+    "models": ["@cf/meta/llama-3.1-8b-instruct"],
+    "gatewayRoutes": {
+      "chat": "https://ai-gateway.example.com/chat"
+    }
+  },
+  "kv": {
+    "namespaceMappings": {
+      "SESSIONS": "kv_sessions"
+    }
+  },
+  "cors": {
+    "origins": ["https://rainbowsmokeofficial.com"],
+    "allowCredentials": true
+  },
+  "featureFlags": {
+    "chatStreaming": false
+  }
+}
