@@ -14,7 +14,12 @@
           "bundle": true,
           "format": "esm",
           "platform": "neutral",
-          "target": "es2022"
+          "target": "es2022",
+          "alias": {
+            "@org/core": "/home/dfox/ai/cloudflare-mono-repo/packages/core/src/index.ts",
+            "@org/tenant-mrrainbowsmoke": "/home/dfox/ai/cloudflare-mono-repo/tenants/mrrainbowsmoke/index.ts",
+            "@org/tenant-rainbowsmokeofficial": "/home/dfox/ai/cloudflare-mono-repo/tenants/rainbowsmokeofficial/index.ts"
+          }
         }
       }
     },
