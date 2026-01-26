@@ -14,7 +14,7 @@ create_issue() {
     ISSUE_URL=$(gh issue create --repo "$REPO" --title "$title" --body "$body" --label "$labels" 2>&1)
     if [[ $ISSUE_URL == https* ]]; then
         # Add to project
-        gh project item-add $PROJECT_NUM --owner rainbowkillah --url "$ISSUE_URL" 2>/dev/null
+        gh project item-add $PROJECT_NUM --owner rainbowkillah --url "$ISSUE_URL" || echo "  -> Failed to add to project: $(gh project item-add $PROJECT_NUM --owner rainbowkillah --url "$ISSUE_URL" 2>&1)"
         echo "  -> Added to project"
     else
         echo "  -> Error: $ISSUE_URL"
