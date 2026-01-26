@@ -16,10 +16,12 @@
 - [metrics.md](docs/metrics.md) — Observability, logging, metrics plan
 - [BINDINGS.md](docs/BINDINGS.md) — Cloudflare bindings reference
 
+### Security & Operations
+- [security.md](docs/security.md) — Security model, authentication, authorization
+- [failure-modes.md](docs/failure-modes.md) — Failure analysis and mitigation
+
 ### Pending Documents
-- `docs/security.md` — Security model (to be written)
 - `docs/milestones.md` — Milestone details (content in plan.md)
-- `docs/failure-modes.md` — Failure mode documentation (to be written)
 - `docs/adrs/` — Architecture Decision Records (empty)
 
 ## GitHub Project

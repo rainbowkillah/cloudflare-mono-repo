@@ -11,6 +11,8 @@
 - [x] Write `.llm/docs/metrics.md` - DONE 2026-01-26
 - [x] Write `.llm/docs/testing.md` - DONE 2026-01-26
 - [x] Write `.llm/docs/api-contracts.md` - DONE 2026-01-26
+- [x] Write `.llm/docs/security.md` - DONE 2026-01-26
+- [x] Write `.llm/docs/failure-modes.md` - DONE 2026-01-26
 - [ ] Start NX-1 plugin bootstrap in parallel
 
 ## Review Feedback Summary (2026-01-26)

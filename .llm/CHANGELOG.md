@@ -16,6 +16,8 @@ Track notable changes to plans, docs, and repo decisions here.
   - `docs/metrics.md` - Observability and logging plan
   - `docs/testing.md` - Testing strategy at all levels
   - `docs/api-contracts.md` - Detailed endpoint specifications
+  - `docs/security.md` - Security model, auth, threat analysis
+  - `docs/failure-modes.md` - Failure analysis and mitigation strategies
 
 ### Reviews Completed
 - **Gemini (Planner) review** of plan.md
