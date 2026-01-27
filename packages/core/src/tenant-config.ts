@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const TenantConfigSchema = z.object({
-  tenantId: z.string().min(1),
+  tenantId: z.string().min(1).max(64).regex(/^[a-z0-9-]+$/, 'Tenant ID must contain only lowercase letters, numbers, and hyphens'),
   accountId: z.string().optional(),
   hostnameMapping: z.record(z.string()).optional(),
   ai: z
