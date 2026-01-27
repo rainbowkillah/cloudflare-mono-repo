@@ -1,6 +1,6 @@
 {
   "tenantId": "mrrainbowsmoke",
-  "accountId": "acct_mrrainbowsmoke",
+  "accountId": "${CLOUDFLARE_ACCOUNT_ID}",
   "hostnameMapping": {
     "api.mrrainbowsmoke.com": "mrrainbowsmoke"
   },
