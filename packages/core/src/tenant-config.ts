@@ -3,11 +3,11 @@ import { z } from 'zod';
 export const TenantConfigSchema = z.object({
   tenantId: z.string().min(1),
   accountId: z.string().optional(),
-  hostnameMapping: z.record(z.string()).optional(),
+  hostnameMapping: z.record(z.string(), z.string()).optional(),
   ai: z
     .object({
       models: z.array(z.string()),
-      gatewayRoutes: z.record(z.string()).optional(),
+      gatewayRoutes: z.record(z.string(), z.string()).optional(),
       budgets: z
         .object({
           tokensPerDay: z.number().optional(),
@@ -23,12 +23,12 @@ export const TenantConfigSchema = z.object({
     .optional(),
   kv: z
     .object({
-      namespaceMappings: z.record(z.string()).optional(),
+      namespaceMappings: z.record(z.string(), z.string()).optional(),
     })
     .optional(),
   durable_objects: z
     .object({
-      classBindings: z.record(z.string()).optional(),
+      classBindings: z.record(z.string(), z.string()).optional(),
     })
     .optional(),
   cors: z
@@ -37,7 +37,7 @@ export const TenantConfigSchema = z.object({
       allowCredentials: z.boolean().optional(),
     })
     .optional(),
-  featureFlags: z.record(z.boolean()).optional(),
+  featureFlags: z.record(z.string(), z.boolean()).optional(),
 });
 
 export type TenantConfig = z.infer<typeof TenantConfigSchema>;
