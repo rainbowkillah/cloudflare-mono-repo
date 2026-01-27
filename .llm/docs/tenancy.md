@@ -102,6 +102,7 @@ export interface TenantContext {
 **Option A: Namespace Isolation (Recommended)**
 
 Each tenant has dedicated KV namespaces:
+
 - `TENANT_A_CACHE` - Tenant A's cache
 - `TENANT_B_CACHE` - Tenant B's cache
 
@@ -111,6 +112,7 @@ Cons: More bindings to manage, harder to scale to many tenants
 **Option B: Key Prefix Isolation**
 
 Single namespace with tenant prefix:
+
 - Key: `tenant-a:cache:query:abc123`
 - Key: `tenant-b:cache:query:def456`
 
@@ -152,16 +154,12 @@ export class TenantDO {
   constructor(private tenant: TenantContext) {}
 
   getSessionStub(sessionId: string): DurableObjectStub {
-    const id = this.tenant.bindings.sessionDO.idFromName(
-      `${this.tenant.tenantId}:${sessionId}`
-    );
+    const id = this.tenant.bindings.sessionDO.idFromName(`${this.tenant.tenantId}:${sessionId}`);
     return this.tenant.bindings.sessionDO.get(id);
   }
 
   getRateLimitStub(key: string): DurableObjectStub {
-    const id = this.tenant.bindings.rateLimitDO.idFromName(
-      `${this.tenant.tenantId}:${key}`
-    );
+    const id = this.tenant.bindings.rateLimitDO.idFromName(`${this.tenant.tenantId}:${key}`);
     return this.tenant.bindings.rateLimitDO.get(id);
   }
 }
@@ -174,6 +172,7 @@ export class TenantDO {
 **Strategy: Separate Index per Tenant**
 
 Each tenant has their own Vectorize index:
+
 - `rainbowsmokeofficial-vectors`
 - `mrrainbowsmoke-vectors`
 
@@ -190,12 +189,12 @@ export class TenantVectorize {
     });
 
     // Double-check tenant ownership in results (defense in depth)
-    return results.matches.filter(m => m.metadata?.tenant === this.tenant.tenantId);
+    return results.matches.filter((m) => m.metadata?.tenant === this.tenant.tenantId);
   }
 
   async upsert(vectors: VectorizeVector[]): Promise<void> {
     // Always stamp vectors with tenant
-    const stamped = vectors.map(v => ({
+    const stamped = vectors.map((v) => ({
       ...v,
       metadata: {
         ...v.metadata,
@@ -218,7 +217,7 @@ Every route handler receives `TenantContext` as a required parameter:
 
 export async function handleChat(
   request: Request,
-  tenant: TenantContext,  // <-- Always required
+  tenant: TenantContext, // <-- Always required
   env: Env
 ): Promise<Response> {
   // All operations use tenant-scoped adapters
@@ -234,10 +233,10 @@ TypeScript types enforce that storage operations require tenant context:
 
 ```typescript
 // This is a compile error - missing tenant
-const kv = new TenantKV();  // ❌ Error: Expected 1 argument
+const kv = new TenantKV(); // ❌ Error: Expected 1 argument
 
 // This is correct
-const kv = new TenantKV(tenant);  // ✅
+const kv = new TenantKV(tenant); // ✅
 ```
 
 ### 5.3 Runtime Validation
@@ -248,7 +247,7 @@ Even with type safety, runtime checks are added as defense in depth:
 export class SessionDO implements DurableObject {
   async fetch(request: Request): Promise<Response> {
     const url = new URL(request.url);
-    const doId = url.pathname.slice(1);  // e.g., "tenant-a:session-123"
+    const doId = url.pathname.slice(1); // e.g., "tenant-a:session-123"
 
     // Extract tenant from DO ID
     const [tenantId] = doId.split(':');
@@ -271,6 +270,7 @@ Some resources may be intentionally shared across tenants:
 ### 6.1 AI Models
 
 Models are accessed via AI Gateway which is shared. Tenant isolation is enforced via:
+
 - Tenant-specific routing policies
 - Separate usage tracking per tenant
 - Rate limits per tenant
@@ -297,21 +297,29 @@ if (globalFlags?.maintenanceMode) {
 import { z } from 'zod';
 
 export const TenantConfigSchema = z.object({
-  tenantId: z.string().min(1).max(64).regex(/^[a-z0-9-]+$/),
+  tenantId: z
+    .string()
+    .min(1)
+    .max(64)
+    .regex(/^[a-z0-9-]+$/),
   accountId: z.string(),
   hostnameMapping: z.array(z.string()).optional(),
 
   ai: z.object({
     defaultModel: z.string(),
     allowedModels: z.array(z.string()),
-    gateway: z.object({
-      id: z.string(),
-      cacheTtl: z.number().optional(),
-    }).optional(),
-    budgets: z.object({
-      dailyTokenLimit: z.number().optional(),
-      requestsPerMinute: z.number().optional(),
-    }).optional(),
+    gateway: z
+      .object({
+        id: z.string(),
+        cacheTtl: z.number().optional(),
+      })
+      .optional(),
+    budgets: z
+      .object({
+        dailyTokenLimit: z.number().optional(),
+        requestsPerMinute: z.number().optional(),
+      })
+      .optional(),
   }),
 
   vectorize: z.object({
@@ -348,10 +356,7 @@ export type TenantConfig = z.infer<typeof TenantConfigSchema>;
 ```typescript
 // packages/core/src/tenant.ts
 
-export async function loadTenantConfig(
-  tenantId: string,
-  env: Env
-): Promise<TenantContext> {
+export async function loadTenantConfig(tenantId: string, env: Env): Promise<TenantContext> {
   // Load from KV or filesystem (dev mode)
   const configJson = await env.TENANT_CONFIGS.get(`tenant:${tenantId}`);
 
@@ -384,7 +389,7 @@ describe('Tenant Isolation', () => {
     const response = await fetch('/chat', { method: 'POST' });
     expect(response.status).toBe(400);
     expect(await response.json()).toMatchObject({
-      error: { code: 'TENANT_NOT_FOUND' }
+      error: { code: 'TENANT_NOT_FOUND' },
     });
   });
 
@@ -394,9 +399,9 @@ describe('Tenant Isolation', () => {
 
     // Attempt to access as tenant B
     const response = await fetch(`/session/${sessionId}`, {
-      headers: { 'x-tenant-id': 'tenant-b' }
+      headers: { 'x-tenant-id': 'tenant-b' },
     });
-    expect(response.status).toBe(404);  // Not 403 to avoid leaking existence
+    expect(response.status).toBe(404); // Not 403 to avoid leaking existence
   });
 
   it('should not return tenant A vectors in tenant B search', async () => {
@@ -416,7 +421,7 @@ describe('Tenant Isolation', () => {
 
     // Tenant B should not be affected
     const response = await fetch('/chat', {
-      headers: { 'x-tenant-id': 'tenant-b' }
+      headers: { 'x-tenant-id': 'tenant-b' },
     });
     expect(response.status).not.toBe(429);
   });
@@ -445,6 +450,7 @@ describe('Tenant Isolation', () => {
 ### 9.3 Tenant Migration
 
 Cross-account migration requires:
+
 1. Export all KV data
 2. Export Vectorize vectors with metadata
 3. Export DO state (custom script)
@@ -455,4 +461,4 @@ Cross-account migration requires:
 
 ---
 
-*See also: [architecture.md](./architecture.md), [security.md](./security.md)*
+_See also: [architecture.md](./architecture.md), [security.md](./security.md)_

@@ -515,9 +515,7 @@
           "labels": ["nx", "testing"]
         }
       ],
-      "exit_criteria": [
-        "nx g nx-cloudflare:init runs cleanly and adds baseline targets"
-      ]
+      "exit_criteria": ["nx g nx-cloudflare:init runs cleanly and adds baseline targets"]
     },
     {
       "id": "NX-2",
@@ -545,9 +543,7 @@
           "labels": ["nx", "testing"]
         }
       ],
-      "exit_criteria": [
-        "New worker app created and runs with nx dev"
-      ]
+      "exit_criteria": ["New worker app created and runs with nx dev"]
     },
     {
       "id": "NX-3",
@@ -575,9 +571,7 @@
           "labels": ["nx", "testing"]
         }
       ],
-      "exit_criteria": [
-        "New tenant scaffold deploys with existing worker"
-      ]
+      "exit_criteria": ["New tenant scaffold deploys with existing worker"]
     },
     {
       "id": "NX-4",
@@ -617,34 +611,32 @@
           "labels": ["nx", "testing"]
         }
       ],
-      "exit_criteria": [
-        "nx deployAll works and reports per tenant status"
-      ]
+      "exit_criteria": ["nx deployAll works and reports per tenant status"]
     }
   ],
   "labels": [
-    {"name": "priority:critical", "color": "B60205", "description": "Blocking other work"},
-    {"name": "priority:high", "color": "D93F0B", "description": "Should be done soon"},
-    {"name": "scaffolding", "color": "0E8A16", "description": "Project structure setup"},
-    {"name": "tooling", "color": "1D76DB", "description": "Build/dev tools"},
-    {"name": "core", "color": "5319E7", "description": "Core functionality"},
-    {"name": "api", "color": "006B75", "description": "API endpoints"},
-    {"name": "storage", "color": "FBCA04", "description": "KV/DO/Vectorize"},
-    {"name": "ai", "color": "D4C5F9", "description": "AI/ML related"},
-    {"name": "rag", "color": "C2E0C6", "description": "RAG pipeline"},
-    {"name": "security", "color": "B60205", "description": "Security related"},
-    {"name": "observability", "color": "0052CC", "description": "Metrics/logging/tracing"},
-    {"name": "testing", "color": "BFD4F2", "description": "Tests"},
-    {"name": "docs", "color": "C5DEF5", "description": "Documentation"},
-    {"name": "nx", "color": "143055", "description": "Nx plugin"},
-    {"name": "deploy", "color": "FEF2C0", "description": "Deployment"},
-    {"name": "dx", "color": "D876E3", "description": "Developer experience"},
-    {"name": "spike", "color": "FFDFBA", "description": "Research/validation"},
-    {"name": "tools", "color": "7057FF", "description": "Tool implementations"},
-    {"name": "ci", "color": "0E8A16", "description": "CI/CD"},
-    {"name": "runbook", "color": "F9D0C4", "description": "Operational docs"},
-    {"name": "cost", "color": "FFC107", "description": "Cost monitoring"},
-    {"name": "integration", "color": "BFD4F2", "description": "External integrations"}
+    { "name": "priority:critical", "color": "B60205", "description": "Blocking other work" },
+    { "name": "priority:high", "color": "D93F0B", "description": "Should be done soon" },
+    { "name": "scaffolding", "color": "0E8A16", "description": "Project structure setup" },
+    { "name": "tooling", "color": "1D76DB", "description": "Build/dev tools" },
+    { "name": "core", "color": "5319E7", "description": "Core functionality" },
+    { "name": "api", "color": "006B75", "description": "API endpoints" },
+    { "name": "storage", "color": "FBCA04", "description": "KV/DO/Vectorize" },
+    { "name": "ai", "color": "D4C5F9", "description": "AI/ML related" },
+    { "name": "rag", "color": "C2E0C6", "description": "RAG pipeline" },
+    { "name": "security", "color": "B60205", "description": "Security related" },
+    { "name": "observability", "color": "0052CC", "description": "Metrics/logging/tracing" },
+    { "name": "testing", "color": "BFD4F2", "description": "Tests" },
+    { "name": "docs", "color": "C5DEF5", "description": "Documentation" },
+    { "name": "nx", "color": "143055", "description": "Nx plugin" },
+    { "name": "deploy", "color": "FEF2C0", "description": "Deployment" },
+    { "name": "dx", "color": "D876E3", "description": "Developer experience" },
+    { "name": "spike", "color": "FFDFBA", "description": "Research/validation" },
+    { "name": "tools", "color": "7057FF", "description": "Tool implementations" },
+    { "name": "ci", "color": "0E8A16", "description": "CI/CD" },
+    { "name": "runbook", "color": "F9D0C4", "description": "Operational docs" },
+    { "name": "cost", "color": "FFC107", "description": "Cost monitoring" },
+    { "name": "integration", "color": "BFD4F2", "description": "External integrations" }
   ],
   "review_feedback": {
     "gemini": {

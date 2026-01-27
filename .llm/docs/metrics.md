@@ -9,6 +9,7 @@
 ## 1. Philosophy
 
 Observability is a **first-class deliverable**, not an afterthought. We measure to:
+
 1. Understand system behavior under load
 2. Detect anomalies before users report them
 3. Debug issues faster with correlation
@@ -24,19 +25,19 @@ All logs are structured JSON with mandatory fields:
 ```typescript
 interface LogEntry {
   // Required fields (every log line)
-  timestamp: string;           // ISO 8601 with timezone
+  timestamp: string; // ISO 8601 with timezone
   level: 'debug' | 'info' | 'warn' | 'error';
-  message: string;             // Human-readable summary
+  message: string; // Human-readable summary
 
   // Request context (attached via middleware)
   tenant_id: string;
   request_id: string;
-  route: string;               // e.g., "POST /chat"
+  route: string; // e.g., "POST /chat"
 
   // Optional contextual fields
   latency_ms?: number;
   status?: number;
-  user_id?: string;            // If auth enabled
+  user_id?: string; // If auth enabled
 
   // AI-specific fields
   model?: string;
@@ -46,7 +47,7 @@ interface LogEntry {
   // Error fields
   error_code?: string;
   error_message?: string;
-  stack_trace?: string;        // Only in non-production
+  stack_trace?: string; // Only in non-production
 
   // Additional context (structured)
   context?: Record<string, unknown>;
@@ -55,22 +56,24 @@ interface LogEntry {
 
 ### 2.2 Log Levels
 
-| Level | When to Use | Example |
-|-------|-------------|---------|
-| `debug` | Development-only details | "Parsed request body: {...}" |
-| `info` | Normal operations | "Request completed successfully" |
-| `warn` | Recoverable issues | "Rate limit approaching threshold" |
-| `error` | Failures requiring attention | "AI Gateway returned 500" |
+| Level   | When to Use                  | Example                            |
+| ------- | ---------------------------- | ---------------------------------- |
+| `debug` | Development-only details     | "Parsed request body: {...}"       |
+| `info`  | Normal operations            | "Request completed successfully"   |
+| `warn`  | Recoverable issues           | "Rate limit approaching threshold" |
+| `error` | Failures requiring attention | "AI Gateway returned 500"          |
 
 ### 2.3 Redaction Rules
 
 **Never log:**
+
 - Raw prompts or completions (may contain PII)
 - Authentication tokens
 - API keys
 - Full request/response bodies
 
 **Allowed to log:**
+
 - Prompt/completion lengths
 - Token counts
 - Hashed identifiers
@@ -99,18 +102,25 @@ function redact(obj: unknown): unknown {
 }
 
 const SENSITIVE_KEYS = [
-  'password', 'token', 'secret', 'key', 'auth',
-  'prompt', 'completion', 'message', 'content'
+  'password',
+  'token',
+  'secret',
+  'key',
+  'auth',
+  'prompt',
+  'completion',
+  'message',
+  'content',
 ];
 ```
 
 ### 2.4 Log Destinations
 
-| Environment | Destination | Retention |
-|-------------|-------------|-----------|
-| Development | Console (stdout) | Session |
-| Staging | Workers Logpush → R2 | 30 days |
-| Production | Workers Logpush → R2 + Analytics | 90 days |
+| Environment | Destination                      | Retention |
+| ----------- | -------------------------------- | --------- |
+| Development | Console (stdout)                 | Session   |
+| Staging     | Workers Logpush → R2             | 30 days   |
+| Production  | Workers Logpush → R2 + Analytics | 90 days   |
 
 ## 3. Metrics
 
@@ -118,44 +128,44 @@ const SENSITIVE_KEYS = [
 
 #### Request Metrics
 
-| Metric | Type | Labels | Description |
-|--------|------|--------|-------------|
-| `http_requests_total` | Counter | tenant, route, method, status | Total HTTP requests |
-| `http_request_duration_ms` | Histogram | tenant, route, method | Request latency distribution |
-| `http_errors_total` | Counter | tenant, route, error_code | Total errors by type |
+| Metric                     | Type      | Labels                        | Description                  |
+| -------------------------- | --------- | ----------------------------- | ---------------------------- |
+| `http_requests_total`      | Counter   | tenant, route, method, status | Total HTTP requests          |
+| `http_request_duration_ms` | Histogram | tenant, route, method         | Request latency distribution |
+| `http_errors_total`        | Counter   | tenant, route, error_code     | Total errors by type         |
 
 #### AI Metrics
 
-| Metric | Type | Labels | Description |
-|--------|------|--------|-------------|
-| `ai_requests_total` | Counter | tenant, model, status | AI inference requests |
-| `ai_tokens_total` | Counter | tenant, model, direction | Token usage (in/out) |
-| `ai_request_duration_ms` | Histogram | tenant, model | AI latency distribution |
-| `ai_gateway_cache_hits_total` | Counter | tenant | Gateway cache utilization |
+| Metric                        | Type      | Labels                   | Description               |
+| ----------------------------- | --------- | ------------------------ | ------------------------- |
+| `ai_requests_total`           | Counter   | tenant, model, status    | AI inference requests     |
+| `ai_tokens_total`             | Counter   | tenant, model, direction | Token usage (in/out)      |
+| `ai_request_duration_ms`      | Histogram | tenant, model            | AI latency distribution   |
+| `ai_gateway_cache_hits_total` | Counter   | tenant                   | Gateway cache utilization |
 
 #### RAG Metrics
 
-| Metric | Type | Labels | Description |
-|--------|------|--------|-------------|
-| `vectorize_queries_total` | Counter | tenant | Vector search queries |
-| `vectorize_query_duration_ms` | Histogram | tenant | Vector search latency |
-| `vectorize_results_count` | Histogram | tenant | Results per query |
-| `rag_cache_hits_total` | Counter | tenant | RAG response cache hits |
+| Metric                        | Type      | Labels | Description             |
+| ----------------------------- | --------- | ------ | ----------------------- |
+| `vectorize_queries_total`     | Counter   | tenant | Vector search queries   |
+| `vectorize_query_duration_ms` | Histogram | tenant | Vector search latency   |
+| `vectorize_results_count`     | Histogram | tenant | Results per query       |
+| `rag_cache_hits_total`        | Counter   | tenant | RAG response cache hits |
 
 #### Session Metrics
 
-| Metric | Type | Labels | Description |
-|--------|------|--------|-------------|
-| `sessions_active` | Gauge | tenant | Currently active sessions |
-| `session_messages_total` | Counter | tenant | Messages across sessions |
-| `session_duration_seconds` | Histogram | tenant | Session lifetime |
+| Metric                     | Type      | Labels | Description               |
+| -------------------------- | --------- | ------ | ------------------------- |
+| `sessions_active`          | Gauge     | tenant | Currently active sessions |
+| `session_messages_total`   | Counter   | tenant | Messages across sessions  |
+| `session_duration_seconds` | Histogram | tenant | Session lifetime          |
 
 #### Rate Limiting Metrics
 
-| Metric | Type | Labels | Description |
-|--------|------|--------|-------------|
+| Metric                  | Type    | Labels             | Description             |
+| ----------------------- | ------- | ------------------ | ----------------------- |
 | `rate_limit_hits_total` | Counter | tenant, limit_type | Rate limit enforcements |
-| `rate_limit_remaining` | Gauge | tenant, limit_type | Remaining quota |
+| `rate_limit_remaining`  | Gauge   | tenant, limit_type | Remaining quota         |
 
 ### 3.2 Metric Implementation
 
@@ -194,7 +204,9 @@ export class MetricsCollector {
   }
 
   private buildKey(name: string, labels: Record<string, string>): string {
-    const sortedLabels = Object.entries(labels).sort().map(([k, v]) => `${k}=${v}`);
+    const sortedLabels = Object.entries(labels)
+      .sort()
+      .map(([k, v]) => `${k}=${v}`);
     return `${name}{${sortedLabels.join(',')}}`;
   }
 }
@@ -205,14 +217,10 @@ export class MetricsCollector {
 Standard latency buckets for all timing metrics:
 
 ```typescript
-const LATENCY_BUCKETS_MS = [
-  5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000
-];
+const LATENCY_BUCKETS_MS = [5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000];
 
 // For AI requests (higher latency expected)
-const AI_LATENCY_BUCKETS_MS = [
-  100, 250, 500, 1000, 2500, 5000, 10000, 30000, 60000
-];
+const AI_LATENCY_BUCKETS_MS = [100, 250, 500, 1000, 2500, 5000, 10000, 30000, 60000];
 ```
 
 ## 4. Tracing
@@ -235,11 +243,7 @@ export function createRequestContext(request: Request): RequestContext {
   };
 }
 
-export function withSpan<T>(
-  ctx: RequestContext,
-  name: string,
-  fn: () => Promise<T>
-): Promise<T> {
+export function withSpan<T>(ctx: RequestContext, name: string, fn: () => Promise<T>): Promise<T> {
   const spanStart = Date.now();
   return fn().finally(() => {
     ctx.spans.push({
@@ -255,9 +259,9 @@ export function withSpan<T>(
 
 ```typescript
 interface Span {
-  name: string;              // e.g., "vectorize.query", "ai.generate"
-  startTime: number;         // Unix ms
-  duration: number;          // ms
+  name: string; // e.g., "vectorize.query", "ai.generate"
+  startTime: number; // Unix ms
+  duration: number; // ms
   status: 'ok' | 'error';
   attributes?: Record<string, unknown>;
 }
@@ -272,7 +276,7 @@ async function callAIGateway(prompt: string, ctx: RequestContext): Promise<strin
   const response = await fetch(AI_GATEWAY_URL, {
     headers: {
       'x-request-id': ctx.requestId,
-      'x-trace-id': ctx.requestId,  // For distributed tracing
+      'x-trace-id': ctx.requestId, // For distributed tracing
     },
     body: JSON.stringify({ prompt }),
   });
@@ -284,43 +288,47 @@ async function callAIGateway(prompt: string, ctx: RequestContext): Promise<strin
 
 ### 5.1 Critical Alerts (Page)
 
-| Condition | Threshold | Action |
-|-----------|-----------|--------|
-| Error rate > 5% | 5 min window | Page on-call |
-| P99 latency > 10s | 5 min window | Page on-call |
-| Rate limit exhaustion | Any tenant | Page on-call |
-| AI Gateway failures | > 1% | Page on-call |
+| Condition             | Threshold    | Action       |
+| --------------------- | ------------ | ------------ |
+| Error rate > 5%       | 5 min window | Page on-call |
+| P99 latency > 10s     | 5 min window | Page on-call |
+| Rate limit exhaustion | Any tenant   | Page on-call |
+| AI Gateway failures   | > 1%         | Page on-call |
 
 ### 5.2 Warning Alerts (Notify)
 
-| Condition | Threshold | Action |
-|-----------|-----------|--------|
-| Error rate > 1% | 15 min window | Slack notification |
-| P95 latency > 5s | 15 min window | Slack notification |
-| Token budget > 80% | Daily | Slack notification |
-| Cache hit rate < 50% | 1 hour | Slack notification |
+| Condition            | Threshold     | Action             |
+| -------------------- | ------------- | ------------------ |
+| Error rate > 1%      | 15 min window | Slack notification |
+| P95 latency > 5s     | 15 min window | Slack notification |
+| Token budget > 80%   | Daily         | Slack notification |
+| Cache hit rate < 50% | 1 hour        | Slack notification |
 
 ### 5.3 Dashboard Panels
 
 **Overview Dashboard:**
+
 1. Request rate (by tenant)
 2. Error rate (by tenant, error type)
 3. Latency heatmap (P50, P95, P99)
 4. Active sessions
 
 **AI Dashboard:**
+
 1. Token usage (by tenant, model)
 2. AI request latency
 3. Gateway cache hit rate
 4. Model distribution
 
 **RAG Dashboard:**
+
 1. Vector query rate
 2. Vector query latency
 3. Results per query distribution
 4. RAG cache hit rate
 
 **Cost Dashboard:**
+
 1. Token usage trend
 2. Projected daily cost
 3. Cost by tenant
@@ -341,7 +349,7 @@ const TOKEN_COSTS: Record<string, { input: number; output: number }> = {
 
 export function estimateCost(model: string, tokensIn: number, tokensOut: number): number {
   const costs = TOKEN_COSTS[model] ?? { input: 0.0001, output: 0.0002 };
-  return (tokensIn * costs.input) + (tokensOut * costs.output);
+  return tokensIn * costs.input + tokensOut * costs.output;
 }
 ```
 
@@ -356,19 +364,19 @@ export async function checkBudget(
   if (!dailyLimit) return true;
 
   const usage = await getTodayTokenUsage(tenant);
-  return (usage + estimatedTokens) <= dailyLimit;
+  return usage + estimatedTokens <= dailyLimit;
 }
 ```
 
 ## 7. Implementation Timeline
 
-| Phase | Milestone | Deliverables |
-|-------|-----------|--------------|
-| M0 | Foundation | Basic logging with request context |
-| M1 | Chat | Session metrics, streaming metrics |
-| M2 | AI Gateway | AI metrics, token tracking |
-| M3 | RAG | Vectorize metrics, cache metrics |
-| M7 | Observability | Full metrics, dashboards, alerts |
+| Phase | Milestone     | Deliverables                       |
+| ----- | ------------- | ---------------------------------- |
+| M0    | Foundation    | Basic logging with request context |
+| M1    | Chat          | Session metrics, streaming metrics |
+| M2    | AI Gateway    | AI metrics, token tracking         |
+| M3    | RAG           | Vectorize metrics, cache metrics   |
+| M7    | Observability | Full metrics, dashboards, alerts   |
 
 ## 8. Local Development
 
@@ -384,4 +392,4 @@ if (env.ENVIRONMENT === 'development') {
 
 ---
 
-*See also: [architecture.md](./architecture.md), [testing.md](./testing.md)*
+_See also: [architecture.md](./architecture.md), [testing.md](./testing.md)_

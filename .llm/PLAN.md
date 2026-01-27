@@ -6,22 +6,26 @@
 ## Index
 
 ### Core Documents
+
 - [plan.md](docs/plan.md) — Canonical project plan with milestones M0-M8 + NX-1 to NX-4
 - [architecture.md](docs/architecture.md) — System architecture, components, data flow
 - [tenancy.md](docs/tenancy.md) — Multi-tenant isolation strategy
 - [api-contracts.md](docs/api-contracts.md) — Detailed endpoint specifications
 
 ### Operational Documents
+
 - [testing.md](docs/testing.md) — Testing strategy (unit, integration, E2E)
 - [metrics.md](docs/metrics.md) — Observability, logging, metrics plan
 - [BINDINGS.md](docs/BINDINGS.md) — Cloudflare bindings reference
 - [cleanup.md](docs/cleanup.md) — Pre-M0 repo cleanup candidates
 
 ### Security & Operations
+
 - [security.md](docs/security.md) — Security model, authentication, authorization
 - [failure-modes.md](docs/failure-modes.md) — Failure analysis and mitigation
 
 ### Pending Documents
+
 - `docs/milestones.md` — Milestone details (content in plan.md)
 - `docs/adrs/` — Architecture Decision Records (empty)
 

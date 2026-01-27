@@ -22,6 +22,7 @@ Inspected repository state after 22 commits on `copilot/sub-pr-126` branch. The 
 ### ✅ What's Working Well
 
 1. **Documentation Suite Complete** (4,491 lines across 10 documents)
+
    - `.llm/docs/plan.md` - Comprehensive 8-milestone roadmap
    - `.llm/docs/architecture.md` - System architecture
    - `.llm/docs/tenancy.md` - Multi-tenant isolation strategy
@@ -32,11 +33,13 @@ Inspected repository state after 22 commits on `copilot/sub-pr-126` branch. The 
    - `.llm/docs/failure-modes.md` - Failure analysis
 
 2. **Agent Orchestration Configured**
+
    - `.llm/agents.prompt.yaml` - 413 lines, well-structured
    - Clear roles: Claude (Architect), Gemini (Planner), Codex (Builder), Copilot (Pair)
    - Execution playbook defined
 
 3. **Documentation Management**
+
    - `.llm/PLAN.md` - Index of all planning documents
    - `.llm/TODO.md` - 122 GitHub issues tracked
    - `.llm/CHANGELOG.md` - Change history
@@ -49,7 +52,9 @@ Inspected repository state after 22 commits on `copilot/sub-pr-126` branch. The 
 ### ⚠️ Critical Issues
 
 #### 1. **Workspace Configuration Mismatch**
+
 **Problem:**
+
 ```json
 // package.json
 "workspaces": [
@@ -60,11 +65,13 @@ Inspected repository state after 22 commits on `copilot/sub-pr-126` branch. The 
 ```
 
 **Reality:**
+
 - ❌ No `tenants/` directory exists
 - ❌ No `apps/` directory exists
 - ✅ `packages/` exists but only contains `.gitkeep`
 
-**Impact:** 
+**Impact:**
+
 - Workspace resolution will fail
 - Cannot install dependencies
 - Nx will not detect any projects
@@ -72,25 +79,31 @@ Inspected repository state after 22 commits on `copilot/sub-pr-126` branch. The 
 **Recommendation:** This is expected for pre-M0. Will be resolved during M0 scaffolding.
 
 #### 2. **No Nx Projects Registered**
+
 **Problem:**
+
 - Attempted `npx nx show projects` fails: "Could not find Nx modules"
 - No `node_modules/` directory (dependencies not installed)
 - No `project.json` files in any location
 
 **Impact:**
+
 - Cannot run any Nx commands
 - Cannot build, test, or deploy
 
 **Recommendation:** This is expected. M0 will create the first project with `project.json`.
 
 #### 3. **No TypeScript Implementation**
+
 **Problem:**
+
 - Only 2 `.ts` files exist:
   - `vitest.workspace.ts` (configuration)
   - `.llm/snippets/openrouter-snippet.ts` (snippet)
 - No actual application code
 
 **Impact:**
+
 - Cannot run builds or tests
 - No worker applications exist
 
@@ -99,10 +112,12 @@ Inspected repository state after 22 commits on `copilot/sub-pr-126` branch. The 
 ### ℹ️ Minor Observations
 
 1. **Cleaned Up Directories**
+
    - `com/` directory removed in recent commits (was placeholder)
    - Agent scratchpads archived to `.llm/archives/2026-01-26-scratch/`
 
 2. **File Naming Convention**
+
    - Renamed `agents.prompt.yml` → `agents.prompt.yaml` (standardization)
 
 3. **Dependencies Defined**
@@ -117,6 +132,7 @@ Inspected repository state after 22 commits on `copilot/sub-pr-126` branch. The 
 ## Repository Structure Analysis
 
 ### Current State
+
 ```
 cloudflare-mono-repo/
 ├── .llm/                      ✅ Complete documentation workspace
@@ -147,6 +163,7 @@ Missing (Expected):
 ```
 
 ### Expected State After M0
+
 ```
 cloudflare-mono-repo/
 ├── apps/
@@ -181,28 +198,36 @@ cloudflare-mono-repo/
 ## Validation Checks
 
 ### Build System ❌ (Expected)
+
 ```bash
 $ npx nx show projects
 Error: Could not find Nx modules
 ```
+
 **Status:** Expected - no projects created yet
 
 ### Dependencies ❌ (Expected)
+
 ```bash
 $ ls node_modules
 ls: cannot access 'node_modules': No such file or directory
 ```
+
 **Status:** Expected - npm install not run yet
 
 ### TypeScript ✅
+
 ```bash
 $ ls *.ts */*.ts
 vitest.workspace.ts  .llm/snippets/openrouter-snippet.ts
 ```
+
 **Status:** Configuration files present
 
 ### Documentation ✅
+
 All critical documents present:
+
 - [x] plan.md (498 lines)
 - [x] architecture.md (444 lines)
 - [x] tenancy.md (458 lines)
@@ -221,18 +246,21 @@ All critical documents present:
 ## Risk Assessment
 
 ### 🟢 Low Risk
+
 - **Documentation Quality:** Excellent, comprehensive
 - **Planning Completeness:** All milestones defined with exit criteria
 - **Agent Coordination:** Clear roles and responsibilities
 - **Dependency Selection:** All appropriate for Cloudflare Workers
 
 ### 🟡 Medium Risk (Acknowledged in Docs)
+
 - **AI Gateway Details:** Some uncertainty about routing configuration (M2 spike planned)
 - **Vectorize Local Testing:** Limited local emulation (staging strategy defined)
 - **Multi-Account Auth:** Credential switching strategy needs definition (deployment scripts in M8)
 - **TTS Implementation:** Provider selection deferred (contract-first approach in M6)
 
 ### 🔴 High Risk
+
 - **None identified** - All risks are acknowledged and mitigation strategies defined
 
 ---
@@ -240,11 +268,13 @@ All critical documents present:
 ## Action Items
 
 ### Immediate (Before M0 Start)
+
 - [ ] **Run `npm install`** - Install all dependencies (122 packages)
 - [ ] **Verify Nx installation** - Ensure `npx nx` works
 - [ ] **Review cleanup.md** - Decide on any final cleanups before scaffolding
 
 ### M0 Foundation (Next Steps per Plan)
+
 1. [ ] Create `apps/worker-api/` with project.json and basic structure
 2. [ ] Create `packages/core/` with tenant resolution middleware
 3. [ ] Create `tenants/mrrainbowsmoke/` and `tenants/rainbowsmokeofficial/`
@@ -257,6 +287,7 @@ All critical documents present:
 10. [ ] Verify `wrangler dev` runs for at least one tenant
 
 ### Quality Gates Before M0 Complete
+
 - [ ] TypeScript compiles without errors
 - [ ] Linter passes
 - [ ] Unit tests pass (tenant resolution + error handling)
@@ -268,6 +299,7 @@ All critical documents present:
 ## Recommendations
 
 ### For @gemini-code
+
 1. ✅ **Documentation is excellent** - No changes needed to planning docs
 2. ✅ **Milestone sequencing is sound** - Dependencies clearly mapped
 3. ✅ **Risk mitigation is thorough** - All blockers identified with mitigation plans
@@ -277,15 +309,17 @@ All critical documents present:
    - Final cleanup decisions
 
 ### For Implementation Team (Codex)
+
 1. 🎯 **Start M0 immediately** - All planning prerequisites are met
 2. 📋 **Follow TODO.md** - Codex recommendations section has concrete technical guidance
 3. 🏗️ **Scaffold in order:**
    - First: packages/core (tenant resolution)
    - Second: apps/worker-api (uses core)
-   - Third: tenants/* (configuration)
+   - Third: tenants/\* (configuration)
 4. 🧪 **Test-first approach:** Write tenant resolution tests before implementing routes
 
 ### For Project Owner (@rainbowkillah)
+
 1. ✅ **Documentation phase complete** - Safe to proceed to implementation
 2. ✅ **GitHub project is well-organized** - 122 issues properly categorized
 3. 💡 **Decision needed:** Review `.llm/docs/cleanup.md` for any final pre-M0 changes
@@ -300,6 +334,7 @@ All critical documents present:
 The repository is in an **excellent state for a pre-M0 planning phase**. All documentation is comprehensive, well-structured, and addresses the hard requirements. The apparent "issues" (no code, no node_modules, no tenants) are **expected** and **by design** at this stage.
 
 ### What's Next
+
 1. **@rainbowkillah:** Review this inspection report and `.llm/docs/cleanup.md`
 2. **Team:** Run `npm install` to initialize node_modules
 3. **Codex:** Begin M0 scaffolding following `.llm/docs/plan.md` M0 section

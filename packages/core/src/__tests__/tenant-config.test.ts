@@ -8,35 +8,35 @@ describe('TenantConfigSchema', () => {
       tenantId: 'mrrainbowsmoke',
       accountId: 'acct_123',
       hostnameMapping: {
-        'api.mrrainbowsmoke.com': 'mrrainbowsmoke'
+        'api.mrrainbowsmoke.com': 'mrrainbowsmoke',
       },
       ai: {
         models: ['@cf/meta/llama-3.1-8b-instruct'],
         budgets: {
           tokensPerDay: 100000,
-          requestsPerMinute: 120
-        }
+          requestsPerMinute: 120,
+        },
       },
       vectorize: {
-        indexNames: ['documents']
+        indexNames: ['documents'],
       },
       kv: {
         namespaceMappings: {
-          SESSIONS: 'kv_sessions'
-        }
+          SESSIONS: 'kv_sessions',
+        },
       },
       durable_objects: {
         classBindings: {
-          SESSIONS: 'SessionDO'
-        }
+          SESSIONS: 'SessionDO',
+        },
       },
       cors: {
         origins: ['https://app.mrrainbowsmoke.com'],
-        allowCredentials: true
+        allowCredentials: true,
       },
       featureFlags: {
-        chatStreaming: true
-      }
+        chatStreaming: true,
+      },
     };
 
     const result = TenantConfigSchema.safeParse(config);
@@ -47,8 +47,8 @@ describe('TenantConfigSchema', () => {
     const config = {
       tenantId: '',
       ai: {
-        models: []
-      }
+        models: [],
+      },
     };
 
     const result = TenantConfigSchema.safeParse(config);

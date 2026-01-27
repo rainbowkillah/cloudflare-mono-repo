@@ -23,12 +23,14 @@ Header: Authorization: Bearer <token>
 ```
 
 Token types (to be implemented):
+
 - API Key: `ak_<tenant>_<random>`
 - JWT: Standard JWT with `tenant` claim
 
 ### 1.3 Common Headers
 
 **Request:**
+
 ```
 x-tenant-id: string          # Required if not using hostname mapping
 x-request-id: string         # Optional, generated if missing
@@ -37,6 +39,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```
 x-request-id: string
 x-tenant-id: string
@@ -63,16 +66,16 @@ interface ErrorResponse {
 
 **Common Error Codes:**
 
-| Code | HTTP Status | Description |
-|------|-------------|-------------|
-| `TENANT_NOT_FOUND` | 400 | Cannot resolve tenant |
-| `VALIDATION_ERROR` | 400 | Invalid request body |
-| `UNAUTHORIZED` | 401 | Missing or invalid auth |
-| `FORBIDDEN` | 403 | Insufficient permissions |
-| `NOT_FOUND` | 404 | Resource not found |
-| `RATE_LIMITED` | 429 | Too many requests |
-| `INTERNAL_ERROR` | 500 | Server error |
-| `SERVICE_UNAVAILABLE` | 503 | Upstream service down |
+| Code                  | HTTP Status | Description              |
+| --------------------- | ----------- | ------------------------ |
+| `TENANT_NOT_FOUND`    | 400         | Cannot resolve tenant    |
+| `VALIDATION_ERROR`    | 400         | Invalid request body     |
+| `UNAUTHORIZED`        | 401         | Missing or invalid auth  |
+| `FORBIDDEN`           | 403         | Insufficient permissions |
+| `NOT_FOUND`           | 404         | Resource not found       |
+| `RATE_LIMITED`        | 429         | Too many requests        |
+| `INTERNAL_ERROR`      | 500         | Server error             |
+| `SERVICE_UNAVAILABLE` | 503         | Upstream service down    |
 
 ---
 
@@ -83,12 +86,14 @@ interface ErrorResponse {
 Returns service health and version information.
 
 **Request:**
+
 ```http
 GET /health
 x-tenant-id: acme
 ```
 
 **Response:**
+
 ```json
 {
   "status": "ok",
@@ -105,6 +110,7 @@ x-tenant-id: acme
 ```
 
 **Status Codes:**
+
 - `200` - All systems operational
 - `503` - One or more services degraded
 
@@ -117,16 +123,17 @@ x-tenant-id: acme
 Streaming chat completion with session support.
 
 **Request:**
+
 ```typescript
 interface ChatRequest {
   messages: Message[];
-  session_id?: string;        // Continue existing session
-  model?: string;             // Override default model
-  stream?: boolean;           // Default: true
+  session_id?: string; // Continue existing session
+  model?: string; // Override default model
+  stream?: boolean; // Default: true
   options?: {
-    temperature?: number;     // 0-2, default 0.7
-    max_tokens?: number;      // Default from tenant config
-    stop?: string[];          // Stop sequences
+    temperature?: number; // 0-2, default 0.7
+    max_tokens?: number; // Default from tenant config
+    stop?: string[]; // Stop sequences
   };
 }
 
@@ -137,6 +144,7 @@ interface Message {
 ```
 
 **Example Request:**
+
 ```http
 POST /chat
 Content-Type: application/json
@@ -152,6 +160,7 @@ x-session-id: sess_abc123
 ```
 
 **Streaming Response (SSE):**
+
 ```
 HTTP/1.1 200 OK
 Content-Type: text/event-stream
@@ -172,6 +181,7 @@ data: [DONE]
 ```
 
 **Non-Streaming Response:**
+
 ```json
 {
   "id": "chat_abc123",
@@ -191,15 +201,16 @@ data: [DONE]
 
 **Event Types (Streaming):**
 
-| Type | Fields | Description |
-|------|--------|-------------|
-| `start` | `model` | Stream beginning |
-| `chunk` | `content` | Text chunk |
+| Type        | Fields              | Description           |
+| ----------- | ------------------- | --------------------- |
+| `start`     | `model`             | Stream beginning      |
+| `chunk`     | `content`           | Text chunk            |
 | `tool_call` | `name`, `arguments` | Function call request |
-| `error` | `code`, `message` | Error during stream |
-| `done` | `usage` | Stream complete |
+| `error`     | `code`, `message`   | Error during stream   |
+| `done`      | `usage`             | Stream complete       |
 
 **Status Codes:**
+
 - `200` - Success
 - `400` - Invalid request
 - `429` - Rate limited
@@ -214,24 +225,26 @@ data: [DONE]
 RAG-powered search with structured results.
 
 **Request:**
+
 ```typescript
 interface SearchRequest {
   query: string;
   filters?: {
-    source?: string[];        // Filter by source
-    date_from?: string;       // ISO date
+    source?: string[]; // Filter by source
+    date_from?: string; // ISO date
     date_to?: string;
     metadata?: Record<string, string>;
   };
   options?: {
-    top_k?: number;           // Default: 5
+    top_k?: number; // Default: 5
     include_sources?: boolean; // Default: true
-    rerank?: boolean;         // Default: false
+    rerank?: boolean; // Default: false
   };
 }
 ```
 
 **Example Request:**
+
 ```http
 POST /search
 Content-Type: application/json
@@ -247,6 +260,7 @@ x-tenant-id: acme
 ```
 
 **Response:**
+
 ```typescript
 interface SearchResponse {
   answer: string;
@@ -271,6 +285,7 @@ interface Source {
 ```
 
 **Example Response:**
+
 ```json
 {
   "answer": "To deploy Cloudflare Workers, you can use the Wrangler CLI with `wrangler deploy`. This will upload your code to Cloudflare's edge network...",
@@ -303,6 +318,7 @@ interface Source {
 ```
 
 **Status Codes:**
+
 - `200` - Success
 - `400` - Invalid query
 - `429` - Rate limited
@@ -316,13 +332,14 @@ interface Source {
 Ingest documents into the RAG pipeline.
 
 **Request:**
+
 ```typescript
 interface IngestRequest {
   documents: Document[];
   options?: {
-    chunk_size?: number;      // Default: 512
-    chunk_overlap?: number;   // Default: 50
-    batch_size?: number;      // Default: 100
+    chunk_size?: number; // Default: 512
+    chunk_overlap?: number; // Default: 50
+    batch_size?: number; // Default: 100
   };
 }
 
@@ -340,6 +357,7 @@ interface Document {
 ```
 
 **Example Request:**
+
 ```http
 POST /ingest
 Content-Type: application/json
@@ -362,6 +380,7 @@ Authorization: Bearer ak_acme_xxx
 ```
 
 **Response:**
+
 ```json
 {
   "ingested": 1,
@@ -373,6 +392,7 @@ Authorization: Bearer ak_acme_xxx
 ```
 
 **Status Codes:**
+
 - `200` - Success
 - `400` - Invalid documents
 - `401` - Unauthorized (requires auth)
@@ -387,28 +407,30 @@ Authorization: Bearer ak_acme_xxx
 Execute a registered tool/function.
 
 **Request:**
+
 ```typescript
 interface ToolExecuteRequest {
   tool: string;
   arguments: Record<string, unknown>;
   options?: {
-    timeout_ms?: number;      // Default: 30000
-    async?: boolean;          // Default: false
+    timeout_ms?: number; // Default: 30000
+    async?: boolean; // Default: false
   };
 }
 ```
 
 **Available Tools:**
 
-| Tool | Arguments | Description |
-|------|-----------|-------------|
-| `summarize` | `text`, `max_length?` | Summarize text |
-| `extract_entities` | `text`, `types?` | Extract named entities |
-| `classify_intent` | `text`, `categories` | Classify text intent |
-| `tag_document` | `text`, `taxonomy?` | Auto-tag document |
-| `ingest_document` | `content`, `metadata` | Ingest single doc |
+| Tool               | Arguments             | Description            |
+| ------------------ | --------------------- | ---------------------- |
+| `summarize`        | `text`, `max_length?` | Summarize text         |
+| `extract_entities` | `text`, `types?`      | Extract named entities |
+| `classify_intent`  | `text`, `categories`  | Classify text intent   |
+| `tag_document`     | `text`, `taxonomy?`   | Auto-tag document      |
+| `ingest_document`  | `content`, `metadata` | Ingest single doc      |
 
 **Example Request:**
+
 ```http
 POST /tools/execute
 Content-Type: application/json
@@ -424,6 +446,7 @@ x-tenant-id: acme
 ```
 
 **Response:**
+
 ```json
 {
   "tool": "summarize",
@@ -438,6 +461,7 @@ x-tenant-id: acme
 ```
 
 **Async Response (when `async: true`):**
+
 ```json
 {
   "job_id": "job_abc123",
@@ -447,6 +471,7 @@ x-tenant-id: acme
 ```
 
 **Status Codes:**
+
 - `200` - Success
 - `400` - Invalid arguments
 - `403` - Tool not allowed for tenant
@@ -461,17 +486,19 @@ x-tenant-id: acme
 Text-to-speech synthesis.
 
 **Request:**
+
 ```typescript
 interface TTSRequest {
   text: string;
-  voice?: string;             // Default: "default"
-  format?: 'mp3' | 'wav' | 'opus';  // Default: "mp3"
-  speed?: number;             // 0.5-2.0, default 1.0
-  stream?: boolean;           // Default: false
+  voice?: string; // Default: "default"
+  format?: 'mp3' | 'wav' | 'opus'; // Default: "mp3"
+  speed?: number; // 0.5-2.0, default 1.0
+  stream?: boolean; // Default: false
 }
 ```
 
 **Example Request:**
+
 ```http
 POST /tts
 Content-Type: application/json
@@ -485,6 +512,7 @@ x-tenant-id: acme
 ```
 
 **Response (Non-Streaming):**
+
 ```
 HTTP/1.1 200 OK
 Content-Type: audio/mpeg
@@ -495,6 +523,7 @@ x-duration-ms: 2500
 ```
 
 **Response (Streaming):**
+
 ```
 HTTP/1.1 200 OK
 Content-Type: audio/mpeg
@@ -505,6 +534,7 @@ x-duration-ms: 2500
 ```
 
 **Stub Response (when TTS not enabled):**
+
 ```json
 {
   "error": {
@@ -516,6 +546,7 @@ x-duration-ms: 2500
 ```
 
 **Status Codes:**
+
 - `200` - Success
 - `400` - Invalid text or options
 - `501` - TTS not implemented
@@ -529,6 +560,7 @@ x-duration-ms: 2500
 Get session details.
 
 **Response:**
+
 ```json
 {
   "id": "sess_abc123",
@@ -547,6 +579,7 @@ Get session details.
 Delete a session and its history.
 
 **Response:**
+
 ```json
 {
   "deleted": true,
@@ -567,6 +600,7 @@ x-ratelimit-reset: 1706270400
 ```
 
 **When Rate Limited:**
+
 ```json
 {
   "error": {
@@ -588,13 +622,13 @@ x-ratelimit-reset: 1706270400
 
 ### Event Types
 
-| Event | Payload | Description |
-|-------|---------|-------------|
-| `ingest.completed` | `job_id`, `document_count` | Ingest job finished |
-| `ingest.failed` | `job_id`, `error` | Ingest job failed |
-| `session.expired` | `session_id` | Session TTL reached |
-| `budget.threshold` | `current`, `limit` | Token budget warning |
+| Event              | Payload                    | Description          |
+| ------------------ | -------------------------- | -------------------- |
+| `ingest.completed` | `job_id`, `document_count` | Ingest job finished  |
+| `ingest.failed`    | `job_id`, `error`          | Ingest job failed    |
+| `session.expired`  | `session_id`               | Session TTL reached  |
+| `budget.threshold` | `current`, `limit`         | Token budget warning |
 
 ---
 
-*See also: [architecture.md](./architecture.md), [tenancy.md](./tenancy.md)*
+_See also: [architecture.md](./architecture.md), [tenancy.md](./tenancy.md)_

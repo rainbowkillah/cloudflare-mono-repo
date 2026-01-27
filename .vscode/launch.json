@@ -6,19 +6,13 @@
       "request": "launch",
       "name": "Debug my-ai with Nx",
       "runtimeExecutable": "npx",
-      "runtimeArgs": [
-        "nx",
-        "serve",
-        "my-ai"
-      ],
+      "runtimeArgs": ["nx", "serve", "my-ai"],
       "env": {
         "NODE_OPTIONS": "--inspect=9229"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
+      "skipFiles": ["<node_internals>/**"],
       "sourceMaps": true,
       "outFiles": [
         "${workspaceFolder}/com-mrrainbowsmoke/my-ai/dist/**/*.(m|c|)js",
@@ -30,19 +24,13 @@
       "request": "launch",
       "name": "Debug my-ai with Nx",
       "runtimeExecutable": "npx",
-      "runtimeArgs": [
-        "nx",
-        "serve",
-        "my-ai"
-      ],
+      "runtimeArgs": ["nx", "serve", "my-ai"],
       "env": {
         "NODE_OPTIONS": "--inspect=9230"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
+      "skipFiles": ["<node_internals>/**"],
       "sourceMaps": true,
       "outFiles": [
         "${workspaceFolder}/com-rainbowsmokeofficial/my-ai/dist/**/*.(m|c|)js",
@@ -54,19 +42,13 @@
       "request": "launch",
       "name": "Debug bluey with Nx",
       "runtimeExecutable": "npx",
-      "runtimeArgs": [
-        "nx",
-        "serve",
-        "bluey"
-      ],
+      "runtimeArgs": ["nx", "serve", "bluey"],
       "env": {
         "NODE_OPTIONS": "--inspect=9231"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
+      "skipFiles": ["<node_internals>/**"],
       "sourceMaps": true,
       "outFiles": [
         "${workspaceFolder}/com/mrrainbowsmoke/ai/dist/**/*.(m|c|)js",
@@ -78,19 +60,13 @@
       "request": "launch",
       "name": "Debug azure with Nx",
       "runtimeExecutable": "npx",
-      "runtimeArgs": [
-        "nx",
-        "serve",
-        "azure"
-      ],
+      "runtimeArgs": ["nx", "serve", "azure"],
       "env": {
         "NODE_OPTIONS": "--inspect=9232"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
+      "skipFiles": ["<node_internals>/**"],
       "sourceMaps": true,
       "outFiles": [
         "${workspaceFolder}/com/rainbowsmokeofficial/ai/dist/**/*.(m|c|)js",

@@ -1,4 +1,5 @@
 ## Party Kit Next.js Chat Template
+
 Find the Party Kit Next.js Chat Template at:
 https://github.com/partykit/partykit-nextjs-chat-template.git
 

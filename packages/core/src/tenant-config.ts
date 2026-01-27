@@ -11,33 +11,33 @@ export const TenantConfigSchema = z.object({
       budgets: z
         .object({
           tokensPerDay: z.number().optional(),
-          requestsPerMinute: z.number().optional()
+          requestsPerMinute: z.number().optional(),
         })
-        .optional()
+        .optional(),
     })
     .optional(),
   vectorize: z
     .object({
-      indexNames: z.array(z.string()).optional()
+      indexNames: z.array(z.string()).optional(),
     })
     .optional(),
   kv: z
     .object({
-      namespaceMappings: z.record(z.string()).optional()
+      namespaceMappings: z.record(z.string()).optional(),
     })
     .optional(),
   durable_objects: z
     .object({
-      classBindings: z.record(z.string()).optional()
+      classBindings: z.record(z.string()).optional(),
     })
     .optional(),
   cors: z
     .object({
       origins: z.array(z.string()).optional(),
-      allowCredentials: z.boolean().optional()
+      allowCredentials: z.boolean().optional(),
     })
     .optional(),
-  featureFlags: z.record(z.boolean()).optional()
+  featureFlags: z.record(z.boolean()).optional(),
 });
 
 export type TenantConfig = z.infer<typeof TenantConfigSchema>;

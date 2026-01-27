@@ -3,6 +3,7 @@
 Guardrails: keep tenants isolated; secrets live only in Workers Secrets; never store raw prompts in D1/KV/R2.
 
 ## mrrainbowsmoke
+
 Account: `9acbaee838d01aa096e63ad4551fda77` — Worker: `mrrainbowsmoke-ai-worker` — Config: `mrrainbowsmoke/wrangler.jsonc`
 
 **Workers AI**
@@ -46,6 +47,7 @@ Account: `9acbaee838d01aa096e63ad4551fda77` — Worker: `mrrainbowsmoke-ai-worke
 | API_KEY | Bearer token for auth |
 
 ## rainbowsmokeofficial
+
 Account: `7fde695caf9cc41efca391316eb71003` — Worker: `rainbowsmokeofficial-ai-worker` — Config: `rainbowsmokeofficial/wrangler.jsonc`
 
 **Workers AI**
@@ -89,6 +91,7 @@ Account: `7fde695caf9cc41efca391316eb71003` — Worker: `rainbowsmokeofficial-ai
 | API_KEY | Bearer token for auth |
 
 ## Env Interface
+
 Bindings are typed in `src/lib/aiClient.ts` (`Env` interface):
 
 ```typescript
@@ -109,6 +112,7 @@ export interface Env {
 ```
 
 ## Usage Notes
+
 - Secrets never live in KV/D1/R2; use `wrangler secret put` only.
 - D1 stores metadata only (roles, timestamps, token counts); no raw prompts.
 - KV `CONFIG` for flags (`VECTORIZE_ENABLED`, `STREAMING_ENABLED`) and allowlists; `CACHE` keyed by hashed input with TTL per env.
